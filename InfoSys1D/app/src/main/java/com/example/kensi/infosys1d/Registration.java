@@ -58,8 +58,6 @@ public class Registration extends AppCompatActivity {
                         Toast.makeText(Registration.this, "Generic error", Toast.LENGTH_LONG).show();
                     }
                 }
-                Intent i = new Intent(Registration.this, Login.class);
-                startActivity(i);
             }
         });
 

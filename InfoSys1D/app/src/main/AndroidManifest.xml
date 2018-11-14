@@ -27,6 +27,7 @@
             android:label="@string/title_activity_qrreader"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Registration" />
+        <activity android:name=".Checkout"/>
     </application>
 
 </manifest>

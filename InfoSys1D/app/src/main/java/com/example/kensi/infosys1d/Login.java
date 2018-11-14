@@ -44,6 +44,14 @@ public class Login extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        buttonForget.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Login.this, Checkout.class);
+                startActivity(i);
+            }
+        });
         //Submission press
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
