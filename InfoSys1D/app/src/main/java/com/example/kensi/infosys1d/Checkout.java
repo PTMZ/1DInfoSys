@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Checkout extends AppCompatActivity {
 
@@ -30,49 +32,22 @@ public class Checkout extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        productList.add(
-                new Product(
-                        1,
-                        "Chicken Burger",
-                        "No chicken",
-                        13,
-                        R.drawable.burger, 5));
-
-        productList.add(
-                new Product(
-                        2,
-                        "Mushroom",
-                        "14 inch, Gray, 1.659 kg",
-                        13,
-                        R.drawable.mushroomsoup, 5));
-
-        productList.add(
-                new Product(
-                        3,
-                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
-                        "13.3 inch, Silver, 1.35 kg",
-                        9,
-                        R.drawable.marinabayotter,5));
-        productList.add(
-                new Product(
-                        3,
-                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
-                        "13.3 inch, Silver, 1.35 kg",
-                        9,
-                        R.drawable.marinabayotter,5));
-        productList.add(
-                new Product(
-                        3,
-                        "Microsoft Surface Pro 4 Core m3 6th Gen - (4 GB/128 GB SSD/Windows 10)",
-                        "13.3 inch, Silver, 1.35 kg",
-                        9,
-                        R.drawable.marinabayotter, 5));
-        adapter = new ProductAdapter(this, productList);
-        recyclerView.setAdapter(adapter);
-        textViewTotalPrice.setText(getPrice(productList));
-//        Toolbar myToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(myToolbar);
+        Map<String, Integer> checkMap = new HashMap<String, Integer>();
+        checkMap.put("Fish Fillet", 3);
+        checkMap.put("Salted Egg Chicken",5);
+        checkMap.put("Steam Egg", 15);
+        String storeID = "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080";
+        final String[] items = CheckoutRequest.keyMapToArray(checkMap);
+        final int[] qty = CheckoutRequest.valueMapToArray(checkMap);
+        CheckoutRequest.request_call_me(getApplicationContext(), storeID, new VolleyCallback() {
+                    @Override
+                    public void onSuccessResponse(String result) {
+                        productList = CheckoutRequest.request_iterate(productList, items, qty, result);
+                        adapter = new ProductAdapter(Checkout.this, productList);
+                        recyclerView.setAdapter(adapter);
+                        textViewTotalPrice.setText(getPrice(productList));
+                    }
+                });
     }
 
     @Override
@@ -84,14 +59,18 @@ public class Checkout extends AppCompatActivity {
     private String getPrice(List<Product> list){
         double totalPrice = 0;
         for (Product p : list){
-            totalPrice += p.getPrice()*p.getQty();
+            totalPrice += Double.valueOf(p.getPrice().substring(2,p.getPrice().length()-1))*p.getQty();
         }
-        String totalPriceString = String.valueOf(totalPrice);
-        if (totalPriceString.charAt(String.valueOf(totalPrice).length()-2)=='.'){
+        return priceConversion(totalPrice);
+
+    }
+
+    public static String priceConversion(double price){
+        String totalPriceString = String.valueOf(price);
+        if (totalPriceString.charAt(String.valueOf(price).length()-2)=='.'){
             return "$ "+totalPriceString+"0";
         } else{
             return totalPriceString;
         }
-
     }
 }

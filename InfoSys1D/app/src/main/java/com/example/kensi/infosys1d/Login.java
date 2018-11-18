@@ -37,9 +37,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Send a single POST request to establish connection
-//        LoginPostRequest.login("defaultpassword","default@email.com", false);
-
         //Input instantiations from UI
         final EditText inputEmail = findViewById(R.id.inputRegUser);
         final EditText inputPassword = findViewById(R.id.inputRegEmail);
@@ -63,16 +60,18 @@ public class Login extends AppCompatActivity {
         buttonSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent i = new Intent(Login.this, Registration.class);
-//                startActivity(i);
+                Intent i = new Intent(Login.this, Registration.class);
+                startActivity(i);
             }
         });
 
+        //temporary button to open checkout menu
+        //todo change function
         buttonForget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent i = new Intent(Login.this, Checkout.class);
-//                startActivity(i);
+                Intent i = new Intent(Login.this, Checkout.class);
+                startActivity(i);
             }
         });
 
@@ -92,19 +91,24 @@ public class Login extends AppCompatActivity {
                     Boolean remember = checkRemember.isChecked();
 
                     // Make POST request to /admin/login
-                    LoginPostRequest.login(getApplicationContext(), password, email, remember);
+                    LoginPostRequest.login(getApplicationContext(), password, email, remember, new VolleyCallback() {
+                        //decides what to do from post request reponse
+                        @Override
+                        public void onSuccessResponse(String result) {
+                            int status = Integer.parseInt(result);
+                            if (status == 1) {
+                                //if successful, opens QR code reader
+                                Toast.makeText(Login.this, "Login success", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(Login.this, QRreader.class);
+                                startActivity(i);
+                            } else if (status == -1) {
+                                Toast.makeText(Login.this, "Wrong E-mail/password", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(Login.this, "Server error", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
 
-//                    if (parsedReply.equals("1")){
-//                        Toast.makeText(Login.this, "Login success", Toast.LENGTH_LONG).show();
-//                        Intent i = new Intent(Login.this, QRreader.class);
-//                        startActivity(i);
-//                    } else if (parsedReply.equals("0")){
-//                        Toast.makeText(Login.this, "Server error", Toast.LENGTH_LONG).show();
-//                    } else if (parsedReply.equals("-1")){
-//                        Toast.makeText(Login.this, "Wrong E-mail/password", Toast.LENGTH_LONG).show();
-//                    } else {
-//                        Toast.makeText(Login.this, "Generic error", Toast.LENGTH_LONG).show();
-//                    }
                 }
             }
         });

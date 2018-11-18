@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inputRegUser" />
 
     <EditText
-        android:id="@+id/inputRegPassword"
+        android:id="@+id/inputRegPassword0"
         android:layout_width="273dp"
         android:layout_height="42dp"
         android:layout_marginTop="12dp"
@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inputRegEmail" />
 
     <EditText
-        android:id="@+id/inputRegPassword2"
+        android:id="@+id/inputRegPassword1"
         android:layout_width="273dp"
         android:layout_height="42dp"
         android:layout_marginTop="12dp"
@@ -53,7 +53,7 @@
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputRegPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/inputRegPassword0" />
 
     <TextView
         android:id="@+id/textEmail"
@@ -86,7 +86,7 @@
         android:layout_marginTop="8dp"
         android:text="Password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/inputRegPassword" />
+        app:layout_constraintTop_toTopOf="@+id/inputRegPassword0" />
 
     <TextView
         android:id="@+id/textPassword2"
@@ -96,7 +96,7 @@
         android:layout_marginLeft="20dp"
         android:text="Confirm Password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/inputRegPassword2" />
+        app:layout_constraintTop_toTopOf="@+id/inputRegPassword1" />
 
     <Button
         android:id="@+id/buttonRegSubmit"
@@ -118,6 +118,6 @@
         android:layout_marginRight="16dp"
         android:text="Are you a vendor?"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputRegPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/inputRegPassword1" />
 
 </android.support.constraint.ConstraintLayout>
