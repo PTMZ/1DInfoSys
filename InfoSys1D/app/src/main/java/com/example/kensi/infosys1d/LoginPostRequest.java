@@ -32,6 +32,7 @@ public class LoginPostRequest {
     // Define all the constant
     private static String BASE_URL = "https://chocolatepie.tech";
     private static org.json.simple.JSONObject response;
+    private static JSONObject testResponse;
 
 
     public static void login(final Context context, final String password, final String email, boolean remember, final VolleyCallback callback) {
@@ -60,13 +61,12 @@ public class LoginPostRequest {
                 public void onResponse(String result) {
                     VolleyLog.wtf(result);
 //                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    JSONParser parser = new JSONParser();
                     try {
-                        response = (org.json.simple.JSONObject) parser.parse(result);
-                        Long status = (Long) response.get("status");
-                        callback.onSuccessResponse(String.valueOf(status));
-                    } catch (ParseException e) {
-                        Log.e("MYAPP", "Parse exception", e);
+                        JSONObject jsonObject = new JSONObject(result);
+                        String status = Integer.toString(jsonObject.getInt("status"));
+                        callback.onSuccessResponse(status);
+                    } catch (JSONException e) {
+                        Log.e("MYAPP", "Unable to get status", e);
                     }
                 }
             }, errorListener) {
@@ -139,12 +139,11 @@ public class LoginPostRequest {
                 public void onResponse(String result) {
                     VolleyLog.wtf(result);
 //                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    JSONParser parser = new JSONParser();
                     try {
-                        response = (org.json.simple.JSONObject) parser.parse(result);
-                        Long status = (Long) response.get("status");
-                        callback.onSuccessResponse(String.valueOf(status));
-                    } catch (ParseException e) {
+                        JSONObject jsonObject = new JSONObject(result);
+                        String status = Integer.toString(jsonObject.getInt("status"));
+                        callback.onSuccessResponse(status);
+                    } catch (JSONException e) {
                         Log.e("MYAPP", "Parse exception", e);
                     }
                 }
