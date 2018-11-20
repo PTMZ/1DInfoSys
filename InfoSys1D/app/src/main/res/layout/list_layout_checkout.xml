@@ -59,6 +59,25 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
                 android:textStyle="bold" />
 
+            <ImageButton
+                android:id="@+id/updateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/removeButton"
+                android:layout_alignParentEnd="true"
+
+                android:layout_alignParentRight="true"
+
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="9dp"
+                android:layout_marginRight="9dp"
+                android:layout_marginBottom="3dp"
+                android:background="@android:color/white"
+                android:src="@drawable/ic_edit_black_24dp"
+                android:text="4.7"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/textViewTotalName"
                 android:layout_width="97dp"

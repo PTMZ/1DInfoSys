@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -61,13 +62,7 @@ public class LoginPostRequest {
                 public void onResponse(String result) {
                     VolleyLog.wtf(result);
 //                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String status = Integer.toString(jsonObject.getInt("status"));
-                        callback.onSuccessResponse(status);
-                    } catch (JSONException e) {
-                        Log.e("MYAPP", "Unable to get status", e);
-                    }
+                    callback.onSuccessResponse(result);
                 }
             }, errorListener) {
 
@@ -92,6 +87,7 @@ public class LoginPostRequest {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                    Login.addSessionCookie(headers);
                     return headers;
                 }
 
@@ -99,6 +95,14 @@ public class LoginPostRequest {
                 @Override
                 public String getBodyContentType() {
                     return "application/json";
+                }
+
+                @Override
+                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                    // since we don't know which of the two underlying network vehicles
+                    // will Volley use, we have to handle and store session cookies manually
+                    Login.checkSessionCookie(response.headers);
+                    return super.parseNetworkResponse(response);
                 }
             };
 

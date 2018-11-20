@@ -50,7 +50,12 @@ public class Checkout extends AppCompatActivity {
                         //Updates productList with full details from items in checkMap
                         productList = CheckoutRequest.request_iterate(productList, items, qty, result);
                         //Updates Recycleview
-                        adapter = new ProductAdapter(Checkout.this, productList);
+                        adapter = new ProductAdapter(Checkout.this, productList, new MyClickListener() {
+                            @Override
+                            public void onPositionClicked(int position, String type) {
+                                // do something
+                            }
+                        });
                         recyclerView.setAdapter(adapter);
                         textViewTotalPrice.setText(getPrice(productList));
                     }
