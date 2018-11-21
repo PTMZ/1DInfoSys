@@ -26,9 +26,16 @@ public class VendorUpdateForm extends AppCompatActivity {
         editTextItemName = findViewById(R.id.editTextItemName);
         editTextItemName.setText(getIntent().getStringExtra("itemName"));
         editTextItemName.setEnabled(false);
+
         editTextCategory = findViewById(R.id.editTextCategory);
+        editTextCategory.setText(getIntent().getStringExtra("category"));
+
         editTextPrice = findViewById(R.id.editTextPrice);
+        editTextPrice.setText(getIntent().getStringExtra("price"));
+
         editTextDescription = findViewById(R.id.editTextDescription);
+        editTextDescription.setText(getIntent().getStringExtra("description"));
+
         buttonAddFinal = findViewById(R.id.buttonAddFinal);
         buttonAddFinal.setText(R.string.update);
 
@@ -46,6 +53,7 @@ public class VendorUpdateForm extends AppCompatActivity {
                             public void onSuccessResponse(String result) {
                                 Toast.makeText(getApplicationContext(), "Updated!", Toast.LENGTH_LONG).show();
                                 Log.d(TAG, "Update Product Result: " + result );
+                                finish();
                             }
                         }
                 );

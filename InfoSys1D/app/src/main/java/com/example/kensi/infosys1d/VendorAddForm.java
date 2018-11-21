@@ -43,6 +43,7 @@ public class VendorAddForm extends AppCompatActivity {
                             public void onSuccessResponse(String result) {
                                 Toast.makeText(getApplicationContext(), "Added!", Toast.LENGTH_LONG).show();
                                 Log.d(TAG, "Add Product Result: " + result );
+                                finish();
                             }
                         }
                 );

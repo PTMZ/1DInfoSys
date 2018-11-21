@@ -175,6 +175,7 @@ public class LoginPostRequest {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                    Login.addSessionCookie(headers);
                     return headers;
                 }
 

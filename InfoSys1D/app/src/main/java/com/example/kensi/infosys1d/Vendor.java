@@ -32,6 +32,9 @@ public class Vendor extends AppCompatActivity {
     ProductAdapter adapter;
     List<Product> productList;
     private static final String TAG = "Vendor";
+    private  static final int ADD_FORM_REQ_CODE = 1;
+    private  static final int UPDATE_FORM_REQ_CODE = 2;
+
     String storeID = "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080";
 
     @Override
@@ -56,7 +59,7 @@ public class Vendor extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Vendor.this, VendorAddForm.class);
-                startActivity(i);
+                startActivityForResult(i, ADD_FORM_REQ_CODE);
             }
         });
 
@@ -68,7 +71,6 @@ public class Vendor extends AppCompatActivity {
 
         //Volley to server
         refreshRecycler();
-
 
     }
 
@@ -92,6 +94,16 @@ public class Vendor extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == ADD_FORM_REQ_CODE){
+            refreshRecycler();
+        }
+        else if(requestCode == UPDATE_FORM_REQ_CODE){
+            refreshRecycler();
+        }
+    }
+
     public void refreshRecycler(){
         VendorRequests.request_call_me(Vendor.this, storeID, new VolleyCallback() {
             @Override
@@ -111,7 +123,10 @@ public class Vendor extends AppCompatActivity {
                         else if(type == "UPDATE"){
                             Intent i = new Intent(Vendor.this, VendorUpdateForm.class);
                             i.putExtra("itemName", itemName);
-                            startActivity(i);
+                            i.putExtra("category", productList.get(position).getCategory());
+                            i.putExtra("price", productList.get(position).getPrice());
+                            i.putExtra("description", productList.get(position).getShortdesc());
+                            startActivityForResult(i,UPDATE_FORM_REQ_CODE);
                         }
 
                     }

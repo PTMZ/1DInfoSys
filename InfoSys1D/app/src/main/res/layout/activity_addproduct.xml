@@ -35,7 +35,7 @@
         android:ems="10"
         android:hint="@string/description"
         android:inputType="textMultiLine"
-        android:lines="5" />
+        android:lines="3" />
 
     <Button
         android:id="@+id/buttonAddFinal"

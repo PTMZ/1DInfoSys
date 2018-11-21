@@ -48,7 +48,7 @@ public class Checkout extends AppCompatActivity {
                     @Override
                     public void onSuccessResponse(String result) {
                         //Updates productList with full details from items in checkMap
-                        productList = CheckoutRequest.request_iterate(productList, items, qty, result);
+                        productList = CheckoutRequest.request_iterate(items, qty, result);
                         //Updates Recycleview
                         adapter = new ProductAdapter(Checkout.this, productList, new MyClickListener() {
                             @Override

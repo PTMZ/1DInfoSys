@@ -11,6 +11,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -34,7 +35,8 @@ public class CheckoutRequest {
     private static org.json.simple.JSONObject response;
 
     //String from Json is passed through here
-    public static List<Product> request_iterate(List<Product> productList, String[] check, int[] qty, String serverReply) {
+    public static List<Product> request_iterate(String[] items, int[] qty, String serverReply) {
+        /*
         int itemNum = qty.length-1;
         //Creates map: Request_check helps sieve out only items in 'check' and grabs additional data from serverReply
         Map<String, String> map = request_check(check, serverReply);
@@ -58,6 +60,33 @@ public class CheckoutRequest {
             it.remove();
         }
         return productList;
+        */
+        List<Product> productList = new ArrayList<>();
+        try {
+            JSONArray jsonData = new JSONObject(serverReply).getJSONArray("data");
+            for(int i=0; i<jsonData.length(); i++){
+                JSONObject curProduct = jsonData.getJSONObject(i);
+                for(int j=0; j<items.length; j++){
+                    if(items[j].equals(curProduct.getString("item_name"))){
+                        productList.add(
+                                new Product(
+                                        j+1,
+                                        curProduct.getString("item_name"),
+                                        curProduct.getString("description"),
+                                        curProduct.getString("category"),
+                                        curProduct.getString("price"),
+                                        R.drawable.burger,
+                                        qty[j]));
+                    }
+                }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return productList;
+
     }
 
     //Request_check helps sieve out only items in 'check' and grabs additional data from serverReply

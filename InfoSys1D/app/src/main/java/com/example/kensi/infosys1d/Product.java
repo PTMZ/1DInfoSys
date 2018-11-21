@@ -3,15 +3,16 @@ package com.example.kensi.infosys1d;
 public class Product {
 
     private int id;
-    private String title, shortdesc;
+    private String title, shortdesc, category;
     private String price;
     private int image;
     private int qty;
 
-    public Product(int id, String title, String shortdesc, String price, int image, int qty) {
+    public Product(int id, String title, String shortdesc, String category, String price, int image, int qty) {
         this.id = id;
         this.title = title;
         this.shortdesc = shortdesc;
+        this.category = category;
         this.price = price;
         this.image = image;
         this.qty = qty;
@@ -27,6 +28,10 @@ public class Product {
 
     public String getShortdesc() {
         return shortdesc;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public String getPrice() {

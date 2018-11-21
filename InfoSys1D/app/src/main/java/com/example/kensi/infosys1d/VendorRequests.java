@@ -100,6 +100,7 @@ public class VendorRequests {
                                 i+1,
                                 curProduct.getString("item_name"),
                                 curProduct.getString("description"),
+                                curProduct.getString("category"),
                                 curProduct.getString("price"),
                                 R.drawable.burger, 1));
             }
