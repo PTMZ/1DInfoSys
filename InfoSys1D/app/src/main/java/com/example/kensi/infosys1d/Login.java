@@ -88,7 +88,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Intent i = new Intent(Login.this, Checkout.class);
-                Intent i = new Intent(Login.this, Vendor.class);
+                Intent i = new Intent(Login.this, MenuMain.class);
                 startActivity(i);
             }
         });
