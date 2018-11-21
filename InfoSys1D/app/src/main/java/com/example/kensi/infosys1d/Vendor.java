@@ -2,26 +2,18 @@ package com.example.kensi.infosys1d;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Vendor extends AppCompatActivity {
 
@@ -29,8 +21,8 @@ public class Vendor extends AppCompatActivity {
     RecyclerView recyclerView;
     Button buttonUploadImage;
     Button buttonAddProduct;
-    ProductAdapter adapter;
-    List<Product> productList;
+    CheckoutProductAdapter adapter;
+    List<CheckoutProduct> checkoutProductList;
     private static final String TAG = "Vendor";
     private  static final int ADD_FORM_REQ_CODE = 1;
     private  static final int UPDATE_FORM_REQ_CODE = 2;
@@ -44,7 +36,7 @@ public class Vendor extends AppCompatActivity {
         setContentView(R.layout.activity_vendor);
 
         //creation of a list for each individual item
-        productList = new ArrayList<>();
+        checkoutProductList = new ArrayList<>();
         buttonAddProduct = findViewById(R.id.buttonAddProduct);
         buttonUploadImage = findViewById(R.id.buttonUploadImage);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -108,14 +100,14 @@ public class Vendor extends AppCompatActivity {
         VendorRequests.request_call_me(Vendor.this, storeID, new VolleyCallback() {
             @Override
             public void onSuccessResponse(String result) {
-                //Updates productList with full details from items in checkMap
+                //Updates checkoutProductList with full details from items in checkMap
                 //Toast.makeText(getApplicationContext(),  "Refresh", Toast.LENGTH_LONG).show();
-                productList = VendorRequests.request_iterate(result);
+                checkoutProductList = VendorRequests.request_iterate(result);
                 //Updates Recycleview
-                adapter = new ProductAdapter(Vendor.this, productList, new MyClickListener() {
+                adapter = new CheckoutProductAdapter(Vendor.this, checkoutProductList, new MyClickListener() {
                     @Override
                     public void onPositionClicked(int position, String type) {
-                        String itemName = productList.get(position).getTitle();
+                        String itemName = checkoutProductList.get(position).getTitle();
 
                         if(type == "REMOVE"){
                             removeItem(itemName);
@@ -123,9 +115,9 @@ public class Vendor extends AppCompatActivity {
                         else if(type == "UPDATE"){
                             Intent i = new Intent(Vendor.this, VendorUpdateForm.class);
                             i.putExtra("itemName", itemName);
-                            i.putExtra("category", productList.get(position).getCategory());
-                            i.putExtra("price", productList.get(position).getPrice());
-                            i.putExtra("description", productList.get(position).getShortdesc());
+                            i.putExtra("category", checkoutProductList.get(position).getCategory());
+                            i.putExtra("price", checkoutProductList.get(position).getPrice());
+                            i.putExtra("description", checkoutProductList.get(position).getShortdesc());
                             startActivityForResult(i,UPDATE_FORM_REQ_CODE);
                         }
 

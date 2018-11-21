@@ -13,7 +13,7 @@ public class PushNotificationService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         /*
             Save the Instance ID into the SharedPreference.
-            This is used later in the Login.java onCreate() to save the Instance ID to the database.
+            This is used later in the LoginMain.java onCreate() to save the Instance ID to the database.
             SharedPreference ID: FCM_ID
             key: ID (Instance ID)
             key: uploaded (Flag for uploading the Instance ID to database)

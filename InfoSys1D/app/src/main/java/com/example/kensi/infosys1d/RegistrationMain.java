@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Registration extends AppCompatActivity {
+public class RegistrationMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class Registration extends AppCompatActivity {
                 //checks registration for error
                 String errorMsg = LoginPostRequest.registrationChecker (email, inputUser.getText().toString(), inputPassword0.getText().toString(), inputPassword1.getText().toString());
                 if (!errorMsg.equals("no_error")) {
-                    Toast.makeText(Registration.this, errorMsg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegistrationMain.this, errorMsg, Toast.LENGTH_LONG).show();
                 } else {
                     LoginPostRequest.registration(getApplicationContext(), inputPassword0.getText().toString(), email, inputUser.getText().toString(), checkVendor.isChecked(), new VolleyCallback() {
                         //calls for response from postrequest
@@ -45,13 +45,13 @@ public class Registration extends AppCompatActivity {
                             int status = Integer.parseInt(result);
                             if (status == 1) {
                                 //If successful, opens login page
-                                Toast.makeText(Registration.this, "Registration success", Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(Registration.this, Login.class);
+                                Toast.makeText(RegistrationMain.this, "RegistrationMain success", Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(RegistrationMain.this, LoginMain.class);
                                 startActivity(i);
                             } else if (status == 0 ) {
-                                Toast.makeText(Registration.this, "Server error", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegistrationMain.this, "Server error", Toast.LENGTH_LONG).show();
                             } else if (status == -1) {
-                                Toast.makeText(Registration.this, "E-mail already used", Toast.LENGTH_LONG).show();
+                                Toast.makeText(RegistrationMain.this, "E-mail already used", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
@@ -62,7 +62,7 @@ public class Registration extends AppCompatActivity {
     }
         //Back button function
         public boolean onOptionsItemSelected (MenuItem item) {
-            Intent myIntent = new Intent(getApplicationContext(), Login.class);
+            Intent myIntent = new Intent(getApplicationContext(), LoginMain.class);
             startActivityForResult(myIntent, 0);
             return true;
         }

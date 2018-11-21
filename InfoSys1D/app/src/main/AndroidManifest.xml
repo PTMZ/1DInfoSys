@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Login">
+        <activity android:name=".LoginMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,11 +26,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".QRreader"
+            android:name=".QRreaderMain"
             android:label="@string/title_activity_qrreader"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Registration" />
-        <activity android:name=".Checkout" />
+        <activity android:name=".RegistrationMain" />
+        <activity android:name=".CheckoutMain" />
         <activity android:name=".Vendor" />
         <activity android:name=".VendorAddForm" />
         <activity android:name=".VendorUpdateForm" />

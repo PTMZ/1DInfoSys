@@ -1,6 +1,6 @@
 package com.example.kensi.infosys1d;
 
-public class Product {
+public class CheckoutProduct {
 
     private int id;
     private String title, shortdesc, category;
@@ -8,7 +8,7 @@ public class Product {
     private int image;
     private int qty;
 
-    public Product(int id, String title, String shortdesc, String category, String price, int image, int qty) {
+    public CheckoutProduct(int id, String title, String shortdesc, String category, String price, int image, int qty) {
         this.id = id;
         this.title = title;
         this.shortdesc = shortdesc;

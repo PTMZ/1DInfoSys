@@ -1,9 +1,7 @@
 package com.example.kensi.infosys1d;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -15,15 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.*;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,7 +77,7 @@ public class LoginPostRequest {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    Login.addSessionCookie(headers);
+                    LoginMain.addSessionCookie(headers);
                     return headers;
                 }
 
@@ -101,7 +91,7 @@ public class LoginPostRequest {
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
                     // since we don't know which of the two underlying network vehicles
                     // will Volley use, we have to handle and store session cookies manually
-                    Login.checkSessionCookie(response.headers);
+                    LoginMain.checkSessionCookie(response.headers);
                     return super.parseNetworkResponse(response);
                 }
             };
@@ -175,7 +165,7 @@ public class LoginPostRequest {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    Login.addSessionCookie(headers);
+                    LoginMain.addSessionCookie(headers);
                     return headers;
                 }
 

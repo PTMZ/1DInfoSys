@@ -16,11 +16,6 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -35,7 +30,7 @@ public class CheckoutRequest {
     private static org.json.simple.JSONObject response;
 
     //String from Json is passed through here
-    public static List<Product> request_iterate(String[] items, int[] qty, String serverReply) {
+    public static List<CheckoutProduct> request_iterate(String[] items, int[] qty, String serverReply) {
         /*
         int itemNum = qty.length-1;
         //Creates map: Request_check helps sieve out only items in 'check' and grabs additional data from serverReply
@@ -49,27 +44,27 @@ public class CheckoutRequest {
             //value 2 = price
             String value[] = pair.getValue().toString().split("@@@");
             //adds each item into producList Hashmap to be shown via recycleview
-            productList.add(
-                    new Product(
+            checkoutProductList.add(
+                    new CheckoutProduct(
                             itemNum,
                             pair.getKey().toString(),
                             value[0],
-                            Checkout.priceConversion(Double.parseDouble(value[2])),
+                            CheckoutMain.priceConversion(Double.parseDouble(value[2])),
                             R.drawable.burger, qty[itemNum]));
             itemNum--;
             it.remove();
         }
-        return productList;
+        return checkoutProductList;
         */
-        List<Product> productList = new ArrayList<>();
+        List<CheckoutProduct> checkoutProductList = new ArrayList<>();
         try {
             JSONArray jsonData = new JSONObject(serverReply).getJSONArray("data");
             for(int i=0; i<jsonData.length(); i++){
                 JSONObject curProduct = jsonData.getJSONObject(i);
                 for(int j=0; j<items.length; j++){
                     if(items[j].equals(curProduct.getString("item_name"))){
-                        productList.add(
-                                new Product(
+                        checkoutProductList.add(
+                                new CheckoutProduct(
                                         j+1,
                                         curProduct.getString("item_name"),
                                         curProduct.getString("description"),
@@ -85,7 +80,7 @@ public class CheckoutRequest {
             e.printStackTrace();
         }
 
-        return productList;
+        return checkoutProductList;
 
     }
 

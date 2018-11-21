@@ -10,20 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProductAdapter.ProductViewHolder> {
 
     private Context mCtx;
-    private List<Product> productList;
+    private List<CheckoutProduct> checkoutProductList;
     private final MyClickListener listener;
 
-    public ProductAdapter(Context mCtx, List<Product> productList, MyClickListener listener) {
+    public CheckoutProductAdapter(Context mCtx, List<CheckoutProduct> checkoutProductList, MyClickListener listener) {
         this.mCtx = mCtx;
-        this.productList = productList;
+        this.checkoutProductList = checkoutProductList;
         this.listener = listener;
     }
 
@@ -31,7 +30,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.list_layout_checkout, null);
+        View view = inflater.inflate(R.layout.checkout_layout_products, null);
         ProductViewHolder holder = new ProductViewHolder(view);
         return holder;
 
@@ -39,17 +38,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product product = productList.get(position);
-        holder.textViewTitle.setText(product.getTitle());
-        holder.textViewDesc.setText(product.getShortdesc());
-        holder.textViewQty.setText("x "+String.valueOf(product.getQty()));
-        holder.textViewPrice.setText(String.valueOf(product.getPrice()));
-        holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
+        CheckoutProduct checkoutProduct = checkoutProductList.get(position);
+        holder.textViewTitle.setText(checkoutProduct.getTitle());
+        holder.textViewDesc.setText(checkoutProduct.getShortdesc());
+        holder.textViewQty.setText("x "+String.valueOf(checkoutProduct.getQty()));
+        holder.textViewPrice.setText(String.valueOf(checkoutProduct.getPrice()));
+        holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(checkoutProduct.getImage()));
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return checkoutProductList.size();
     }
 
     class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -82,11 +81,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         public void onClick(View v) {
             String actionType = "";
             if (v.getId() == removeButton.getId()){
-                Log.d("ProductAdapter", "Remove item... " + String.valueOf(getAdapterPosition()));
+                Log.d("CheckoutProductAdapter", "Remove item... " + String.valueOf(getAdapterPosition()));
                 actionType = "REMOVE";
             }
             else if(v.getId() == updateButton.getId()){
-                Log.d("ProductAdapter", "Update item... " + String.valueOf(getAdapterPosition()));
+                Log.d("CheckoutProductAdapter", "Update item... " + String.valueOf(getAdapterPosition()));
                 actionType = "UPDATE";
             }
             listenerRef.get().onPositionClicked(getAdapterPosition(), actionType);

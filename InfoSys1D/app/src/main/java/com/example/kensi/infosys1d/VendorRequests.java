@@ -4,11 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 
@@ -21,11 +19,8 @@ import org.json.simple.parser.ParseException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import static android.content.ContentValues.TAG;
 
 public class VendorRequests {
 
@@ -89,14 +84,14 @@ public class VendorRequests {
         }
     }
 
-    public static List<Product> request_iterate(String serverReply) {
-        List<Product> productList = new ArrayList<>();
+    public static List<CheckoutProduct> request_iterate(String serverReply) {
+        List<CheckoutProduct> checkoutProductList = new ArrayList<>();
         try {
             JSONArray jsonData = new JSONObject(serverReply).getJSONArray("data");
             for(int i=0; i<jsonData.length(); i++){
                 JSONObject curProduct = jsonData.getJSONObject(i);
-                productList.add(
-                        new Product(
+                checkoutProductList.add(
+                        new CheckoutProduct(
                                 i+1,
                                 curProduct.getString("item_name"),
                                 curProduct.getString("description"),
@@ -108,7 +103,7 @@ public class VendorRequests {
             e.printStackTrace();
         }
 
-        return productList;
+        return checkoutProductList;
     }
 
 
@@ -164,7 +159,7 @@ public class VendorRequests {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    Login.addSessionCookie(headers);
+                    LoginMain.addSessionCookie(headers);
                     return headers;
                 }
 
@@ -237,7 +232,7 @@ public class VendorRequests {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    Login.addSessionCookie(headers);
+                    LoginMain.addSessionCookie(headers);
                     return headers;
                 }
 
@@ -307,7 +302,7 @@ public class VendorRequests {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<>();
                     headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    Login.addSessionCookie(headers);
+                    LoginMain.addSessionCookie(headers);
                     return headers;
                 }
 

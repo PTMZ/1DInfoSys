@@ -12,11 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Response;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -25,11 +22,9 @@ import com.google.firebase.iid.InstanceIdResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.CookieHandler;
-import java.net.CookieManager;
 import java.util.Map;
 
-public class Login extends AppCompatActivity {
+public class LoginMain extends AppCompatActivity {
     private static final String FCM_ID = "FCM_ID";
     String instanceID;
     int uploaded;
@@ -77,7 +72,7 @@ public class Login extends AppCompatActivity {
         buttonSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Login.this, Registration.class);
+                Intent i = new Intent(LoginMain.this, RegistrationMain.class);
                 startActivity(i);
             }
         });
@@ -87,8 +82,8 @@ public class Login extends AppCompatActivity {
         buttonForget.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent i = new Intent(Login.this, Checkout.class);
-                Intent i = new Intent(Login.this, MenuMain.class);
+                //Intent i = new Intent(LoginMain.this, CheckoutMain.class);
+                Intent i = new Intent(LoginMain.this, MenuMain.class);
                 startActivity(i);
             }
         });
@@ -102,7 +97,7 @@ public class Login extends AppCompatActivity {
                 String errorMsg = LoginPostRequest.longChecker(email, inputPassword.getText().toString());
                 if (!errorMsg.equals("no_error")) {
                     // Display error message if the email syntax is invalid
-                    Toast.makeText(Login.this, errorMsg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginMain.this, errorMsg, Toast.LENGTH_LONG).show();
                 } else {
                     // Get the data from the UI
                     String password = inputPassword.getText().toString();
@@ -113,22 +108,22 @@ public class Login extends AppCompatActivity {
                         //decides what to do from post request reponse
                         @Override
                         public void onSuccessResponse(String result) {
-                            Toast.makeText(Login.this, result, Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginMain.this, result, Toast.LENGTH_LONG).show();
                             try {
                                 JSONObject jsonObject = new JSONObject(result);
                                 int status = jsonObject.getInt("status");
                                 int isVendor = jsonObject.getInt("is_vendor");
-                                Log.d("Login", "Check isVendor: " + String.valueOf(isVendor));
+                                Log.d("LoginMain", "Check isVendor: " + String.valueOf(isVendor));
                                 if (status == 1) {
                                     //if successful, opens QR code reader
-                                    Toast.makeText(Login.this, "Login success", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginMain.this, "LoginMain success", Toast.LENGTH_LONG).show();
                                     Intent i;
-                                    i = isVendor == 0 ? new Intent(Login.this, QRreader.class) : new Intent(Login.this, Vendor.class);
+                                    i = isVendor == 0 ? new Intent(LoginMain.this, QRreaderMain.class) : new Intent(LoginMain.this, Vendor.class);
                                     startActivity(i);
                                 } else if (status == -1) {
-                                    Toast.makeText(Login.this, "Wrong E-mail/password", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginMain.this, "Wrong E-mail/password", Toast.LENGTH_LONG).show();
                                 } else {
-                                    Toast.makeText(Login.this, "Server error", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginMain.this, "Server error", Toast.LENGTH_LONG).show();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();

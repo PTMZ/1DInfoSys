@@ -52,7 +52,7 @@ public class VendorUpdateForm extends AppCompatActivity {
                             @Override
                             public void onSuccessResponse(String result) {
                                 Toast.makeText(getApplicationContext(), "Updated!", Toast.LENGTH_LONG).show();
-                                Log.d(TAG, "Update Product Result: " + result );
+                                Log.d(TAG, "Update CheckoutProduct Result: " + result );
                                 finish();
                             }
                         }
