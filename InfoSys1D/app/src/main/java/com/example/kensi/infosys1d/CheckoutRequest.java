@@ -69,7 +69,7 @@ public class CheckoutRequest {
                                         curProduct.getString("item_name"),
                                         curProduct.getString("description"),
                                         curProduct.getString("category"),
-                                        curProduct.getString("price"),
+                                        CheckoutMain.priceConversion(Double.parseDouble(curProduct.getString("price"))),
                                         R.drawable.burger,
                                         qty[j]));
                     }

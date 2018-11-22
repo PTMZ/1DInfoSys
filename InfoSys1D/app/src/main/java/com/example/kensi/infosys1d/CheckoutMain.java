@@ -63,7 +63,7 @@ public class CheckoutMain extends AppCompatActivity {
 
                         recyclerView.setAdapter(adapter);
 
-                        //textViewTotalPrice.setText(getPrice(checkoutProductList));
+                        textViewTotalPrice.setText(getPrice(checkoutProductList));
 
                     }
                 });
