@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +21,9 @@ public class CheckoutMain extends AppCompatActivity {
     CheckoutProductAdapter adapter;
     List<CheckoutProduct> checkoutProductList;
     private static final String TAG = "CheckoutMain";
+    //Testing StoreID, to be passed on from previous activity
+    String storeID = "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: checkout" );
@@ -37,34 +41,53 @@ public class CheckoutMain extends AppCompatActivity {
         checkMap.put("Fish Fillet", 3);
         checkMap.put("Salted Egg Chicken",5);
         checkMap.put("Steam Egg", 15);
-        //Testing StoreID, to be passed on from previous activity
-        String storeID = "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080";
+
         //Creation of Array from Item hashmap, as Volley requires final
         final String[] items = CheckoutRequest.keyMapToArray(checkMap);
         final int[] qty = CheckoutRequest.valueMapToArray(checkMap);
         //Volley to server
-        CheckoutRequest.request_call_me(getApplicationContext(), storeID, new VolleyCallback() {
+
+        CheckoutRequest.request_call_me(CheckoutMain.this, storeID, new VolleyCallback() {
                     @Override
                     public void onSuccessResponse(String result) {
                         //Updates checkoutProductList with full details from items in checkMap
                         checkoutProductList = CheckoutRequest.request_iterate(items, qty, result);
                         //Updates Recycleview
+
                         adapter = new CheckoutProductAdapter(CheckoutMain.this, checkoutProductList, new MyClickListener() {
                             @Override
                             public void onPositionClicked(int position, String type) {
                                 // do something
                             }
                         });
+
                         recyclerView.setAdapter(adapter);
-                        textViewTotalPrice.setText(getPrice(checkoutProductList));
+
+                        //textViewTotalPrice.setText(getPrice(checkoutProductList));
+
                     }
                 });
+
+
     }
 
     //adds Menu to top bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_logout){
+            LoginPostRequest.logout(CheckoutMain.this, new VolleyCallback(){
+                @Override
+                public void onSuccessResponse(String result) {
+                    finish();
+                }
+            });
+        }
         return true;
     }
 

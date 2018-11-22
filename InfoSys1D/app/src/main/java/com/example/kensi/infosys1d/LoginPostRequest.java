@@ -106,6 +106,59 @@ public class LoginPostRequest {
         }
     }
 
+    public static void logout(final Context context, final VolleyCallback callback) {
+        try {
+            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
+            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
+            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
+
+            // Define the url
+            String endpoint = "/admin/logout";
+            String url = BASE_URL + endpoint;
+
+            // Make form POST request
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+
+                // Response Handler
+                @Override
+                public void onResponse(String result) {
+                    VolleyLog.wtf(result);
+//                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                    callback.onSuccessResponse(result);
+                }
+            }, errorListener) {
+
+                // Set the task priority
+                @Override
+                public Priority getPriority() {
+                    return Priority.HIGH;
+                }
+
+                // Set the Header of the POST request
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+                    LoginMain.addSessionCookie(headers);
+                    return headers;
+                }
+
+                // Define the Response Content Type
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+            };
+
+            // Add the POST form request to the Volley RequestQueue
+            queue.add(stringRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("MYAPP", "exception", e);
+        }
+    }
+
 
     public static void registration(final Context context, final String password, final String email, final String username, final boolean vendor, final VolleyCallback callback) {
         try {

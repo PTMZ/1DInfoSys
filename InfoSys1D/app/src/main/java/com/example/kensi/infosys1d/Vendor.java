@@ -21,7 +21,7 @@ public class Vendor extends AppCompatActivity {
     RecyclerView recyclerView;
     Button buttonUploadImage;
     Button buttonAddProduct;
-    CheckoutProductAdapter adapter;
+    VendorProductAdapter adapter;
     List<CheckoutProduct> checkoutProductList;
     private static final String TAG = "Vendor";
     private  static final int ADD_FORM_REQ_CODE = 1;
@@ -83,6 +83,14 @@ public class Vendor extends AppCompatActivity {
                 }
             });
         }
+        if(item.getItemId() == R.id.action_logout){
+            LoginPostRequest.logout(Vendor.this, new VolleyCallback(){
+                @Override
+                public void onSuccessResponse(String result) {
+                    finish();
+                }
+            });
+        }
         return true;
     }
 
@@ -104,7 +112,7 @@ public class Vendor extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),  "Refresh", Toast.LENGTH_LONG).show();
                 checkoutProductList = VendorRequests.request_iterate(result);
                 //Updates Recycleview
-                adapter = new CheckoutProductAdapter(Vendor.this, checkoutProductList, new MyClickListener() {
+                adapter = new VendorProductAdapter(Vendor.this, checkoutProductList, new MyClickListener() {
                     @Override
                     public void onPositionClicked(int position, String type) {
                         String itemName = checkoutProductList.get(position).getTitle();

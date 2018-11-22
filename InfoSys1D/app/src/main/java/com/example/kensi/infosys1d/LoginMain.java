@@ -83,7 +83,7 @@ public class LoginMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Intent i = new Intent(LoginMain.this, CheckoutMain.class);
-                Intent i = new Intent(LoginMain.this, MenuMain.class);
+                Intent i = new Intent(LoginMain.this, CheckoutMain.class);
                 startActivity(i);
             }
         });
@@ -118,7 +118,7 @@ public class LoginMain extends AppCompatActivity {
                                     //if successful, opens QR code reader
                                     Toast.makeText(LoginMain.this, "LoginMain success", Toast.LENGTH_LONG).show();
                                     Intent i;
-                                    i = isVendor == 0 ? new Intent(LoginMain.this, QRreaderMain.class) : new Intent(LoginMain.this, Vendor.class);
+                                    i = (isVendor == 0) ? new Intent(LoginMain.this, CheckoutMain.class) : new Intent(LoginMain.this, Vendor.class);
                                     startActivity(i);
                                 } else if (status == -1) {
                                     Toast.makeText(LoginMain.this, "Wrong E-mail/password", Toast.LENGTH_LONG).show();
@@ -232,6 +232,14 @@ public class LoginMain extends AppCompatActivity {
         }
         */
     }
+
+    public static void removeSessionCookie() {
+        SharedPreferences.Editor prefEditor = _preferences.edit();
+        prefEditor.putString(SESSION_COOKIE, "");
+        prefEditor.commit();
+        Log.d("LOGIN", "Pref Remove: " + _preferences.getString(SESSION_COOKIE, ""));
+    }
+
 
 
 }
