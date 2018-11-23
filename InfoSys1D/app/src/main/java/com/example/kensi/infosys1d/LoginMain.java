@@ -31,7 +31,9 @@ public class LoginMain extends AppCompatActivity {
     private static final String SET_COOKIE_KEY = "Set-Cookie";
     private static final String COOKIE_KEY = "Cookie";
     private static final String SESSION_COOKIE = "session";
-    private static final String SESSION_COOKIE2 = "remember_token";
+    //private static final String SESSION_COOKIE2 = "remember_token";
+    private static final  int CHECKOUT_REQ = 1;
+    private static final  int VENDOR_REQ = 2;
 
     private static SharedPreferences _preferences;
 
@@ -46,7 +48,15 @@ public class LoginMain extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         _preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        // SharedPreferences.Editor prefEditor = _preferences.edit();
+        // prefEditor.clear();
+        // prefEditor.apply();
         String sessionId = _preferences.getString(SESSION_COOKIE, "");
+        String emailPref = _preferences.getString("email", "");
+        String passwordPref = _preferences.getString("password", "");
+        if(passwordPref.length() > 0){
+            loginRequest(passwordPref, emailPref, true);
+        }
         Log.d("LOGIN_START", "Check Pref: " + sessionId);
 
         //Input instantiations from UI
@@ -104,37 +114,27 @@ public class LoginMain extends AppCompatActivity {
                     Boolean remember = checkRemember.isChecked();
 
                     // Make POST request to /admin/login
-                    LoginPostRequest.login(getApplicationContext(), password, email, remember, new VolleyCallback() {
-                        //decides what to do from post request reponse
-                        @Override
-                        public void onSuccessResponse(String result) {
-                            Toast.makeText(LoginMain.this, result, Toast.LENGTH_LONG).show();
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                int status = jsonObject.getInt("status");
-                                int isVendor = jsonObject.getInt("is_vendor");
-                                Log.d("LoginMain", "Check isVendor: " + String.valueOf(isVendor));
-                                if (status == 1) {
-                                    //if successful, opens QR code reader
-                                    Toast.makeText(LoginMain.this, "LoginMain success", Toast.LENGTH_LONG).show();
-                                    Intent i;
-                                    i = (isVendor == 0) ? new Intent(LoginMain.this, CheckoutMain.class) : new Intent(LoginMain.this, Vendor.class);
-                                    startActivity(i);
-                                } else if (status == -1) {
-                                    Toast.makeText(LoginMain.this, "Wrong E-mail/password", Toast.LENGTH_LONG).show();
-                                } else {
-                                    Toast.makeText(LoginMain.this, "Server error", Toast.LENGTH_LONG).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    });
+                    loginRequest(password, email, remember);
 
                 }
             }
         });
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == CHECKOUT_REQ){
+            if(data!= null && data.getBooleanExtra("BackPress", false)){
+                finish();
+            }
+        }
+        else if(requestCode == VENDOR_REQ){
+            if(data!=null && data.getBooleanExtra("BackPress", false)){
+                finish();
+            }
+        }
     }
 
 
@@ -179,11 +179,8 @@ public class LoginMain extends AppCompatActivity {
             Log.d("LOGIN", "Value: " + headers.get(key));
             if(key.equals(SET_COOKIE_KEY)){
                 String cookie = headers.get(SET_COOKIE_KEY);
+                if(cookie == null) return;
                 Log.d("LOGIN", "My cookie: " + cookie);
-                //String currentCookie;
-                //currentCookie = cookie.startsWith(SESSION_COOKIE) ? SESSION_COOKIE : "";
-                //currentCookie = cookie.startsWith(SESSION_COOKIE2) ? SESSION_COOKIE2 : "";
-                //if(currentCookie == "") return;
 
                 if (cookie.length() > 0) {
                     String[] splitCookie = cookie.split(";");
@@ -191,21 +188,14 @@ public class LoginMain extends AppCompatActivity {
                     cookie = splitSessionId[1];
                     SharedPreferences.Editor prefEditor = _preferences.edit();
                     prefEditor.putString(SESSION_COOKIE, cookie);
-                    prefEditor.commit();
-                    Log.d("LOGIN", "Pref Save: " + _preferences.getString(SESSION_COOKIE, ""));
+                    prefEditor.apply();
                 }
             }
         }
     }
 
-    /**
-     * Adds session cookie to headers if exists.
-     * @param headers
-     */
     public static void addSessionCookie(Map<String, String> headers) {
         String sessionId = _preferences.getString(SESSION_COOKIE, "");
-        Log.d("LOGIN", "Key: " + SESSION_COOKIE);
-        Log.d("LOGIN", "Value: " + sessionId);
         if (sessionId.length() > 0) {
             StringBuilder builder = new StringBuilder();
             builder.append(SESSION_COOKIE);
@@ -217,29 +207,52 @@ public class LoginMain extends AppCompatActivity {
             }
             headers.put(COOKIE_KEY, builder.toString());
         }
-        /*
-        String remember_token = _preferences.getString(SESSION_COOKIE2, "");
-        if (remember_token.length() > 0) {
-            StringBuilder builder = new StringBuilder();
-            builder.append(SESSION_COOKIE2);
-            builder.append("=");
-            builder.append(remember_token);
-            if (headers.containsKey(COOKIE_KEY)) {
-                builder.append("; ");
-                builder.append(headers.get(COOKIE_KEY));
-            }
-            headers.put(COOKIE_KEY, builder.toString());
-        }
-        */
     }
 
     public static void removeSessionCookie() {
         SharedPreferences.Editor prefEditor = _preferences.edit();
-        prefEditor.putString(SESSION_COOKIE, "");
-        prefEditor.commit();
-        Log.d("LOGIN", "Pref Remove: " + _preferences.getString(SESSION_COOKIE, ""));
+        prefEditor.remove(SESSION_COOKIE);
+        prefEditor.remove("email");
+        prefEditor.remove("password");
+        prefEditor.apply();
     }
 
+    public void loginRequest(final String password, final String email, final boolean remember){
+        LoginPostRequest.login(getApplicationContext(), password, email, remember, new VolleyCallback() {
+            //decides what to do from post request reponse
+            @Override
+            public void onSuccessResponse(String result) {
+                Toast.makeText(LoginMain.this, result, Toast.LENGTH_LONG).show();
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    int status = jsonObject.getInt("status");
+                    int isVendor = jsonObject.getInt("is_vendor");
+                    Log.d("LoginMain", "Check isVendor: " + String.valueOf(isVendor));
+                    if (status == 1) {
+                        //if successful, opens QR code reader
+                        Toast.makeText(LoginMain.this, "LoginMain success", Toast.LENGTH_LONG).show();
+                        Intent i;
+                        i = (isVendor == 0) ? new Intent(LoginMain.this, CheckoutMain.class) : new Intent(LoginMain.this, Vendor.class);
+                        int reqCode = (isVendor == 0) ? CHECKOUT_REQ : VENDOR_REQ;
+                        SharedPreferences.Editor prefEditor = _preferences.edit();
+                        if(remember){
+                            prefEditor.putString("email",email);
+                            prefEditor.putString("password",password);
+                            prefEditor.apply();
+                        }
+                        startActivityForResult(i, reqCode);
 
+                    } else if (status == -1) {
+                        Toast.makeText(LoginMain.this, "Wrong E-mail/password", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(LoginMain.this, "Server error", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+    }
 
 }

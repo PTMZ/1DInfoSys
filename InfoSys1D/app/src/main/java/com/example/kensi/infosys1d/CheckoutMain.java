@@ -1,5 +1,6 @@
 package com.example.kensi.infosys1d;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -84,6 +85,7 @@ public class CheckoutMain extends AppCompatActivity {
             LoginPostRequest.logout(CheckoutMain.this, new VolleyCallback(){
                 @Override
                 public void onSuccessResponse(String result) {
+                    LoginMain.removeSessionCookie();
                     finish();
                 }
             });
@@ -109,5 +111,13 @@ public class CheckoutMain extends AppCompatActivity {
         } else{
             return totalPriceString;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.putExtra("BackPress",true);
+        setResult(RESULT_OK, i);
+        finish();
     }
 }

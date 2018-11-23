@@ -1,6 +1,9 @@
 package com.example.kensi.infosys1d;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.util.Base64;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -16,7 +19,9 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,59 +29,14 @@ import java.util.Map;
 
 public class VendorRequests {
 
-    private static String BASE_URL = "https://chocolatepie.tech";
-    private static org.json.simple.JSONObject response;
-
     public static void request_call_me(final Context context, final String storeID, final VolleyCallback callback) {
         try {
-            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
-            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
-            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
-
             // Define the url
             String endpoint = "/inventory/listItem/" + storeID;
-            String url = BASE_URL + endpoint;
+            String url = RequestUtils.BASE_URL + endpoint;
 
-            // Make form POST request
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-
-                // Response Handler
-                @Override
-                public void onResponse(String result) {
-                    VolleyLog.wtf(result);
-                    JSONParser parser = new JSONParser();
-                    try {
-                        response = (org.json.simple.JSONObject) parser.parse(result);
-                        callback.onSuccessResponse(response.toString());
-                    } catch (ParseException e) {
-                        Log.e("MYAPP", "Parse exception", e);
-                    }
-                }
-            }, errorListener) {
-
-                // Set the task priority
-                @Override
-                public Priority getPriority() {
-                    return Priority.HIGH;
-                }
-
-                // Set the Header of the POST request
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    return headers;
-                }
-
-                // Define the Response Content Type
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
-
-            // Add the POST form request to the Volley RequestQueue
-            queue.add(stringRequest);
+            // Send form POST request
+            RequestUtils.sendGetStringReq(context,url,callback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,72 +66,21 @@ public class VendorRequests {
         return checkoutProductList;
     }
 
-
     public static void addProduct(final Context context, final String itemName, final String description, final String category, final String price, final VolleyCallback callback) {
         try {
-
-            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
-            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
-            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
-
             // Define the url
             String endpoint = "/inventory/add";
-            String url = BASE_URL + endpoint;
+            String url = RequestUtils.BASE_URL + endpoint;
 
-            // Make form POST request
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // Make params
+            Map<String, String> params = new HashMap<>();
+            params.put("item_name", itemName);
+            params.put("description", description);
+            params.put("category", category);
+            params.put("price", price);
 
-                // Response Handler
-                @Override
-                public void onResponse(String result) {
-                    VolleyLog.wtf(result);
-//                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    JSONParser parser = new JSONParser();
-                    try {
-                        response = (org.json.simple.JSONObject) parser.parse(result);
-                        Long status = (Long) response.get("status");
-                        callback.onSuccessResponse(String.valueOf(status));
-                    } catch (ParseException e) {
-                        Log.e("MYAPP", "Parse exception", e);
-                    }
-                }
-            }, errorListener) {
-
-                // Set the task priority
-                @Override
-                public Priority getPriority() {
-                    return Priority.IMMEDIATE;
-                }
-
-                // Set the form parameters
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("item_name", itemName);
-                    params.put("description", description);
-                    params.put("category", category);
-                    params.put("price", price);
-                    return params;
-                }
-
-                // Set the Header of the POST request
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    LoginMain.addSessionCookie(headers);
-                    return headers;
-                }
-
-                // Define the Response Content Type
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
-
-            // Add the POST form request to the Volley RequestQueue
-            queue.add(stringRequest);
+            // Send form POST request
+            RequestUtils.sendPostStringReq(context, url, params, callback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -182,69 +91,19 @@ public class VendorRequests {
 
     public static void updateProduct(final Context context, final String itemName, final String description, final String category, final String price, final VolleyCallback callback) {
         try {
-
-            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
-            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
-            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
-
             // Define the url
             String endpoint = "/inventory/update";
-            String url = BASE_URL + endpoint;
+            String url = RequestUtils.BASE_URL + endpoint;
 
-            // Make form POST request
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // Make params
+            Map<String, String> params = new HashMap<>();
+            params.put("item_name", itemName);
+            params.put("description", description);
+            params.put("category", category);
+            params.put("price", price);
 
-                // Response Handler
-                @Override
-                public void onResponse(String result) {
-                    VolleyLog.wtf(result);
-//                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    JSONParser parser = new JSONParser();
-                    try {
-                        response = (org.json.simple.JSONObject) parser.parse(result);
-                        Long status = (Long) response.get("status");
-                        callback.onSuccessResponse(String.valueOf(status));
-                    } catch (ParseException e) {
-                        Log.e("MYAPP", "Parse exception", e);
-                    }
-                }
-            }, errorListener) {
-
-                // Set the task priority
-                @Override
-                public Priority getPriority() {
-                    return Priority.IMMEDIATE;
-                }
-
-                // Set the form parameters
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("item_name", itemName);
-                    params.put("description", description);
-                    params.put("category", category);
-                    params.put("price", price);
-                    return params;
-                }
-
-                // Set the Header of the POST request
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    LoginMain.addSessionCookie(headers);
-                    return headers;
-                }
-
-                // Define the Response Content Type
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
-
-            // Add the POST form request to the Volley RequestQueue
-            queue.add(stringRequest);
+            // Send form POST request
+            RequestUtils.sendPostStringReq(context, url, params, callback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -255,66 +114,16 @@ public class VendorRequests {
 
     public static void removeProduct(final Context context, final String itemName, final VolleyCallback callback) {
         try {
-
-            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
-            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
-            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
-
             // Define the url
             String endpoint = "/inventory/remove";
-            String url = BASE_URL + endpoint;
+            String url = RequestUtils.BASE_URL + endpoint;
 
-            // Make form POST request
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // Make params
+            Map<String, String> params = new HashMap<>();
+            params.put("item_name", itemName);
 
-                // Response Handler
-                @Override
-                public void onResponse(String result) {
-                    VolleyLog.wtf(result);
-//                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    JSONParser parser = new JSONParser();
-                    try {
-                        response = (org.json.simple.JSONObject) parser.parse(result);
-                        Long status = (Long) response.get("status");
-                        callback.onSuccessResponse(String.valueOf(status));
-                    } catch (ParseException e) {
-                        Log.e("MYAPP", "Parse exception", e);
-                    }
-                }
-            }, errorListener) {
-
-                // Set the task priority
-                @Override
-                public Priority getPriority() {
-                    return Priority.IMMEDIATE;
-                }
-
-                // Set the form parameters
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("item_name", itemName);
-                    return params;
-                }
-
-                // Set the Header of the POST request
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    LoginMain.addSessionCookie(headers);
-                    return headers;
-                }
-
-                // Define the Response Content Type
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
-
-            // Add the POST form request to the Volley RequestQueue
-            queue.add(stringRequest);
+            // Send form POST request
+            RequestUtils.sendPostStringReq(context, url, params, callback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -323,16 +132,19 @@ public class VendorRequests {
         }
     }
 
-    public static void uploadImage(final Context context, final File fileBinaryData, final String itemName, String storeId, final VolleyCallback callback) {
+    public static void uploadImage(final Context context, final String itemName, final Bitmap bitmap, final VolleyCallback callback) {
         try {
-            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
-            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
-            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
-
             // Define the url
             String endpoint = "/inventory/uploadImg";
-            String url = BASE_URL + endpoint;
+            String url = RequestUtils.BASE_URL + endpoint;
 
+            // Make params
+            Map<String, String> params = new HashMap<>();
+            params.put("item_name", itemName);
+            params.put("file", imageToString(bitmap));
+
+            // Send form POST request
+            RequestUtils.sendPostStringReq(context, url, params, callback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -340,5 +152,13 @@ public class VendorRequests {
 //            return "check log";
         }
     }
+
+    private static String imageToString(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] imgBytes = byteArrayOutputStream.toByteArray();
+        return new String(imgBytes, Charset.forName("UTF-8"));
+    }
+
 
 }

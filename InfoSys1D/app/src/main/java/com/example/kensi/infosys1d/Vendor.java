@@ -87,6 +87,7 @@ public class Vendor extends AppCompatActivity {
             LoginPostRequest.logout(Vendor.this, new VolleyCallback(){
                 @Override
                 public void onSuccessResponse(String result) {
+                    LoginMain.removeSessionCookie();
                     finish();
                 }
             });
@@ -145,6 +146,14 @@ public class Vendor extends AppCompatActivity {
                 refreshRecycler();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent();
+        i.putExtra("BackPress",true);
+        setResult(RESULT_OK, i);
+        finish();
     }
 
 }

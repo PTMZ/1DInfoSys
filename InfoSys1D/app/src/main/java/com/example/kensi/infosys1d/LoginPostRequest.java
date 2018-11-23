@@ -20,84 +20,23 @@ import java.util.Map;
 
 public class LoginPostRequest {
 
-    // Define all the constant
-    private static String BASE_URL = "https://chocolatepie.tech";
-    private static org.json.simple.JSONObject response;
-    private static JSONObject testResponse;
-
-
     public static void login(final Context context, final String password, final String email, boolean remember, final VolleyCallback callback) {
         try {
             // Convert boolean to 1 or 0
-            final String strRemember;
-            if (remember) {
-                strRemember = "1";
-            } else {
-                strRemember = "0";
-            }
-
-            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
-            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
-            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
+            final String strRemember = "0";
 
             // Define the url
             String endpoint = "/admin/login";
-            String url = BASE_URL + endpoint;
+            String url = RequestUtils.BASE_URL + endpoint;
 
-            // Make form POST request
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // Make params
+            Map<String, String> params = new HashMap<>();
+            params.put("email", email);
+            params.put("password", password);
+            params.put("remember", strRemember);
 
-                // Response Handler
-                @Override
-                public void onResponse(String result) {
-                    VolleyLog.wtf(result);
-//                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    callback.onSuccessResponse(result);
-                }
-            }, errorListener) {
-
-                // Set the task priority
-                @Override
-                public Priority getPriority() {
-                    return Priority.IMMEDIATE;
-                }
-
-                // Set the form parameters
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("email", email);
-                    params.put("password", password);
-                    params.put("remember", strRemember);
-                    return params;
-                }
-
-                // Set the Header of the POST request
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    LoginMain.addSessionCookie(headers);
-                    return headers;
-                }
-
-                // Define the Response Content Type
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-
-                @Override
-                protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    // since we don't know which of the two underlying network vehicles
-                    // will Volley use, we have to handle and store session cookies manually
-                    LoginMain.checkSessionCookie(response.headers);
-                    return super.parseNetworkResponse(response);
-                }
-            };
-
-            // Add the POST form request to the Volley RequestQueue
-            queue.add(stringRequest);
+            // Send form POST request
+            RequestUtils.sendPostStringReq(context, url, params, callback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,50 +47,13 @@ public class LoginPostRequest {
 
     public static void logout(final Context context, final VolleyCallback callback) {
         try {
-            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
-            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
-            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
 
             // Define the url
             String endpoint = "/admin/logout";
-            String url = BASE_URL + endpoint;
+            String url = RequestUtils.BASE_URL + endpoint;
 
-            // Make form POST request
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-
-                // Response Handler
-                @Override
-                public void onResponse(String result) {
-                    VolleyLog.wtf(result);
-//                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    callback.onSuccessResponse(result);
-                }
-            }, errorListener) {
-
-                // Set the task priority
-                @Override
-                public Priority getPriority() {
-                    return Priority.HIGH;
-                }
-
-                // Set the Header of the POST request
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    LoginMain.addSessionCookie(headers);
-                    return headers;
-                }
-
-                // Define the Response Content Type
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
-
-            // Add the POST form request to the Volley RequestQueue
-            queue.add(stringRequest);
+            // Send form GET request
+            RequestUtils.sendGetStringReq(context, url, callback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -170,67 +72,19 @@ public class LoginPostRequest {
                 strVendor = "0";
             }
 
-            // Get the RequestQueue and Response.ErrorListener instance(Singleton)
-            RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
-            Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
 
             // Define the url
             String endpoint = "/admin/register";
-            String url = BASE_URL + endpoint;
+            String url = RequestUtils.BASE_URL + endpoint;
 
-            // Make form POST request
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            Map<String, String> params = new HashMap<>();
+            params.put("email", email);
+            params.put("password", password);
+            params.put("username", username);
+            params.put("is_vendor", strVendor);
 
-                // Response Handler
-                @Override
-                public void onResponse(String result) {
-                    VolleyLog.wtf(result);
-//                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-                    try {
-                        JSONObject jsonObject = new JSONObject(result);
-                        String status = Integer.toString(jsonObject.getInt("status"));
-                        callback.onSuccessResponse(status);
-                    } catch (JSONException e) {
-                        Log.e("MYAPP", "Parse exception", e);
-                    }
-                }
-            }, errorListener) {
-
-                // Set the task priority
-                @Override
-                public Priority getPriority() {
-                    return Priority.IMMEDIATE;
-                }
-
-                // Set the form parameters
-                @Override
-                public Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("email", email);
-                    params.put("password", password);
-                    params.put("username", username);
-                    params.put("is_vendor", strVendor);
-                    return params;
-                }
-
-                // Set the Header of the POST request
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    HashMap<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-                    LoginMain.addSessionCookie(headers);
-                    return headers;
-                }
-
-                // Define the Response Content Type
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-            };
-
-            // Add the POST form request to the Volley RequestQueue
-            queue.add(stringRequest);
+            // Send form POST request
+            RequestUtils.sendPostStringReq(context, url, params, callback);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -293,7 +147,6 @@ public class LoginPostRequest {
         }
         return true;
     }
-
 
     public static boolean contains(int[] arr, int check) {
         for (int n : arr) {
