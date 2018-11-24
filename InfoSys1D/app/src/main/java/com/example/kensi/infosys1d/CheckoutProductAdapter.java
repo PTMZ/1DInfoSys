@@ -17,10 +17,10 @@ import java.util.List;
 public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProductAdapter.ProductViewHolder> {
 
     private Context mCtx;
-    private List<CheckoutProduct> checkoutProductList;
+    private List<Product> checkoutProductList;
     private final MyClickListener listener;
 
-    public CheckoutProductAdapter(Context mCtx, List<CheckoutProduct> checkoutProductList, MyClickListener listener) {
+    public CheckoutProductAdapter(Context mCtx, List<Product> checkoutProductList, MyClickListener listener) {
         this.mCtx = mCtx;
         this.checkoutProductList = checkoutProductList;
         this.listener = listener;
@@ -38,12 +38,19 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        CheckoutProduct checkoutProduct = checkoutProductList.get(position);
+        Product checkoutProduct = checkoutProductList.get(position);
         holder.textViewTitle.setText(checkoutProduct.getTitle());
         holder.textViewDesc.setText(checkoutProduct.getShortdesc());
         holder.textViewQty.setText("x "+String.valueOf(checkoutProduct.getQty()));
         holder.textViewPrice.setText(String.valueOf(checkoutProduct.getPrice()));
-        holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(checkoutProduct.getImage()));
+        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(checkoutProduct.getImage()));
+
+        Log.d("IMAGE_URL",checkoutProduct.getImageURL());
+        String downloadKey = checkoutProduct.getImageURL();
+        if(downloadKey.length()>0){
+            RequestUtils.downloadFile(mCtx, downloadKey, holder.imageView);
+        }
+
     }
 
     @Override

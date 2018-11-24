@@ -1,20 +1,38 @@
 package com.example.kensi.infosys1d;
 
-public class CheckoutProduct {
+public class Product {
 
     private int id;
     private String title, shortdesc, category;
     private String price;
     private int image;
+    private String imageUrl;
     private int qty;
 
-    public CheckoutProduct(int id, String title, String shortdesc, String category, String price, int image, int qty) {
+    public Product(int id, String title, String shortdesc, String category, String price, int image, int qty) {
         this.id = id;
         this.title = title;
         this.shortdesc = shortdesc;
         this.category = category;
         this.price = price;
         this.image = image;
+        this.qty = qty;
+    }
+
+    public Product(int id, String title, double price, int image){
+        this.id = id;
+        this.title = title;
+        this.price = String.valueOf(price);
+        this.image = image;
+    }
+
+    public Product(int id, String title, String shortdesc, String category, String price, String imageUrl, int qty) {
+        this.id = id;
+        this.title = title;
+        this.shortdesc = shortdesc;
+        this.category = category;
+        this.price = price;
+        this.imageUrl = imageUrl;
         this.qty = qty;
     }
 
@@ -44,5 +62,9 @@ public class CheckoutProduct {
 
     public int getQty() {
         return qty;
+    }
+
+    public String getImageURL(){
+        return imageUrl;
     }
 }

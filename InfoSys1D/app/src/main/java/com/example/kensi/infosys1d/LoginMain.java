@@ -48,9 +48,9 @@ public class LoginMain extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         _preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        // SharedPreferences.Editor prefEditor = _preferences.edit();
-        // prefEditor.clear();
-        // prefEditor.apply();
+        //SharedPreferences.Editor prefEditor = _preferences.edit();
+        //prefEditor.clear();
+        //prefEditor.apply();
         String sessionId = _preferences.getString(SESSION_COOKIE, "");
         String emailPref = _preferences.getString("email", "");
         String passwordPref = _preferences.getString("password", "");
@@ -232,7 +232,7 @@ public class LoginMain extends AppCompatActivity {
                         //if successful, opens QR code reader
                         Toast.makeText(LoginMain.this, "LoginMain success", Toast.LENGTH_LONG).show();
                         Intent i;
-                        i = (isVendor == 0) ? new Intent(LoginMain.this, CheckoutMain.class) : new Intent(LoginMain.this, Vendor.class);
+                        i = (isVendor == 0) ? new Intent(LoginMain.this, MenuMain.class) : new Intent(LoginMain.this, Vendor.class);
                         int reqCode = (isVendor == 0) ? CHECKOUT_REQ : VENDOR_REQ;
                         SharedPreferences.Editor prefEditor = _preferences.edit();
                         if(remember){

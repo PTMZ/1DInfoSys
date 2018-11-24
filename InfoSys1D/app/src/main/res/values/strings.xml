@@ -28,4 +28,6 @@
     <string name="refresh">Refresh</string>
     <string name="update">Update</string>
     <string name="logout">Logout</string>
+    <string name="choose_image">Choose Image</string>
+    <string name="upload">Upload</string>
 </resources>

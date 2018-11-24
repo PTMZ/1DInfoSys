@@ -44,20 +44,21 @@ public class VendorRequests {
         }
     }
 
-    public static List<CheckoutProduct> request_iterate(String serverReply) {
-        List<CheckoutProduct> checkoutProductList = new ArrayList<>();
+    public static List<Product> request_iterate(String serverReply) {
+        List<Product> checkoutProductList = new ArrayList<>();
         try {
             JSONArray jsonData = new JSONObject(serverReply).getJSONArray("data");
             for(int i=0; i<jsonData.length(); i++){
                 JSONObject curProduct = jsonData.getJSONObject(i);
                 checkoutProductList.add(
-                        new CheckoutProduct(
+                        new Product(
                                 i+1,
                                 curProduct.getString("item_name"),
                                 curProduct.getString("description"),
                                 curProduct.getString("category"),
                                 curProduct.getString("price"),
-                                R.drawable.burger, 1));
+                                curProduct.getString("image_url"),
+                                1));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -157,7 +158,7 @@ public class VendorRequests {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] imgBytes = byteArrayOutputStream.toByteArray();
-        return new String(imgBytes, Charset.forName("UTF-8"));
+        return Base64.encodeToString(imgBytes, Base64.DEFAULT);
     }
 
 

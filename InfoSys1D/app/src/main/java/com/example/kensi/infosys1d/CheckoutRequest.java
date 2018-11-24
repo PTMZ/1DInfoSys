@@ -3,13 +3,6 @@ package com.example.kensi.infosys1d;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,21 +10,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-
 public class CheckoutRequest {
 
-    private static String BASE_URL = "https://chocolatepie.tech";
-    private static org.json.simple.JSONObject response;
-
     //String from Json is passed through here
-    public static List<CheckoutProduct> request_iterate(String[] items, int[] qty, String serverReply) {
-        List<CheckoutProduct> checkoutProductList = new ArrayList<>();
+    public static List<Product> request_iterate(String[] items, int[] qty, String serverReply) {
+        List<Product> checkoutProductList = new ArrayList<>();
         try {
             JSONArray jsonData = new JSONObject(serverReply).getJSONArray("data");
             for(int i=0; i<jsonData.length(); i++){
@@ -39,13 +26,13 @@ public class CheckoutRequest {
                 for(int j=0; j<items.length; j++){
                     if(items[j].equals(curProduct.getString("item_name"))){
                         checkoutProductList.add(
-                                new CheckoutProduct(
+                                new Product(
                                         j+1,
                                         curProduct.getString("item_name"),
                                         curProduct.getString("description"),
                                         curProduct.getString("category"),
                                         CheckoutMain.priceConversion(Double.parseDouble(curProduct.getString("price"))),
-                                        R.drawable.burger,
+                                        curProduct.getString("image_url"),
                                         qty[j]));
                     }
                 }

@@ -2,6 +2,7 @@ package com.example.kensi.infosys1d;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +24,10 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
     private Context mCtx;
 
     //we are storing all the products in a menu_layout_products
-    private List<MenuProduct> productList;
+    private List<Product> productList;
 
     //getting the context and product menu_layout_products with constructor
-    public MenuProductAdapter(Context mCtx, List<MenuProduct> productList) {
+    public MenuProductAdapter(Context mCtx, List<Product> productList) {
         this.mCtx = mCtx;
         this.productList = productList;
     }
@@ -42,7 +43,7 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         //getting the product of the specified position
-        MenuProduct product = productList.get(position);
+        Product product = productList.get(position);
 
         //binding the data with the viewholder views
         holder.textViewTitle.setText(product.getTitle());
@@ -51,6 +52,13 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         holder.textViewPrice.setText(String.valueOf(product.getPrice()));
 
         holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
+        /*
+        Log.d("IMAGE_URL",product.getImageURL());
+        String downloadKey = product.getImageURL();
+        if(downloadKey.length()>0){
+            RequestUtils.downloadFile(mCtx, downloadKey, holder.imageView);
+        }
+        */
 
     }
 

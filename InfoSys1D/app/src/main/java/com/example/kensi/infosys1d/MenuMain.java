@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,7 @@ import android.support.design.widget.Snackbar;
 public class MenuMain extends AppCompatActivity {
 
     //a menu_layout_products to store all the products
-    List<MenuProduct> productList;
+    List<Product> productList;
 
     //the recyclerview
     RecyclerView recyclerView;
@@ -57,14 +59,14 @@ public class MenuMain extends AppCompatActivity {
 
         //adding some items to our menu_layout_products
         productList.add(
-                new MenuProduct(
+                new Product(
                         1,
                         "Beef Lagsana",
                         7.90,
                         R.drawable.beef_lagsana));
 
         productList.add(
-                new MenuProduct(
+                new Product(
                         1,
                         "Beef Tacos",
 
@@ -72,7 +74,7 @@ public class MenuMain extends AppCompatActivity {
                         R.drawable.beef_tacos));
 
         productList.add(
-                new MenuProduct(
+                new Product(
                         1,
                         "Burger and Fries",
 
@@ -80,7 +82,7 @@ public class MenuMain extends AppCompatActivity {
                         R.drawable.burgerandfries));
 
         productList.add(
-                new MenuProduct(
+                new Product(
                         1,
                         "Chicken Kebab",
 
@@ -88,7 +90,7 @@ public class MenuMain extends AppCompatActivity {
                         R.drawable.chicken_kebab));
 
         productList.add(
-                new MenuProduct(
+                new Product(
                         1,
                         "Creamy Pumpkin Pasta",
 
@@ -96,14 +98,14 @@ public class MenuMain extends AppCompatActivity {
                         R.drawable.creamy_pumpkin_pasta));
 
         productList.add(
-                new MenuProduct(
+                new Product(
                         1,
                         "Pepperoni Pizza",
 
                         15,
                         R.drawable.pepperoni_pizza));
         productList.add(
-                new MenuProduct(
+                new Product(
                         1,
                         "Relish Hotog",
 
@@ -118,6 +120,27 @@ public class MenuMain extends AppCompatActivity {
 
         //setting adapter to recyclerview
         recyclerView.setAdapter(adapter);
+    }
+
+    //adds Menu to top bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_logout){
+            LoginPostRequest.logout(MenuMain.this, new VolleyCallback(){
+                @Override
+                public void onSuccessResponse(String result) {
+                    LoginMain.removeSessionCookie();
+                    finish();
+                }
+            });
+        }
+        return true;
     }
 
     public void showToast(View view){

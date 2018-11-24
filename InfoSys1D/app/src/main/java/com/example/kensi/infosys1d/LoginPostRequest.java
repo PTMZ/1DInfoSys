@@ -3,17 +3,6 @@ package com.example.kensi.infosys1d;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,13 +54,7 @@ public class LoginPostRequest {
     public static void registration(final Context context, final String password, final String email, final String username, final boolean vendor, final VolleyCallback callback) {
         try {
             // Convert boolean to 1 or 0
-            final String strVendor;
-            if (vendor) {
-                strVendor = "1";
-            } else {
-                strVendor = "0";
-            }
-
+            final String strVendor = vendor ? "1" : "0";
 
             // Define the url
             String endpoint = "/admin/register";
