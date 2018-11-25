@@ -1,6 +1,7 @@
 package com.example.kensi.infosys1d;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,10 +12,6 @@ import android.widget.TextView;
 
 
 import java.util.List;
-
-/**
- * Created by Belal on 10/18/2017.
- */
 
 
 public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.ProductViewHolder> {
@@ -74,7 +71,7 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         TextView textViewTitle, textViewShortDesc, textViewRating, textViewPrice;
         ImageView imageView;
 
-        public ProductViewHolder(View itemView) {
+        public ProductViewHolder(final View itemView) {
             super(itemView);
 
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
@@ -82,6 +79,23 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
             //textViewRating = itemView.findViewById(R.id.textViewRating);
             textViewPrice = itemView.findViewById(R.id.textViewPrice);
             imageView = itemView.findViewById(R.id.imageView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+
+                    Intent intent = new Intent(itemView.getContext(), MenuPop.class);
+
+
+                    intent.putExtra("viewpager_position", getAdapterPosition());
+
+                    itemView.getContext().startActivity(intent);
+                }
+
+
+            });
         }
     }
 }

@@ -37,7 +37,8 @@
         <activity android:name=".VendorUpdateForm" />
         <activity android:name=".MenuMain" />
         <activity android:name=".VendorUploadImage" />
-
+        <activity android:name=".MenuPop"
+            android:theme="@style/AppTheme.CustomTheme"/>
         <service
             android:name=".PushNotificationService"
             android:enabled="true"
