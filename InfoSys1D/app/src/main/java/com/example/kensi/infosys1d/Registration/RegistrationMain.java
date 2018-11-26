@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Registration;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.kensi.infosys1d.Login.LoginMain;
+import com.example.kensi.infosys1d.Login.LoginPostRequest;
+import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.VolleyCallback;
 
 public class RegistrationMain extends AppCompatActivity {
 

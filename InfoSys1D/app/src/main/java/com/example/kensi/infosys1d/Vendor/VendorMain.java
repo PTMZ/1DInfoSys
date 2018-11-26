@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Vendor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +12,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.kensi.infosys1d.Login.LoginMain;
+import com.example.kensi.infosys1d.Login.LoginPostRequest;
+import com.example.kensi.infosys1d.MyClickListener;
+import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.VolleyCallback;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Vendor extends AppCompatActivity {
+public class VendorMain extends AppCompatActivity {
 
     //TextView textViewFileName;
     RecyclerView recyclerView;
@@ -23,7 +30,7 @@ public class Vendor extends AppCompatActivity {
     Button buttonAddProduct;
     VendorProductAdapter adapter;
     List<Product> checkoutProductList;
-    private static final String TAG = "Vendor";
+    private static final String TAG = "VendorMain";
     private static final int ADD_FORM_REQ_CODE = 1;
     private static final int UPDATE_FORM_REQ_CODE = 2;
     private static final int UPLOAD_FORM_REQ_CODE = 3;
@@ -51,7 +58,7 @@ public class Vendor extends AppCompatActivity {
         buttonAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Vendor.this, VendorAddForm.class);
+                Intent i = new Intent(VendorMain.this, VendorAddForm.class);
                 startActivityForResult(i, ADD_FORM_REQ_CODE);
             }
         });
@@ -59,7 +66,7 @@ public class Vendor extends AppCompatActivity {
         buttonUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Vendor.this, VendorUploadImage.class);
+                Intent i = new Intent(VendorMain.this, VendorUploadImage.class);
                 startActivityForResult(i, UPLOAD_FORM_REQ_CODE);
             }
         });
@@ -79,7 +86,7 @@ public class Vendor extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_refresh){
-            VendorRequests.request_call_me(Vendor.this, storeID, new VolleyCallback() {
+            VendorRequests.request_call_me(VendorMain.this, storeID, new VolleyCallback() {
                 @Override
                 public void onSuccessResponse(String result) {
                     refreshRecycler();
@@ -87,7 +94,7 @@ public class Vendor extends AppCompatActivity {
             });
         }
         if(item.getItemId() == R.id.action_logout){
-            LoginPostRequest.logout(Vendor.this, new VolleyCallback(){
+            LoginPostRequest.logout(VendorMain.this, new VolleyCallback(){
                 @Override
                 public void onSuccessResponse(String result) {
                     LoginMain.removeSessionCookie();
@@ -112,14 +119,14 @@ public class Vendor extends AppCompatActivity {
     }
 
     public void refreshRecycler(){
-        VendorRequests.request_call_me(Vendor.this, storeID, new VolleyCallback() {
+        VendorRequests.request_call_me(VendorMain.this, storeID, new VolleyCallback() {
             @Override
             public void onSuccessResponse(String result) {
                 //Updates checkoutProductList with full details from items in checkMap
                 //Toast.makeText(getApplicationContext(),  "Refresh", Toast.LENGTH_LONG).show();
                 checkoutProductList = VendorRequests.request_iterate(result);
                 //Updates Recycleview
-                adapter = new VendorProductAdapter(Vendor.this, checkoutProductList, new MyClickListener() {
+                adapter = new VendorProductAdapter(VendorMain.this, checkoutProductList, new MyClickListener() {
                     @Override
                     public void onPositionClicked(int position, String type) {
                         String itemName = checkoutProductList.get(position).getTitle();
@@ -128,7 +135,7 @@ public class Vendor extends AppCompatActivity {
                             removeItem(itemName);
                         }
                         else if(type == "UPDATE"){
-                            Intent i = new Intent(Vendor.this, VendorUpdateForm.class);
+                            Intent i = new Intent(VendorMain.this, VendorUpdateForm.class);
                             i.putExtra("itemName", itemName);
                             i.putExtra("category", checkoutProductList.get(position).getCategory());
                             i.putExtra("price", checkoutProductList.get(position).getPrice());
@@ -144,7 +151,7 @@ public class Vendor extends AppCompatActivity {
     }
 
     public void removeItem(final String itemName){
-        VendorRequests.removeProduct(Vendor.this, itemName, new VolleyCallback() {
+        VendorRequests.removeProduct(VendorMain.this, itemName, new VolleyCallback() {
             @Override
             public void onSuccessResponse(String result) {
                 Toast.makeText(getApplicationContext(), "Removed: " + itemName, Toast.LENGTH_SHORT).show();

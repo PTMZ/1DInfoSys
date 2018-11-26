@@ -1,25 +1,24 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Menu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import java.util.ArrayList;
-import java.util.List;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+
+import com.example.kensi.infosys1d.Login.LoginMain;
+import com.example.kensi.infosys1d.Login.LoginPostRequest;
+import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.VolleyCallback;
 
 public class MenuMain extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.QRreader;
 
 import android.Manifest;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.example.kensi.infosys1d.R;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;

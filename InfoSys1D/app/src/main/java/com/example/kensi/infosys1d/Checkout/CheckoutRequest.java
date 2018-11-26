@@ -1,13 +1,14 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Checkout;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.Vendor.VendorRequests;
+import com.example.kensi.infosys1d.VolleyCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Checkout;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,16 +11,21 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.kensi.infosys1d.MyClickListener;
+import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.Registration.RequestUtils;
+
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class VendorProductAdapter extends RecyclerView.Adapter<VendorProductAdapter.ProductViewHolder> {
+public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProductAdapter.ProductViewHolder> {
 
     private Context mCtx;
     private List<Product> checkoutProductList;
     private final MyClickListener listener;
 
-    public VendorProductAdapter(Context mCtx, List<Product> checkoutProductList, MyClickListener listener) {
+    public CheckoutProductAdapter(Context mCtx, List<Product> checkoutProductList, MyClickListener listener) {
         this.mCtx = mCtx;
         this.checkoutProductList = checkoutProductList;
         this.listener = listener;
@@ -30,7 +35,7 @@ public class VendorProductAdapter extends RecyclerView.Adapter<VendorProductAdap
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View view = inflater.inflate(R.layout.vendor_layout_products, null);
+        View view = inflater.inflate(R.layout.checkout_layout_products, null);
         ProductViewHolder holder = new ProductViewHolder(view);
         return holder;
 
@@ -44,11 +49,13 @@ public class VendorProductAdapter extends RecyclerView.Adapter<VendorProductAdap
         holder.textViewQty.setText("x "+String.valueOf(checkoutProduct.getQty()));
         holder.textViewPrice.setText(String.valueOf(checkoutProduct.getPrice()));
         //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(checkoutProduct.getImage()));
+
         Log.d("IMAGE_URL",checkoutProduct.getImageURL());
         String downloadKey = checkoutProduct.getImageURL();
         if(downloadKey.length()>0){
             RequestUtils.downloadFile(mCtx, downloadKey, holder.imageView);
         }
+
     }
 
     @Override
@@ -61,7 +68,6 @@ public class VendorProductAdapter extends RecyclerView.Adapter<VendorProductAdap
         ImageView imageView;
         TextView textViewTitle, textViewDesc, textViewPrice, textViewQty;
         ImageButton removeButton;
-        ImageButton updateButton;
         private WeakReference<MyClickListener> listenerRef;
 
         public ProductViewHolder(@NonNull View itemView) {
@@ -73,12 +79,10 @@ public class VendorProductAdapter extends RecyclerView.Adapter<VendorProductAdap
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
             textViewDesc = itemView.findViewById(R.id.textViewShortDesc);
             removeButton = itemView.findViewById(R.id.removeButton);
-            updateButton = itemView.findViewById(R.id.updateButton);
             textViewPrice = itemView.findViewById(R.id.textViewTotalName);
             textViewQty = itemView.findViewById(R.id.textViewQty);
 
             removeButton.setOnClickListener(this);
-            updateButton.setOnClickListener(this);
 
         }
 
@@ -88,10 +92,6 @@ public class VendorProductAdapter extends RecyclerView.Adapter<VendorProductAdap
             if (v.getId() == removeButton.getId()){
                 Log.d("CheckoutProductAdapter", "Remove item... " + String.valueOf(getAdapterPosition()));
                 actionType = "REMOVE";
-            }
-            else if(v.getId() == updateButton.getId()){
-                Log.d("CheckoutProductAdapter", "Update item... " + String.valueOf(getAdapterPosition()));
-                actionType = "UPDATE";
             }
             listenerRef.get().onPositionClicked(getAdapterPosition(), actionType);
         }

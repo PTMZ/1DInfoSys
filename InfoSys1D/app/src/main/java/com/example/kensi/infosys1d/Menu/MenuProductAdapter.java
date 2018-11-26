@@ -1,15 +1,17 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Menu;
 
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.R;
 
 import java.util.List;
 

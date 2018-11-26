@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Vendor;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.VolleyCallback;
 
 import java.io.IOException;
 
@@ -22,7 +24,7 @@ public class VendorUploadImage extends AppCompatActivity implements View.OnClick
     Button buttonUpload;
     ImageView image;
     Bitmap bitmap;
-    private static final String TAG = "Vendor";
+    private static final String TAG = "VendorMain";
     private static final int IMG_REQUEST = 1;
 
     @Override

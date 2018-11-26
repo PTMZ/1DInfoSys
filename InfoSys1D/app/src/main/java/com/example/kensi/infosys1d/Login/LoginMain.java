@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +14,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.kensi.infosys1d.Menu.MenuMain;
+import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.Registration.RegistrationMain;
+import com.example.kensi.infosys1d.Vendor.VendorMain;
+import com.example.kensi.infosys1d.VolleyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -232,7 +237,7 @@ public class LoginMain extends AppCompatActivity {
                         //if successful, opens QR code reader
                         Toast.makeText(LoginMain.this, "LoginMain success", Toast.LENGTH_LONG).show();
                         Intent i;
-                        i = (isVendor == 0) ? new Intent(LoginMain.this, MenuMain.class) : new Intent(LoginMain.this, Vendor.class);
+                        i = (isVendor == 0) ? new Intent(LoginMain.this, MenuMain.class) : new Intent(LoginMain.this, VendorMain.class);
                         int reqCode = (isVendor == 0) ? CHECKOUT_REQ : VENDOR_REQ;
                         SharedPreferences.Editor prefEditor = _preferences.edit();
                         if(remember){

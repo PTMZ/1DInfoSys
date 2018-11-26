@@ -1,14 +1,10 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Registration;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferObserver;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
@@ -22,11 +18,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+import com.example.kensi.infosys1d.Login.LoginMain;
+import com.example.kensi.infosys1d.SingletonRequestQueue;
+import com.example.kensi.infosys1d.VolleyCallback;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;

@@ -1,27 +1,19 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Vendor;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Base64;
 import android.util.Log;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
+import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.Registration.RequestUtils;
+import com.example.kensi.infosys1d.VolleyCallback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

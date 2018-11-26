@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Menu;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.kensi.infosys1d.R;
 
 public class SlideAdapter extends PagerAdapter {
     Context context;

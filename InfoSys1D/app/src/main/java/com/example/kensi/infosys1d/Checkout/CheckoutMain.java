@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d;
+package com.example.kensi.infosys1d.Checkout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.example.kensi.infosys1d.Login.LoginMain;
+import com.example.kensi.infosys1d.Login.LoginPostRequest;
+import com.example.kensi.infosys1d.MyClickListener;
+import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.VolleyCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
