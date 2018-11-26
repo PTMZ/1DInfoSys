@@ -19,11 +19,11 @@ public class Product {
         this.qty = qty;
     }
 
-    public Product(int id, String title, double price, int image){
+    public Product(int id, String title, double price, String imageUrl){
         this.id = id;
         this.title = title;
         this.price = String.valueOf(price);
-        this.image = image;
+        this.imageUrl = imageUrl;
     }
 
     public Product(int id, String title, String shortdesc, String category, String price, String imageUrl, int qty) {

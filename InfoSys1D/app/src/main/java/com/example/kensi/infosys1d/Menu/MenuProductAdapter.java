@@ -3,7 +3,9 @@ package com.example.kensi.infosys1d.Menu;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.Registration.RequestUtils;
 
 import java.util.List;
 
@@ -50,14 +53,12 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         //holder.textViewRating.setText(String.valueOf(product.getRating()));
         holder.textViewPrice.setText(String.valueOf(product.getPrice()));
 
-        holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
-        /*
+//        holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
         Log.d("IMAGE_URL",product.getImageURL());
         String downloadKey = product.getImageURL();
         if(downloadKey.length()>0){
             RequestUtils.downloadFile(mCtx, downloadKey, holder.imageView);
         }
-        */
 
     }
 
