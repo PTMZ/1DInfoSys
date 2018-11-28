@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.kensi.infosys1d.MyClickListener;
 import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
-import com.example.kensi.infosys1d.Registration.RequestUtils;
+import com.example.kensi.infosys1d.RequestUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.List;

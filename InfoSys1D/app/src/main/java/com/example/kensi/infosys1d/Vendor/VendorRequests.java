@@ -6,7 +6,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.example.kensi.infosys1d.Product;
-import com.example.kensi.infosys1d.Registration.RequestUtils;
+import com.example.kensi.infosys1d.RequestUtils;
 import com.example.kensi.infosys1d.VolleyCallback;
 
 import org.json.JSONArray;

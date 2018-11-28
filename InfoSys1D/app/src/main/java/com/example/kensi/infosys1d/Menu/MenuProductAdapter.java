@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,9 +13,11 @@ import android.widget.TextView;
 
 import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
-import com.example.kensi.infosys1d.Registration.RequestUtils;
+import com.example.kensi.infosys1d.RequestUtils;
 
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 
 public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.ProductViewHolder> {
@@ -90,6 +91,7 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
 
 
                     Intent intent = new Intent(itemView.getContext(), MenuPop.class);
+//                    intent.putExtra("product_list", MenuMain.getProductList());
 
 
                     intent.putExtra("viewpager_position", getAdapterPosition());

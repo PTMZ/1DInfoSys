@@ -13,7 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
+
+import java.util.List;
 
 public class MenuPop extends AppCompatActivity {
     private ViewPager viewPager;
@@ -29,6 +32,8 @@ public class MenuPop extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         setContentView(R.layout.menu_pop);
         relativeLayout = (RelativeLayout)findViewById(R.id.relativeLayout);

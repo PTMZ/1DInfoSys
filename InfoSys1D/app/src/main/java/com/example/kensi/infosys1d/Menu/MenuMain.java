@@ -29,12 +29,16 @@ import com.example.kensi.infosys1d.VolleyCallback;
 public class MenuMain extends AppCompatActivity {
 
     //a menu_layout_products to store all the products
-    List<Product> productList;
+    public static List<Product> productList;
 
     //the recyclerview
     RecyclerView recyclerView;
 
     String storeID = "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080";
+
+    public static List<Product> getProductList() {
+        return productList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -31,8 +31,11 @@ public class MenuRequest {
                                         i+1,
                                         curProduct.getString("item_name"),
                                         //todo modify the below line
-                                        Double.parseDouble(curProduct.getString("price")),
-                                        curProduct.getString("image_url")));
+                                        curProduct.getString("description"),
+                                        curProduct.getString("category"),
+                                        curProduct.getString("price"),
+                                        curProduct.getString("image_url"),
+                                0));
 
             }
         } catch (JSONException e) {
