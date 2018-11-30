@@ -80,66 +80,6 @@ public class MenuMain extends AppCompatActivity {
                 recyclerView.setAdapter(adapter);
             }
         });
-
-//        //adding some items to our menu_layout_products
-//        productList.add(
-//                new Product(
-//                        1,
-//                        "Beef Lagsana",
-//                        7.90,
-//                        R.drawable.beef_lagsana));
-//
-//        productList.add(
-//                new Product(
-//                        1,
-//                        "Beef Tacos",
-//
-//                        8.50,
-//                        R.drawable.beef_tacos));
-//
-//        productList.add(
-//                new Product(
-//                        1,
-//                        "Burger and Fries",
-//
-//                        15,
-//                        R.drawable.burgerandfries));
-//
-//        productList.add(
-//                new Product(
-//                        1,
-//                        "Chicken Kebab",
-//
-//                        13,
-//                        R.drawable.chicken_kebab));
-//
-//        productList.add(
-//                new Product(
-//                        1,
-//                        "Creamy Pumpkin Pasta",
-//
-//                        13,
-//                        R.drawable.creamy_pumpkin_pasta));
-//
-//        productList.add(
-//                new Product(
-//                        1,
-//                        "Pepperoni Pizza",
-//
-//                        15,
-//                        R.drawable.pepperoni_pizza));
-//        productList.add(
-//                new Product(
-//                        1,
-//                        "Relish Hotog",
-//
-//                        7.90,
-//                        R.drawable.relish_hotdog));
-
-
-
-
-
     }
 
     //adds Menu to top bar

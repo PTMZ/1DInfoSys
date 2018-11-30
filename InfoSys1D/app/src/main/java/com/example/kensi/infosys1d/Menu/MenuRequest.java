@@ -30,7 +30,6 @@ public class MenuRequest {
                                 new Product(
                                         i+1,
                                         curProduct.getString("item_name"),
-                                        //todo modify the below line
                                         curProduct.getString("description"),
                                         curProduct.getString("category"),
                                         curProduct.getString("price"),
@@ -49,33 +48,6 @@ public class MenuRequest {
     //access the json file from the server
     public static void request_call_me(final Context context, final String storeID, final VolleyCallback callback) {
         VendorRequests.request_call_me(context, storeID, callback);
-    }
-
-    //converts hashmap's value to an int array
-    public static int[] valueMapToArray(Map<String, Integer> checkMap) {
-        int[] check = new int[checkMap.size()];
-        int i = 0;
-        Iterator checkIt = checkMap.entrySet().iterator();
-        while (checkIt.hasNext()) {
-            Map.Entry pair = (Map.Entry) checkIt.next();
-            check[i] = Integer.valueOf(pair.getValue().toString());
-            i++;
-        }
-        return check;
-    }
-
-
-    //converts hashmap's key to a string array
-    public static String[] keyMapToArray(Map<String, Integer> checkMap) {
-        String[] check = new String[checkMap.size()];
-        int i = 0;
-        Iterator checkIt = checkMap.entrySet().iterator();
-        while (checkIt.hasNext()) {
-            Map.Entry pair = (Map.Entry) checkIt.next();
-            check[i] = pair.getKey().toString();
-            i++;
-        }
-        return check;
     }
 
 }
