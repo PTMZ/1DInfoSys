@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class CheckoutRequest {
+public class CheckoutRequest_NOT_IN_USE {
 
     //String from Json is passed through here
     public static List<Product> request_iterate(String[] items, int[] qty, String serverReply) {

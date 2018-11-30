@@ -70,24 +70,26 @@ public class SlideAdapter extends PagerAdapter {
         itemprice.setText(MenuMain.getProductList().get(position).getPrice());
         Log.d("MENU_POS", "Position: " + String.valueOf(position));
 
+        //checks if qty is below 100, then adds 1 if button is pressed
         increasebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currNumItems = MenuMain.getProductList().get(position).getQty();
                 if (currNumItems < 100) {
                     MenuMain.getProductList().get(position).setQty(currNumItems + 1);
-                    itemqty.setText(String.valueOf(currNumItems));
+                    itemqty.setText(String.valueOf(currNumItems + 1));
                 }
             }
         });
 
+        //checks if qty is above 0, then subtracts 1 if button is pressed
         decreasebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currNumItems = MenuMain.getProductList().get(position).getQty();
                 if (currNumItems > 0) {
-                    MenuMain.getProductList().get(position).setQty(MenuMain.getProductList().get(position).getQty() - 1);
-                    itemqty.setText(String.valueOf(MenuMain.getProductList().get(position).getQty()));
+                    MenuMain.getProductList().get(position).setQty(currNumItems - 1);
+                    itemqty.setText(String.valueOf(currNumItems - 1));
                 }
             }
         });

@@ -1,27 +1,24 @@
 package com.example.kensi.infosys1d.Menu;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.widget.Button;
 
 import com.example.kensi.infosys1d.Checkout.CheckoutMain;
-import com.example.kensi.infosys1d.Checkout.CheckoutProductAdapter;
-import com.example.kensi.infosys1d.Checkout.CheckoutRequest;
 import com.example.kensi.infosys1d.Login.LoginMain;
 import com.example.kensi.infosys1d.Login.LoginPostRequest;
-import com.example.kensi.infosys1d.MyClickListener;
 import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
 import com.example.kensi.infosys1d.VolleyCallback;
@@ -64,8 +61,6 @@ public class MenuMain extends AppCompatActivity {
         //initializing the productlist
         productList = new ArrayList<>();
 
-        //Volley to server
-
         MenuRequest.request_call_me(MenuMain.this, storeID, new VolleyCallback() {
             @Override
             public void onSuccessResponse(String result) {
@@ -78,6 +73,17 @@ public class MenuMain extends AppCompatActivity {
 
                 //setting adapter to recyclerview
                 recyclerView.setAdapter(adapter);
+            }
+        });
+
+        //TODO repair this part
+        Button checkoutButton = findViewById(R.id.checkoutbutton);
+
+        checkoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MenuMain.this, CheckoutMain.class);
+                startActivity(i);
             }
         });
     }
