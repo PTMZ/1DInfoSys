@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.kensi.infosys1d.Menu.MenuMain;
+import com.example.kensi.infosys1d.PaymentConfirmationMain;
 import com.example.kensi.infosys1d.R;
 import com.example.kensi.infosys1d.Registration.RegistrationMain;
 import com.example.kensi.infosys1d.Vendor.VendorMain;
@@ -98,7 +99,7 @@ public class LoginMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Intent i = new Intent(LoginMain.this, CheckoutMain.class);
-                Intent i = new Intent(LoginMain.this, MenuMain.class);
+                Intent i = new Intent(LoginMain.this, PaymentConfirmationMain.class);
                 startActivity(i);
             }
         });

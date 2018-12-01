@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.kensi.infosys1d.Login.LoginMain;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 public class CheckoutMain extends AppCompatActivity {
 
+    Button buttonPlaceOrder;
     TextView textViewTotalPrice;
     RecyclerView recyclerView;
     CheckoutProductAdapter adapter;
@@ -42,31 +44,9 @@ public class CheckoutMain extends AppCompatActivity {
         //creation of a list for each individual item
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        //Creation of testing hashmap; this is to be passed on from previous activity in the future
-//        Map<String, Integer> checkMap = new HashMap<String, Integer>();
-//        checkMap.put("Fish Fillet", 3);
-//        checkMap.put("Salted Egg Chicken",5);
-//        checkMap.put("Steam Egg", 15);
-//
-//        //Creation of Array from Item hashmap, as Volley requires final
-//        final String[] items = CheckoutRequest_NOT_IN_USE.keyMapToArray(checkMap);
-//        final int[] qty = CheckoutRequest_NOT_IN_USE.valueMapToArray(checkMap);
-//        //Volley to server
-//
-//        CheckoutRequest_NOT_IN_USE.request_call_me(CheckoutMain.this, storeID, new VolleyCallback() {
-//                    @Override
-//                    public void onSuccessResponse(String result) {
-//                        //Updates checkoutProductList with full details from items in checkMap
-//                        checkoutProductList = CheckoutRequest_NOT_IN_USE.request_iterate(items, qty, result);
-//                        //Updates Recycleview
-//
-//
-//                    }
-//                });
-
 
         //Creates a new list from MenuMain's productList, removing all the QTY=0 elements
         checkoutList = removeZeroQtyList(MenuMain.productList);

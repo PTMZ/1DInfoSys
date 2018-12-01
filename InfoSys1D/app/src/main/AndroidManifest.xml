@@ -37,8 +37,10 @@
         <activity android:name=".Vendor.VendorUpdateForm" />
         <activity android:name=".Menu.MenuMain" />
         <activity android:name=".Vendor.VendorUploadImage" />
-        <activity android:name=".Menu.MenuPop"
-            android:theme="@style/AppTheme.CustomTheme"/>
+        <activity
+            android:name=".Menu.MenuPop"
+            android:theme="@style/AppTheme.CustomTheme" />
+
         <service
             android:name=".PushNotificationService"
             android:enabled="true"
@@ -47,6 +49,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".PaymentConfirmationMain"
+            android:label="@string/title_activity_payment_confirmation_main"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

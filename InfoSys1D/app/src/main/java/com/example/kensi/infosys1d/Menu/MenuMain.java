@@ -77,16 +77,6 @@ public class MenuMain extends AppCompatActivity {
             }
         });
 
-//        //TODO repair this part
-//        Button checkoutButton = findViewById(R.id.checkoutbutton);
-//
-//        checkoutButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(MenuMain.this, CheckoutMain.class);
-//                startActivity(i);
-//            }
-//        });
     }
 
     //adds Menu to top bar
@@ -107,7 +97,7 @@ public class MenuMain extends AppCompatActivity {
                     }
                 });
             case R.id.action_cart:
-                Toast.makeText(MenuMain.this, "Place Order & Pay", Toast.LENGTH_LONG).show();
+//                Toast.makeText(MenuMain.this, "Place Order & Pay", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MenuMain.this, CheckoutMain.class);
                 startActivity(intent);
 
