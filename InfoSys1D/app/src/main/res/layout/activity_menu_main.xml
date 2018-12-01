@@ -33,13 +33,13 @@
         app:borderWidth="0dp"
         app:srcCompat="@drawable/ic_more_vert" />
 
-    <Button
+    <!--Button
         android:id="@+id/checkoutbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/fab"
         android:layout_alignParentStart="true"
-        android:text=" temp checkout" />
+        android:text=" temp checkout" -->
 
 
 </RelativeLayout>

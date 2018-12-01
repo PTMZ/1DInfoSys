@@ -15,6 +15,7 @@ import android.view.View;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.kensi.infosys1d.Checkout.CheckoutMain;
 import com.example.kensi.infosys1d.Login.LoginMain;
@@ -76,16 +77,16 @@ public class MenuMain extends AppCompatActivity {
             }
         });
 
-        //TODO repair this part
-        Button checkoutButton = findViewById(R.id.checkoutbutton);
-
-        checkoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MenuMain.this, CheckoutMain.class);
-                startActivity(i);
-            }
-        });
+//        //TODO repair this part
+//        Button checkoutButton = findViewById(R.id.checkoutbutton);
+//
+//        checkoutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(MenuMain.this, CheckoutMain.class);
+//                startActivity(i);
+//            }
+//        });
     }
 
     //adds Menu to top bar
@@ -95,19 +96,25 @@ public class MenuMain extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_logout){
-            LoginPostRequest.logout(MenuMain.this, new VolleyCallback(){
-                @Override
-                public void onSuccessResponse(String result) {
-                    LoginMain.removeSessionCookie();
-                    finish();
-                }
-            });
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.action_logout:
+                LoginPostRequest.logout(MenuMain.this, new VolleyCallback(){
+                    @Override
+                    public void onSuccessResponse(String result) {
+                        LoginMain.removeSessionCookie();
+                        finish();
+                    }
+                });
+            case R.id.action_cart:
+                Toast.makeText(MenuMain.this, "Place Order & Pay", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MenuMain.this, CheckoutMain.class);
+                startActivity(intent);
+
         }
         return true;
     }
+
 
     public void showToast(View view){
     }
