@@ -12,11 +12,6 @@
         android:title="@string/action_cart"
         app:showAsAction="ifRoom"/>
 
-    <item
-        android:id="@+id/action_bill"
-        android:icon="@drawable/ic_receipt_black_24dp"
-        android:title="@string/action_bill"
-        app:showAsAction="ifRoom"/>
 
 
     <item
