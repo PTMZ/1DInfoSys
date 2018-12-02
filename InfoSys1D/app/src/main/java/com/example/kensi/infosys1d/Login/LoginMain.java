@@ -66,7 +66,6 @@ public class LoginMain extends AppCompatActivity {
         deviceID = _preferences.getString("deviceID", "");
         if(deviceID.equals("")) {
             setFCMInstanceID();
-            deviceID = _preferences.getString("deviceID", "");
         }
         if (passwordPref.length() > 0) {
             loginRequest(passwordPref, emailPref, deviceID);
@@ -154,7 +153,7 @@ public class LoginMain extends AppCompatActivity {
                     return;
                 }
                 // Get new device ID
-                String deviceID = task.getResult().getToken();
+                LoginMain.deviceID = task.getResult().getToken();
                 // Save the device ID
                 SharedPreferences.Editor prefEditor = _preferences.edit();
                 prefEditor.putString("deviceID", deviceID);
