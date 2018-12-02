@@ -35,8 +35,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 public class LoginMain extends AppCompatActivity {
-    private static final String FCM_ID = "FCM_ID";
-    String instanceID;
+    private static String deviceID;
     int uploaded;
     private static final String SET_COOKIE_KEY = "Set-Cookie";
     private static final String COOKIE_KEY = "Cookie";
@@ -64,8 +63,13 @@ public class LoginMain extends AppCompatActivity {
         String sessionId = _preferences.getString(SESSION_COOKIE, "");
         String emailPref = _preferences.getString("email", "");
         String passwordPref = _preferences.getString("password", "");
+        deviceID = _preferences.getString("deviceID", "");
+        if(deviceID.equals("")) {
+            setFCMInstanceID();
+            deviceID = _preferences.getString("deviceID", "");
+        }
         if (passwordPref.length() > 0) {
-            loginRequest(passwordPref, emailPref, true);
+            loginRequest(passwordPref, emailPref, deviceID);
         }
         Log.d("LOGIN_START", "Check Pref: " + sessionId);
 
@@ -77,16 +81,6 @@ public class LoginMain extends AppCompatActivity {
         final Button buttonTest = findViewById(R.id.buttonTest);
         final Button buttonSign = findViewById(R.id.buttonSign);
 
-        // Get data from SharedPreference
-        SharedPreferences settings = getSharedPreferences(FCM_ID, MODE_PRIVATE);
-        instanceID = settings.getString("ID", "");
-        uploaded = settings.getInt("uploaded", 0);
-
-        // Save the instance ID if it has not saved into the SharedPreference
-        if (instanceID.equals("")) {
-            setFCMInstanceID();
-        }
-        Log.d("Token", instanceID);
 
         // Define all the UI listener
         buttonSign.setOnClickListener(new View.OnClickListener() {
@@ -127,10 +121,9 @@ public class LoginMain extends AppCompatActivity {
                 } else {
                     // Get the data from the UI
                     String password = inputPassword.getText().toString();
-                    Boolean remember = checkRemember.isChecked();
 
                     // Make POST request to /admin/login
-                    loginRequest(password, email, remember);
+                    loginRequest(password, email, deviceID);
 
                 }
             }
@@ -152,16 +145,7 @@ public class LoginMain extends AppCompatActivity {
         }
     }
 
-
-    /*
-        This private method is used to save the FCM Instance ID into SharedPreference.
-        Saved the FCM Instance ID into SharedPreference.
-        SharedPreference ID: FCM_ID
-        key: ID (Instance ID)
-        key: uploaded (Flag for uploading the Instance ID to database)
-     */
-    private void setFCMInstanceID() {
-
+    private static void setFCMInstanceID() {
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
             @Override
             public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -169,19 +153,14 @@ public class LoginMain extends AppCompatActivity {
                     Log.w("access_token", "getInstanceId failed", task.getException());
                     return;
                 }
-
-                // Get new Instance ID token
-                instanceID = task.getResult().getToken();
-
-                // Save into SharedPreference
-                SharedPreferences FCM = getSharedPreferences(FCM_ID, MODE_PRIVATE);
-                SharedPreferences.Editor editor = FCM.edit();
-                editor.putString("ID", instanceID);
-                editor.putInt("uploaded", 0);
-                editor.apply();
-
+                // Get new device ID
+                String deviceID = task.getResult().getToken();
+                // Save the device ID
+                SharedPreferences.Editor prefEditor = _preferences.edit();
+                prefEditor.putString("deviceID", deviceID);
+                prefEditor.apply();
                 // Log
-                String msg = "Access Token: " + instanceID;
+                String msg = "Access Token: " + deviceID;
                 Log.d("access_token", msg);
             }
         });
@@ -232,8 +211,8 @@ public class LoginMain extends AppCompatActivity {
         prefEditor.apply();
     }
 
-    public void loginRequest(final String password, final String email, final boolean remember) {
-        LoginPostRequest.login(getApplicationContext(), password, email, remember, new VolleyCallback() {
+    public void loginRequest(final String password, final String email, final String deviceID) {
+        LoginPostRequest.login(getApplicationContext(), password, email, deviceID, new VolleyCallback() {
             //decides what to do from post request reponse
             @Override
             public void onSuccessResponse(String result) {
@@ -250,11 +229,9 @@ public class LoginMain extends AppCompatActivity {
                         i = (isVendor == 0) ? new Intent(LoginMain.this, QRreaderMain.class) : new Intent(LoginMain.this, VendorMain.class);
                         int reqCode = (isVendor == 0) ? CHECKOUT_REQ : VENDOR_REQ;
                         SharedPreferences.Editor prefEditor = _preferences.edit();
-                        if (remember) {
-                            prefEditor.putString("email", email);
-                            prefEditor.putString("password", password);
-                            prefEditor.apply();
-                        }
+                        prefEditor.putString("email", email);
+                        prefEditor.putString("password", password);
+                        prefEditor.apply();
                         startActivityForResult(i, reqCode);
 
                     } else if (status == -1) {
