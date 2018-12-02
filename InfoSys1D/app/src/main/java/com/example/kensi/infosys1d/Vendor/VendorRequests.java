@@ -24,7 +24,7 @@ public class VendorRequests {
     public static void request_call_me(final Context context, final String storeID, final VolleyCallback callback) {
         try {
             // Define the url
-            String endpoint = "/inventory/listItem/" + storeID;
+            String endpoint = "/inventory/listItem" + (storeID.length()>0 ? "/" + storeID : "");
             String url = RequestUtils.BASE_URL + endpoint;
 
             // Send form POST request
