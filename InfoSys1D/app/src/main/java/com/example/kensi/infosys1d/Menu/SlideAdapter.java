@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ public class SlideAdapter extends PagerAdapter {
         ImageView imgslide = view.findViewById(R.id.slideimg);
         TextView txttitle = view.findViewById(R.id.txttitle);
         TextView description = view.findViewById(R.id.txtdescription);
+        description.setMovementMethod(new ScrollingMovementMethod());
         TextView itemprice = view.findViewById(R.id.itemprice);
         final TextView itemqty = view.findViewById(R.id.itemqty);
         Button decreasebutton = view.findViewById(R.id.decreasebutton);
