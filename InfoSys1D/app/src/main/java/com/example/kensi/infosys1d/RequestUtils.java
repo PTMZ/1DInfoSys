@@ -1,4 +1,4 @@
-package com.example.kensi.infosys1d.Registration;
+package com.example.kensi.infosys1d;
 
 import android.content.Context;
 import android.util.Log;

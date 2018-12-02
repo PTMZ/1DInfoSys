@@ -13,7 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
+
+import java.util.List;
 
 public class MenuPop extends AppCompatActivity {
     private ViewPager viewPager;
@@ -30,8 +33,9 @@ public class MenuPop extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.menu_pop);
-        relativeLayout = (RelativeLayout)findViewById(R.id.relativeLayout);
+        relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
 
         final DisplayMetrics dm = new DisplayMetrics();
@@ -40,11 +44,11 @@ public class MenuPop extends AppCompatActivity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int)(width*.87), (int)(height*.87));
+        getWindow().setLayout((int) (width * .87), (int) (height * .87));
 
         int position = 0;
         Bundle extras = getIntent().getExtras();
-        if(extras != null) {
+        if (extras != null) {
             position = extras.getInt("viewpager_position");
         }
 
@@ -75,7 +79,7 @@ public class MenuPop extends AppCompatActivity {
         dotscount = myadapter.getCount();
         dots = new ImageView[dotscount];
 
-        for(int i = 0; i < dotscount; i++){
+        for (int i = 0; i < dotscount; i++) {
 
             dots[i] = new ImageView(this);
             dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
@@ -85,14 +89,9 @@ public class MenuPop extends AppCompatActivity {
             params.setMargins(8, 0, 8, 0);
 
             sliderDotspanel.addView(dots[i], params);
-
         }
 
         dots[viewPager.getCurrentItem()].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.active_dot));
-
-
-
-
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -104,7 +103,7 @@ public class MenuPop extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
 
-                for(int i = 0; i< dotscount; i++){
+                for (int i = 0; i < dotscount; i++) {
                     dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.non_active_dot));
                 }
 

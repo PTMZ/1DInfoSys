@@ -64,6 +64,10 @@ public class Product {
         return qty;
     }
 
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
     public String getImageURL(){
         return imageUrl;
     }

@@ -2,6 +2,7 @@ package com.example.kensi.infosys1d.QRreader;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
@@ -12,8 +13,15 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.kensi.infosys1d.Login.LoginMain;
+import com.example.kensi.infosys1d.Menu.MenuMain;
+import com.example.kensi.infosys1d.Menu.MenuProductAdapter;
+import com.example.kensi.infosys1d.Menu.MenuRequest;
+import com.example.kensi.infosys1d.PaymentConfirmationMain;
 import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.VolleyCallback;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -28,6 +36,17 @@ public class QRreaderMain extends AppCompatActivity {
     TextView textView;
     BarcodeDetector barcodeDetector;
     FrameLayout frameLayout;
+    long pastTime = 0;
+    long currTime = 0;
+    static String savedResult;
+
+    public static void setSavedResult(String setsavedResult) {
+        savedResult = setsavedResult;
+    }
+
+    public static String getSavedResult() {
+        return savedResult;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +72,7 @@ public class QRreaderMain extends AppCompatActivity {
                 }
                 try {
                     cameraSource.start(holder);
-                } catch(IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -77,20 +96,49 @@ public class QRreaderMain extends AppCompatActivity {
 
             }
 
+            //TODO add logout menu for QRreader
+
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrCodes = detections.getDetectedItems();
-
-                if(qrCodes.size() != 0){
+                if (qrCodes.size() != 0) {
                     textView.post(new Runnable() {
+                        //upon recieving scanning QR code
                         @Override
                         public void run() {
-                            //Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            //vibrator.vibrate(100);
-                            textView.setText(qrCodes.valueAt(0).displayValue);
+                            //checks for time, so function doesn't run more than once by accident
+                            currTime = System.currentTimeMillis();
+                            if (currTime - pastTime > 7000) {
+                                pastTime = currTime;
+                                //sends request to server for menu
+                                MenuRequest.request_call_me(QRreaderMain.this, qrCodes.valueAt(0).displayValue, new VolleyCallback() {
+                                    @Override
+                                    public void onSuccessResponse(String result) {
+                                        //checks if QR code is valid based on String length sent by server
+                                        if (result.length() >= 16) {
+                                            Intent i = new Intent(QRreaderMain.this, MenuMain.class);
+                                            i.putExtra("ServerResult", result);
+                                            setSavedResult(result);
+                                            //vibrates phone
+                                            Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                            vibrator.vibrate(100);
+                                            //starts MenuMain
+                                            startActivity(i);
+                                        } else {
+                                            //if invalid QR code
+                                            textView.setText(qrCodes.valueAt(0).displayValue);
+                                            Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                            vibrator.vibrate(40);
+                                            Toast.makeText(QRreaderMain.this, "Invalid QR Code", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+                            }
+
                         }
                     });
                 }
+
             }
         });
     }

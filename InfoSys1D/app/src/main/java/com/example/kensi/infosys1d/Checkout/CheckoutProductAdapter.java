@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.kensi.infosys1d.MyClickListener;
 import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
-import com.example.kensi.infosys1d.Registration.RequestUtils;
+import com.example.kensi.infosys1d.RequestUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -46,13 +46,12 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
         Product checkoutProduct = checkoutProductList.get(position);
         holder.textViewTitle.setText(checkoutProduct.getTitle());
         holder.textViewDesc.setText(checkoutProduct.getShortdesc());
-        holder.textViewQty.setText("x "+String.valueOf(checkoutProduct.getQty()));
-        holder.textViewPrice.setText(String.valueOf(checkoutProduct.getPrice()));
-        //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(checkoutProduct.getImage()));
-
-        Log.d("IMAGE_URL",checkoutProduct.getImageURL());
+        holder.textViewQty.setText("x " + String.valueOf(checkoutProduct.getQty()));
+        //Changes the price amount to a $X.XX representation
+        holder.textViewPrice.setText(CheckoutMain.priceConversion(Double.valueOf(checkoutProduct.getPrice())));
+        Log.d("IMAGE_URL", checkoutProduct.getImageURL());
         String downloadKey = checkoutProduct.getImageURL();
-        if(downloadKey.length()>0){
+        if (downloadKey.length() > 0) {
             RequestUtils.downloadFile(mCtx, downloadKey, holder.imageView);
         }
 
@@ -63,7 +62,7 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
         return checkoutProductList.size();
     }
 
-    class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imageView;
         TextView textViewTitle, textViewDesc, textViewPrice, textViewQty;
@@ -89,12 +88,13 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
         @Override
         public void onClick(View v) {
             String actionType = "";
-            if (v.getId() == removeButton.getId()){
+            if (v.getId() == removeButton.getId()) {
                 Log.d("CheckoutProductAdapter", "Remove item... " + String.valueOf(getAdapterPosition()));
                 actionType = "REMOVE";
             }
             listenerRef.get().onPositionClicked(getAdapterPosition(), actionType);
         }
     }
+
 
 }
