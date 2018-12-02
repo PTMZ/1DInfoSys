@@ -43,8 +43,8 @@ public class RequestUtils {
     public static void sendGetStringReq(final Context context, final String url, final VolleyCallback callback){
         RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
         Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
+        Log.d("GET_REQ_URL", url);
         StringRequest ans = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-
             // Response Handler
             @Override
             public void onResponse(String result) {
@@ -86,6 +86,7 @@ public class RequestUtils {
     public static void sendPostStringReq(final Context context, final String url, final Map<String, String> params, final VolleyCallback callback){
         RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
         Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
+        Log.d("POST_REQ_URL", url);
         StringRequest ans = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
             // Response Handler
