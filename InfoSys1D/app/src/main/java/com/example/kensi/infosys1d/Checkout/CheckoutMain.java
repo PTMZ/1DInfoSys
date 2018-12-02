@@ -117,9 +117,9 @@ public class CheckoutMain extends AppCompatActivity {
         } else if (totalPriceString.charAt(String.valueOf(price).length() - 3) != '.') {
             int dotNum = totalPriceString.indexOf('.');
             if (dotNum == -1) {
-                return "$" + totalPriceString.substring(0, dotNum) + ".00";
+                return "$" + totalPriceString + ".00";
             } else {
-                return "$" + totalPriceString.substring(0, dotNum);
+                return "$" + totalPriceString.substring(0, dotNum+3);
             }
         } else {
             return "$" + totalPriceString;
