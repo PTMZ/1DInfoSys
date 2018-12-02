@@ -1,8 +1,10 @@
 package com.example.kensi.infosys1d.Login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.StrictMode;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +17,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.kensi.infosys1d.Menu.MenuMain;
+import com.example.kensi.infosys1d.Menu.MenuRequest;
 import com.example.kensi.infosys1d.PaymentConfirmationMain;
+import com.example.kensi.infosys1d.QRreader.QRreaderMain;
 import com.example.kensi.infosys1d.R;
 import com.example.kensi.infosys1d.Registration.RegistrationMain;
 import com.example.kensi.infosys1d.Vendor.VendorMain;
@@ -38,8 +42,8 @@ public class LoginMain extends AppCompatActivity {
     private static final String COOKIE_KEY = "Cookie";
     private static final String SESSION_COOKIE = "session";
     //private static final String SESSION_COOKIE2 = "remember_token";
-    private static final  int CHECKOUT_REQ = 1;
-    private static final  int VENDOR_REQ = 2;
+    private static final int CHECKOUT_REQ = 1;
+    private static final int VENDOR_REQ = 2;
 
     private static SharedPreferences _preferences;
 
@@ -60,7 +64,7 @@ public class LoginMain extends AppCompatActivity {
         String sessionId = _preferences.getString(SESSION_COOKIE, "");
         String emailPref = _preferences.getString("email", "");
         String passwordPref = _preferences.getString("password", "");
-        if(passwordPref.length() > 0){
+        if (passwordPref.length() > 0) {
             loginRequest(passwordPref, emailPref, true);
         }
         Log.d("LOGIN_START", "Check Pref: " + sessionId);
@@ -70,7 +74,7 @@ public class LoginMain extends AppCompatActivity {
         final EditText inputPassword = findViewById(R.id.inputRegEmail);
         final CheckBox checkRemember = findViewById(R.id.checkRemember);
         final Button buttonSubmit = findViewById(R.id.buttonRegSubmit);
-        final Button buttonForget = findViewById(R.id.buttonForget);
+        final Button buttonTest = findViewById(R.id.buttonTest);
         final Button buttonSign = findViewById(R.id.buttonSign);
 
         // Get data from SharedPreference
@@ -93,14 +97,20 @@ public class LoginMain extends AppCompatActivity {
             }
         });
 
-        //temporary button to open checkout menu
-        //todo change function
-        buttonForget.setOnClickListener(new View.OnClickListener() {
+        //temporary button
+        //todo remove test button
+        buttonTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Intent i = new Intent(LoginMain.this, CheckoutMain.class);
-                Intent i = new Intent(LoginMain.this, PaymentConfirmationMain.class);
-                startActivity(i);
+                MenuRequest.request_call_me(LoginMain.this, "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080", new VolleyCallback() {
+                    @Override
+                    public void onSuccessResponse(String result) {
+                        Intent i = new Intent(LoginMain.this, MenuMain.class);
+                        i.putExtra("ServerResult", result);
+                        startActivity(i);
+                    }
+                });
             }
         });
 
@@ -131,13 +141,12 @@ public class LoginMain extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == CHECKOUT_REQ){
-            if(data!= null && data.getBooleanExtra("BackPress", false)){
+        if (requestCode == CHECKOUT_REQ) {
+            if (data != null && data.getBooleanExtra("BackPress", false)) {
                 finish();
             }
-        }
-        else if(requestCode == VENDOR_REQ){
-            if(data!=null && data.getBooleanExtra("BackPress", false)){
+        } else if (requestCode == VENDOR_REQ) {
+            if (data != null && data.getBooleanExtra("BackPress", false)) {
                 finish();
             }
         }
@@ -180,12 +189,12 @@ public class LoginMain extends AppCompatActivity {
 
     public static void checkSessionCookie(Map<String, String> headers) {
         //Log.d("LOGIN", "My cookie: " + headers.get("Set-Cookie"));
-        for(String key : headers.keySet()){
+        for (String key : headers.keySet()) {
             Log.d("LOGIN", "Key: " + key);
             Log.d("LOGIN", "Value: " + headers.get(key));
-            if(key.equals(SET_COOKIE_KEY)){
+            if (key.equals(SET_COOKIE_KEY)) {
                 String cookie = headers.get(SET_COOKIE_KEY);
-                if(cookie == null) return;
+                if (cookie == null) return;
                 Log.d("LOGIN", "My cookie: " + cookie);
 
                 if (cookie.length() > 0) {
@@ -223,7 +232,7 @@ public class LoginMain extends AppCompatActivity {
         prefEditor.apply();
     }
 
-    public void loginRequest(final String password, final String email, final boolean remember){
+    public void loginRequest(final String password, final String email, final boolean remember) {
         LoginPostRequest.login(getApplicationContext(), password, email, remember, new VolleyCallback() {
             //decides what to do from post request reponse
             @Override
@@ -238,12 +247,12 @@ public class LoginMain extends AppCompatActivity {
                         //if successful, opens QR code reader
                         Toast.makeText(LoginMain.this, "LoginMain success", Toast.LENGTH_LONG).show();
                         Intent i;
-                        i = (isVendor == 0) ? new Intent(LoginMain.this, MenuMain.class) : new Intent(LoginMain.this, VendorMain.class);
+                        i = (isVendor == 0) ? new Intent(LoginMain.this, QRreaderMain.class) : new Intent(LoginMain.this, VendorMain.class);
                         int reqCode = (isVendor == 0) ? CHECKOUT_REQ : VENDOR_REQ;
                         SharedPreferences.Editor prefEditor = _preferences.edit();
-                        if(remember){
-                            prefEditor.putString("email",email);
-                            prefEditor.putString("password",password);
+                        if (remember) {
+                            prefEditor.putString("email", email);
+                            prefEditor.putString("password", password);
                             prefEditor.apply();
                         }
                         startActivityForResult(i, reqCode);

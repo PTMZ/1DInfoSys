@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,8 +17,10 @@ import com.example.kensi.infosys1d.Login.LoginMain;
 import com.example.kensi.infosys1d.Login.LoginPostRequest;
 import com.example.kensi.infosys1d.Menu.MenuMain;
 import com.example.kensi.infosys1d.MyClickListener;
+import com.example.kensi.infosys1d.PaymentConfirmationMain;
 import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
+import com.example.kensi.infosys1d.Registration.RegistrationMain;
 import com.example.kensi.infosys1d.VolleyCallback;
 
 import java.util.ArrayList;
@@ -33,8 +36,6 @@ public class CheckoutMain extends AppCompatActivity {
     CheckoutProductAdapter adapter;
     List<Product> checkoutList;
     private static final String TAG = "CheckoutMain";
-    //Testing StoreID, to be passed on from previous activity
-    String storeID = "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,6 @@ public class CheckoutMain extends AppCompatActivity {
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         //Creates a new list from MenuMain's productList, removing all the QTY=0 elements
         checkoutList = removeZeroQtyList(MenuMain.productList);
         adapter = new CheckoutProductAdapter(CheckoutMain.this, checkoutList, new MyClickListener() {
@@ -57,8 +57,22 @@ public class CheckoutMain extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
+
         //Set total value
-        textViewTotalPrice.setText(CheckoutMain.priceConversion(Double.valueOf(getPrice(checkoutList))));
+        final double totalPriceDouble = getPrice(checkoutList);
+        final String totalPriceString = CheckoutMain.priceConversion(totalPriceDouble);
+        textViewTotalPrice.setText(totalPriceString);
+
+        //Clicking the Place Order button
+        buttonPlaceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
+                i.putExtra("totalPriceDouble", totalPriceDouble);
+                i.putExtra("totalPriceString", totalPriceString);
+                startActivity(i);
+            }
+        });
     }
 
     //adds Menu to top bar
@@ -76,19 +90,22 @@ public class CheckoutMain extends AppCompatActivity {
                 public void onSuccessResponse(String result) {
                     LoginMain.removeSessionCookie();
                     finish();
+                    Intent i = new Intent(CheckoutMain.this, LoginMain.class);
+                    startActivity(i);
                 }
             });
+            return true;
         }
-        return true;
+        return false;
     }
 
     //Calculates total value from individual item Strings
-    private String getPrice(List<Product> list) {
+    private Double getPrice(List<Product> list) {
         double totalPrice = 0;
         for (Product p : list) {
-            totalPrice += Double.valueOf(p.getPrice()) * Double.valueOf(p.getQty());
+            totalPrice += Double.valueOf(p.getPrice()) * p.getQty();
         }
-        return String.valueOf(totalPrice);
+        return totalPrice;
 
     }
 
@@ -96,9 +113,16 @@ public class CheckoutMain extends AppCompatActivity {
     public static String priceConversion(double price) {
         String totalPriceString = String.valueOf(price);
         if (totalPriceString.charAt(String.valueOf(price).length() - 2) == '.') {
-            return "$ " + totalPriceString + "0";
+            return "$" + totalPriceString + "0";
+        } else if (totalPriceString.charAt(String.valueOf(price).length() - 3) != '.') {
+            int dotNum = totalPriceString.indexOf('.');
+            if (dotNum == -1) {
+                return "$" + totalPriceString.substring(0, dotNum) + ".00";
+            } else {
+                return "$" + totalPriceString.substring(0, dotNum);
+            }
         } else {
-            return totalPriceString;
+            return "$" + totalPriceString;
         }
     }
 
@@ -121,4 +145,6 @@ public class CheckoutMain extends AppCompatActivity {
         }
         return checkoutList;
     }
+
+
 }

@@ -21,6 +21,7 @@ import com.example.kensi.infosys1d.Checkout.CheckoutMain;
 import com.example.kensi.infosys1d.Login.LoginMain;
 import com.example.kensi.infosys1d.Login.LoginPostRequest;
 import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.QRreader.QRreaderMain;
 import com.example.kensi.infosys1d.R;
 import com.example.kensi.infosys1d.VolleyCallback;
 
@@ -40,6 +41,7 @@ public class MenuMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_main);
 
@@ -52,30 +54,34 @@ public class MenuMain extends AppCompatActivity {
             }
         });
 
-
-
         //getting the recyclerview from xml
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         //initializing the productlist
         productList = new ArrayList<>();
 
-        MenuRequest.request_call_me(MenuMain.this, storeID, new VolleyCallback() {
-            @Override
-            public void onSuccessResponse(String result) {
-                //Updates checkoutProductList with full details from items in checkMap
-                productList = MenuRequest.request_iterate(result);
-                //Updates Recycleview
-                //creating recyclerview adapter
-                MenuProductAdapter adapter = new MenuProductAdapter(MenuMain.this, productList);
-
-
-                //setting adapter to recyclerview
-                recyclerView.setAdapter(adapter);
+        //Checks QRreader for menu details
+        String result;
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                result = QRreaderMain.getSavedResult();
+            } else {
+                result = extras.getString("ServerResult");
             }
-        });
+        } else {
+            result = (String) savedInstanceState.getSerializable("ServerResult");
+        }
+
+        productList = MenuRequest.request_iterate(result);
+        //Updates Recycleview
+        //creating recyclerview adapter
+        MenuProductAdapter adapter = new MenuProductAdapter(MenuMain.this, productList);
+
+        //setting adapter to recyclerview
+        recyclerView.setAdapter(adapter);
 
     }
 
@@ -86,26 +92,30 @@ public class MenuMain extends AppCompatActivity {
         return true;
     }
 
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_logout:
-                LoginPostRequest.logout(MenuMain.this, new VolleyCallback(){
+                LoginPostRequest.logout(MenuMain.this, new VolleyCallback() {
                     @Override
                     public void onSuccessResponse(String result) {
                         LoginMain.removeSessionCookie();
                         finish();
+                        Intent intent = new Intent(MenuMain.this, LoginMain.class);
+                        startActivity(intent);
                     }
                 });
+                return true;
             case R.id.action_cart:
 //                Toast.makeText(MenuMain.this, "Place Order & Pay", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MenuMain.this, CheckoutMain.class);
                 startActivity(intent);
+                return true;
 
         }
-        return true;
+        return false;
     }
 
 
-    public void showToast(View view){
+    public void showToast(View view) {
     }
 }

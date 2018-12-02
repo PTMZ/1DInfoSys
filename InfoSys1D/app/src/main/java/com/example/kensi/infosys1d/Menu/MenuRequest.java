@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class MenuRequest {
 
+
     //String from Json is passed through here
     public static List<Product> request_iterate(String serverReply) {
         List<Product> checkoutProductList = new ArrayList<>();

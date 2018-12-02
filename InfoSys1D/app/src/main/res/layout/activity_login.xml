@@ -34,26 +34,22 @@
         android:id="@+id/textEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="E-mail"
         app:layout_constraintEnd_toStartOf="@+id/inputRegUser"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/inputRegUser" />
 
     <TextView
         android:id="@+id/textPassword"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
+        android:layout_height="16dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:text="Password"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/inputRegEmail"
         app:layout_constraintTop_toBottomOf="@+id/textEmail" />
 
     <CheckBox
@@ -80,12 +76,15 @@
         app:layout_constraintTop_toBottomOf="@+id/checkRemember" />
 
     <Button
-        android:id="@+id/buttonForget"
+        android:id="@+id/buttonTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginLeft="80dp"
-        android:text="Forget Password"
+        android:layout_marginTop="4dp"
+        android:text="Test Button"
+        app:layout_constraintEnd_toEndOf="@+id/buttonSign"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/checkRemember" />
 
@@ -93,8 +92,10 @@
         android:id="@+id/buttonSign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
         android:text="Sign Up"
         app:layout_constraintBottom_toBottomOf="@+id/buttonRegSubmit"
-        app:layout_constraintEnd_toEndOf="@+id/buttonForget" />
+        app:layout_constraintEnd_toStartOf="@+id/buttonRegSubmit" />
 
 </android.support.constraint.ConstraintLayout>
