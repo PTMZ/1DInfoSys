@@ -31,4 +31,7 @@
     <string name="choose_image">Choose Image</string>
     <string name="upload">Upload</string>
     <string name="title_activity_payment_confirmation_main">PaymentConfirmationMain</string>
+
+    <string name="network_error">Network Unavailable</string>
+    <string name="paymentlogin_activity_name">OCBC Login</string>
 </resources>

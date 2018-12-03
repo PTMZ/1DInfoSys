@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="test_bank_account">c03effed-a0ff-4e89-978e-0fcd86fc7a56</string>
+    <string name="client_id">hPH3p3NsQL4bdunQJECpbTP03K4a</string>
+    <string name="redirect_uri">https://api.ocbc.com:8243/transactional/payanyone/1.0</string>
+    <string name="login_url">https://api.ocbc.com/ocbcauthentication/api/oauth2/authorize</string>
+</resources>

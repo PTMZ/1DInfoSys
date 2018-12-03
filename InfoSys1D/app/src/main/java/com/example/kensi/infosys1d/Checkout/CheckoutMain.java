@@ -1,6 +1,8 @@
 package com.example.kensi.infosys1d.Checkout;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
@@ -12,16 +14,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+//import com.example.kensi.infosys1d.Checkout.Payment.PaymentConfirm;
+import com.example.kensi.infosys1d.Checkout.Payment.PaymentLogin;
 import com.example.kensi.infosys1d.Login.LoginMain;
 import com.example.kensi.infosys1d.Login.LoginPostRequest;
 import com.example.kensi.infosys1d.Menu.MenuMain;
 import com.example.kensi.infosys1d.MyClickListener;
+import com.example.kensi.infosys1d.OCBI_API.PayAnyone;
+import com.example.kensi.infosys1d.OCBI_API.Utils;
 import com.example.kensi.infosys1d.PaymentConfirmationMain;
 import com.example.kensi.infosys1d.Product;
 import com.example.kensi.infosys1d.R;
 import com.example.kensi.infosys1d.Registration.RegistrationMain;
 import com.example.kensi.infosys1d.VolleyCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +45,12 @@ public class CheckoutMain extends AppCompatActivity {
     RecyclerView recyclerView;
     CheckoutProductAdapter adapter;
     List<Product> checkoutList;
+    boolean isLogin = false;
+    String session_token;
+    private double totalPriceDouble = 0;
+    private String totalPriceString = "";
+    final int PAYMENT_REQUEST = 1;
+
     private static final String TAG = "CheckoutMain";
 
     @Override
@@ -59,20 +75,45 @@ public class CheckoutMain extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         //Set total value
-        final double totalPriceDouble = getPrice(checkoutList);
-        final String totalPriceString = CheckoutMain.priceConversion(totalPriceDouble);
+        totalPriceDouble = getPrice(checkoutList);
+        totalPriceString = CheckoutMain.priceConversion(totalPriceDouble);
         textViewTotalPrice.setText(totalPriceString);
 
-        //Clicking the Place Order button
+        // Clicking the Place Order button
         buttonPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
-                i.putExtra("totalPriceDouble", totalPriceDouble);
-                i.putExtra("totalPriceString", totalPriceString);
-                startActivity(i);
+                //Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
+                if (session_token == null){ // Go to OCBC Login if there is no session token
+                    if (Utils.isNetworkAvailable(CheckoutMain.this)) {
+                        Intent i = new Intent(CheckoutMain.this, PaymentLogin.class);
+                        i.putExtra("totalPriceDouble", totalPriceDouble);
+                        i.putExtra("totalPriceString", totalPriceString);
+                        startActivityForResult(i,PAYMENT_REQUEST);
+                    } else {
+                        Toast.makeText(CheckoutMain.this, getText(R.string.network_error), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    if (Utils.isNetworkAvailable(CheckoutMain.this)) {
+                        PaymentProcessing paymentProcessing = new PaymentProcessing();
+                        paymentProcessing.execute(session_token);
+                    }
+                }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == PAYMENT_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                //TODO: Make app go live
+                //session_token = data.getStringExtra(PaymentLogin.SESSION_TOKEN);
+                session_token = "9a948a49407c380ed0d0a07d995e9f38";
+            }
+        }
     }
 
     //adds Menu to top bar
@@ -146,5 +187,54 @@ public class CheckoutMain extends AppCompatActivity {
         return checkoutList;
     }
 
+    class PaymentProcessing extends AsyncTask<String, String, JSONObject> // <Input, Progress, Output>
+    {
+        JSONObject response_json;
 
+        @Override
+        protected JSONObject doInBackground(String... token) {
+            if(Utils.isNetworkAvailable(CheckoutMain.this)) {
+                PayAnyone payAnyone = new PayAnyone(getString(R.string.client_id),
+                        getString(R.string.test_bank_account),
+                        totalPriceDouble,
+                        "Bob",
+                        "87654321",
+                        "999999");
+                String response = payAnyone.getResponseBody(token[0]);
+                try {
+                    response_json = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    response_json = new JSONObject();
+                }
+            } else {
+                Toast.makeText(CheckoutMain.this, "Network Unavailable", Toast.LENGTH_SHORT).show();
+            }
+            return response_json;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+        }
+        @Override
+        protected void onPostExecute(JSONObject output) {
+            super.onPostExecute(output);
+//            response.setText(output);
+            String success_response = null;
+            try {
+                 success_response = output.getJSONObject("results").getString("success");
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Toast.makeText(CheckoutMain.this,"Error",Toast.LENGTH_SHORT).show();
+            }
+            if (success_response == "true") {
+                Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
+                i.putExtra("totalPriceDouble", totalPriceDouble);
+                i.putExtra("totalPriceString", totalPriceString);
+                startActivity(i);
+            }
+        }
+    }
 }
+

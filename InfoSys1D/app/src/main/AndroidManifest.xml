@@ -4,6 +4,7 @@
     package="com.example.kensi.infosys1d">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -33,6 +34,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Registration.RegistrationMain" />
         <activity android:name=".Checkout.CheckoutMain" />
+        <activity android:name=".Checkout.Payment.PaymentLogin"
+            android:parentActivityName = ".Checkout.CheckoutMain"
+            android:label = "@string/paymentlogin_activity_name"/>
         <activity android:name=".Vendor.VendorMain" />
         <activity android:name=".Vendor.VendorAddForm" />
         <activity android:name=".Vendor.VendorUpdateForm" />
