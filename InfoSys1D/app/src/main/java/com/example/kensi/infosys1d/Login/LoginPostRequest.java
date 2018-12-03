@@ -12,11 +12,8 @@ import java.util.Map;
 
 public class LoginPostRequest {
 
-    public static void login(final Context context, final String password, final String email, boolean remember, final VolleyCallback callback) {
+    public static void login(final Context context, final String password, final String email, final String deviceID, final VolleyCallback callback) {
         try {
-            // Convert boolean to 1 or 0
-            final String strRemember = "0";
-
             // Define the url
             String endpoint = "/admin/login";
             String url = RequestUtils.BASE_URL + endpoint;
@@ -25,7 +22,7 @@ public class LoginPostRequest {
             Map<String, String> params = new HashMap<>();
             params.put("email", email);
             params.put("password", password);
-            params.put("remember", strRemember);
+            params.put("deviceID", deviceID);
 
             // Send form POST request
             RequestUtils.sendPostStringReq(context, url, params, callback);
