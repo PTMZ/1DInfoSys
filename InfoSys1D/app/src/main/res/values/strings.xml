@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">InfoSys1D</string>
+    <string name="app_name">menü</string>
     <string name="email_error">E-mail wrong format</string>
     <string name="title_activity_qrreader">QRreader</string>
     <string name="username_short">Username too short</string>

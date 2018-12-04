@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.kensi.infosys1d.Checkout.CheckoutMain;
 import com.example.kensi.infosys1d.Menu.MenuMain;
 import com.example.kensi.infosys1d.Menu.MenuRequest;
 import com.example.kensi.infosys1d.PaymentConfirmationMain;
@@ -96,14 +97,16 @@ public class LoginMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Intent i = new Intent(LoginMain.this, CheckoutMain.class);
-                MenuRequest.request_call_me(LoginMain.this, "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080", new VolleyCallback() {
-                    @Override
-                    public void onSuccessResponse(String result) {
-                        Intent i = new Intent(LoginMain.this, MenuMain.class);
-                        i.putExtra("ServerResult", result);
-                        startActivity(i);
-                    }
-                });
+//                MenuRequest.request_call_me(LoginMain.this, "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080", new VolleyCallback() {
+//                    @Override
+//                    public void onSuccessResponse(String result) {
+//                        Intent i = new Intent(LoginMain.this, MenuMain.class);
+//                        i.putExtra("ServerResult", result);
+//                        startActivity(i);
+//                    }
+//                });
+                Intent i = new Intent(LoginMain.this, PaymentConfirmationMain.class);
+                startActivity(i);
             }
         });
 

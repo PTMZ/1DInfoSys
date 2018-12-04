@@ -9,13 +9,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.kensi.infosys1d.Checkout.CheckoutMain;
 import com.example.kensi.infosys1d.Login.LoginMain;
+import com.example.kensi.infosys1d.Login.LoginPostRequest;
 import com.example.kensi.infosys1d.Menu.MenuMain;
 import com.example.kensi.infosys1d.Menu.MenuProductAdapter;
 import com.example.kensi.infosys1d.Menu.MenuRequest;
@@ -53,7 +57,7 @@ public class QRreaderMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrreader);
         surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
-        textView = (TextView) findViewById(R.id.textView);
+//        textView = (TextView) findViewById(R.id.textView);
         frameLayout = (FrameLayout) findViewById(R.id.framelayout);
         frameLayout.bringToFront();
         barcodeDetector = new BarcodeDetector.Builder(this)
@@ -141,5 +145,29 @@ public class QRreaderMain extends AppCompatActivity {
 
             }
         });
+    }
+
+    //adds Menu to top bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_handicap, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                LoginPostRequest.logout(QRreaderMain.this, new VolleyCallback() {
+                    @Override
+                    public void onSuccessResponse(String result) {
+                        LoginMain.removeSessionCookie();
+                        finish();
+                        Intent intent = new Intent(QRreaderMain.this, LoginMain.class);
+                        startActivity(intent);
+                    }
+                });
+                return true;
+        }
+        return false;
     }
 }

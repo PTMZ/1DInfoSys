@@ -13,12 +13,15 @@ import android.support.graphics.drawable.Animatable2Compat;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kensi.infosys1d.Login.LoginMain;
+import com.example.kensi.infosys1d.Login.LoginPostRequest;
 import com.example.kensi.infosys1d.Menu.MenuMain;
 import com.example.kensi.infosys1d.QRreader.QRreaderMain;
 
@@ -30,8 +33,8 @@ public class PaymentConfirmationMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_confirmation_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         Button buttonQRScanner = findViewById(R.id.buttonQRScanner);
         Button buttonMenu = findViewById(R.id.buttonMenu);
@@ -81,5 +84,29 @@ public class PaymentConfirmationMain extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    //adds Menu to top bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_handicap, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                LoginPostRequest.logout(PaymentConfirmationMain.this, new VolleyCallback() {
+                    @Override
+                    public void onSuccessResponse(String result) {
+                        LoginMain.removeSessionCookie();
+                        finish();
+                        Intent intent = new Intent(PaymentConfirmationMain.this, LoginMain.class);
+                        startActivity(intent);
+                    }
+                });
+                return true;
+        }
+        return false;
     }
 }
