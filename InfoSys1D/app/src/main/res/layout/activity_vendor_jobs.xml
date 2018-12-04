@@ -39,7 +39,7 @@
             android:id="@+id/textViewTotalTasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/recyclerView"
+            android:layout_alignParentBottom="true"
             android:gravity="center"
             android:text="Total Tasks" />
 

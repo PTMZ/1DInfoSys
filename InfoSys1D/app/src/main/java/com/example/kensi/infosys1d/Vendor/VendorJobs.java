@@ -27,6 +27,7 @@ public class VendorJobs extends AppCompatActivity {
     VendorJobAdapter adapter;
     List<Job> jobsList;
     TextView textViewTotalTasks;
+    Handler handler;
     private static final String TAG = "VendorJobs";
 
     @Override
@@ -44,17 +45,9 @@ public class VendorJobs extends AppCompatActivity {
         textViewTotalTasks = findViewById(R.id.textViewTotalTasks);
 
         refreshRecycler();
-        /*
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshRecycler();
-            }
-        }, 5000);
-        */
-        //Volley to server
-        //refreshRecycler();
+
+        handler = new Handler();
+        autoRefresh();
 
     }
 
@@ -126,6 +119,16 @@ public class VendorJobs extends AppCompatActivity {
         i.putExtra("BackPress",true);
         setResult(RESULT_OK, i);
         finish();
+    }
+
+    private void autoRefresh(){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshRecycler();
+                autoRefresh();
+            }
+        }, 5000);
     }
 
 }
