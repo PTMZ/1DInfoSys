@@ -34,8 +34,9 @@ public class VendorMain extends AppCompatActivity {
     private static final int ADD_FORM_REQ_CODE = 1;
     private static final int UPDATE_FORM_REQ_CODE = 2;
     private static final int UPLOAD_FORM_REQ_CODE = 3;
+    private static final int JOBS_REQ_CODE = 4;
 
-    //String storeID = "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080";
+
     String storeID = "";
 
     @Override
@@ -80,12 +81,16 @@ public class VendorMain extends AppCompatActivity {
     //adds Menu to top bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_vendor, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_jobs){
+            Intent i = new Intent(VendorMain.this, VendorJobs.class);
+            startActivityForResult(i, JOBS_REQ_CODE);
+        }
         if(item.getItemId() == R.id.action_refresh){
             VendorRequests.request_call_me(VendorMain.this, storeID, new VolleyCallback() {
                 @Override
