@@ -187,7 +187,6 @@ public class VendorRequests {
             // Define the url
             String endpoint = "/sales/removeTask";
             String url = RequestUtils.BASE_URL + endpoint;
-
             // Make params
             Map<String, String> params = new HashMap<>();
             params.put("task_id", String.valueOf(taskId));

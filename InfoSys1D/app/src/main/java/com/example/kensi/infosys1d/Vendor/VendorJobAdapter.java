@@ -42,8 +42,8 @@ public class VendorJobAdapter extends RecyclerView.Adapter<VendorJobAdapter.Prod
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Job job = jobsList.get(position);
         holder.textViewItemName.setText(job.getItemName());
-        holder.textViewTaskNo.setText(job.getTaskId());
-        holder.textViewTableNo.setText(job.getTableId());
+        holder.textViewTaskNo.setText("TASK ID: " + String.valueOf(job.getTaskId()));
+        holder.textViewTableNo.setText("TABLE ID: " + String.valueOf(job.getTableId()));
         holder.textViewQty.setText("x "+String.valueOf(job.getQty()));
         //holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(checkoutProduct.getImage()));
     }
@@ -63,7 +63,6 @@ public class VendorJobAdapter extends RecyclerView.Adapter<VendorJobAdapter.Prod
 
             super(itemView);
             listenerRef = new WeakReference<>(listener);
-
 
             removeButton = itemView.findViewById(R.id.removeButton);
             textViewQty = itemView.findViewById(R.id.textViewQty);

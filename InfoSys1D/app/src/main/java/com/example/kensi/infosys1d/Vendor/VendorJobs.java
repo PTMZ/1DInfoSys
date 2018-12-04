@@ -40,10 +40,11 @@ public class VendorJobs extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         textViewTotalTasks = findViewById(R.id.textViewTotalTasks);
 
         refreshRecycler();
-
+        /*
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -51,7 +52,7 @@ public class VendorJobs extends AppCompatActivity {
                 refreshRecycler();
             }
         }, 5000);
-
+        */
         //Volley to server
         //refreshRecycler();
 
@@ -88,12 +89,13 @@ public class VendorJobs extends AppCompatActivity {
                 //Updates checkoutProductList with full details from items in checkMap
                 //Toast.makeText(getApplicationContext(),  "Refresh", Toast.LENGTH_LONG).show();
                 jobsList = VendorRequests.jobs_iterate(result);
+                Log.d("JOBS", "Job list size: " + String.valueOf(jobsList.size()));
                 //Updates Recycleview
                 adapter = new VendorJobAdapter(VendorJobs.this, jobsList, new MyClickListener() {
                     @Override
                     public void onPositionClicked(int position, String type) {
                         int taskId = jobsList.get(position).getTaskId();
-
+                        Log.d("REMOVE_JOB",String.valueOf(taskId));
                         if(type == "REMOVE"){
                             removeItem(taskId);
                         }
