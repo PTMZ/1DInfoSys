@@ -1,6 +1,8 @@
 package com.example.kensi.infosys1d;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -16,12 +18,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.example.kensi.infosys1d.Login.LoginMain;
-import com.example.kensi.infosys1d.SingletonRequestQueue;
-import com.example.kensi.infosys1d.VolleyCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -83,7 +86,8 @@ public class RequestUtils {
         queue.add(ans);
     }
 
-    public static void sendPostStringReq(final Context context, final String url, final Map<String, String> params, final VolleyCallback callback){
+    public static void sendPostStringReq(final Context context, final String url,
+                                         final Map<String, String> params, final VolleyCallback callback){
         RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
         Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
         Log.d("POST_REQ_URL", url);
@@ -109,10 +113,10 @@ public class RequestUtils {
                 return Priority.IMMEDIATE;
             }
 
-            // Set the form parameters
+            //Set the form parameters
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public Map<String, String> getParams() {
-                return params;
+            public Map<String, String> getParams() { return params;
             }
 
             // Set the Header of the POST request
@@ -142,6 +146,63 @@ public class RequestUtils {
         queue.add(ans);
     }
 
+
+    public static void sendPostJSONReq(final Context context, final String url,
+                                         final JSONObject params, final VolleyCallback callback){
+        RequestQueue queue = SingletonRequestQueue.getInstance(context).getRequestQueue();
+        Response.ErrorListener errorListener = SingletonRequestQueue.getInstance(context).getErrorListener();
+        Log.d("POST_REQ_URL", url);
+        JsonObjectRequest ans = new JsonObjectRequest(url, params, new Response.Listener() {
+
+            // Response Handler
+            @Override
+            public void onResponse(Object result) {
+                String resultStr = result.toString();
+                String response = "0";
+                JSONObject resultJSON = new JSONObject();
+                VolleyLog.wtf(resultStr, "utf-8");
+                try {
+                    resultJSON = new JSONObject(resultStr);
+                    response = resultJSON.getString("result");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                callback.onSuccessResponse(response);
+            }
+        }, errorListener) {
+
+            // Set the task priority
+            @Override
+            public Priority getPriority() {
+                return Priority.IMMEDIATE;
+            }
+
+            // Set the Header of the POST request
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                LoginMain.addSessionCookie(headers);
+                return headers;
+            }
+
+            // Define the Response Content Type
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+//            @Override
+//            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+//                // since we don't know which of the two underlying network vehicles
+//                // will Volley use, we have to handle and store session cookies manually
+//                LoginMain.checkSessionCookie(response.headers);
+//                return super.parseNetworkResponse(response);
+//            }
+        };
+        queue.add(ans);
+    }
     public static void downloadFile(final Context context, String downloadKey, ImageView imgView){
 
         credentialsProvider(context);

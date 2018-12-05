@@ -12,7 +12,8 @@ import java.util.Map;
 
 public class LoginPostRequest {
 
-    public static void login(final Context context, final String password, final String email, final String deviceID, final VolleyCallback callback) {
+    public static void login(final Context context, final String password, final String email,
+                             final String deviceID, final VolleyCallback callback) {
         try {
             // Define the url
             String endpoint = "/admin/login";
