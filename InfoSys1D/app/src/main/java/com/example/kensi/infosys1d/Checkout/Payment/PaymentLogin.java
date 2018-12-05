@@ -5,16 +5,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.kensi.infosys1d.Checkout.CheckoutMain;
 import com.example.kensi.infosys1d.OCBI_API.Utils;
-import com.example.kensi.infosys1d.PaymentConfirmationMain;
 import com.example.kensi.infosys1d.R;
 
 import java.util.HashMap;
@@ -23,7 +20,6 @@ public class PaymentLogin extends AppCompatActivity {
 
     private boolean accessed;
     public final static String SESSION_TOKEN = "Session Token";
-    private String login_url;
     private HashMap<String,String> login_params = new HashMap<>();
 
     @Override
@@ -34,10 +30,10 @@ public class PaymentLogin extends AppCompatActivity {
         // Build the Bank Login URL
         login_params.put("client_id",getString(R.string.client_id));
         login_params.put("redirect_uri",getString(R.string.redirect_uri));
-        login_url = buildUrl(getString(R.string.login_url),login_params);
+        String login_url = buildUrl(getString(R.string.login_url), login_params);
 
         // These webview settings are required for the login form to work
-        final WebView myWebView = (WebView) findViewById(R.id.webview);
+        final WebView myWebView = findViewById(R.id.webview);
         myWebView.clearCache(true);
         myWebView.clearHistory();
         myWebView.getSettings().setJavaScriptEnabled(true);

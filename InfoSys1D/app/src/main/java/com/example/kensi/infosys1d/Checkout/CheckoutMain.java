@@ -1,10 +1,10 @@
 package com.example.kensi.infosys1d.Checkout;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.MainThread;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 //import com.example.kensi.infosys1d.Checkout.Payment.PaymentConfirm;
 import com.example.kensi.infosys1d.Checkout.Payment.PaymentLogin;
+import com.example.kensi.infosys1d.Checkout.Payment.PaymentPostRequest;
 import com.example.kensi.infosys1d.Login.LoginMain;
 import com.example.kensi.infosys1d.Login.LoginPostRequest;
 import com.example.kensi.infosys1d.Menu.MenuMain;
@@ -26,26 +27,26 @@ import com.example.kensi.infosys1d.OCBI_API.PayAnyone;
 import com.example.kensi.infosys1d.OCBI_API.Utils;
 import com.example.kensi.infosys1d.PaymentConfirmationMain;
 import com.example.kensi.infosys1d.Product;
+import com.example.kensi.infosys1d.QRreader.QRreaderMain;
 import com.example.kensi.infosys1d.R;
-import com.example.kensi.infosys1d.Registration.RegistrationMain;
+
 import com.example.kensi.infosys1d.VolleyCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 public class CheckoutMain extends AppCompatActivity {
 
     Button buttonPlaceOrder;
     TextView textViewTotalPrice;
     RecyclerView recyclerView;
     CheckoutProductAdapter adapter;
+
     List<Product> checkoutList;
-    boolean isLogin = false;
+    public JSONObject checkoutJSON;
+
     String session_token;
     private double totalPriceDouble = 0;
     private String totalPriceString = "";
@@ -60,12 +61,18 @@ public class CheckoutMain extends AppCompatActivity {
         setContentView(R.layout.activity_checkout_main);
         //creation of a list for each individual item
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //Creates a new list from MenuMain's productList, removing all the QTY=0 elements
         checkoutList = removeZeroQtyList(MenuMain.productList);
+        try {
+            checkoutJSON = getJSONCheckout(MenuMain.productList);
+        } catch (JSONException e) {
+            Log.e(TAG,"JSON ERROR");
+            e.printStackTrace();
+        }
         adapter = new CheckoutProductAdapter(CheckoutMain.this, checkoutList, new MyClickListener() {
             @Override
             public void onPositionClicked(int position, String type) {
@@ -187,6 +194,33 @@ public class CheckoutMain extends AppCompatActivity {
         return checkoutList;
     }
 
+    //removes all the QTY=0 elements
+    public List<JSONObject> getJSONOrder(List<Product> productList) throws  JSONException {
+
+        List<JSONObject> orders = new ArrayList<>();
+        for (int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getQty() != 0) {
+                orders.add(productList.get(i).getJSON());
+            }
+        }
+        return orders;
+    }
+
+
+    public JSONObject getJSONCheckout(List<Product> productList) throws JSONException {
+        JSONObject out = new JSONObject();
+
+        List<JSONObject> orders = getJSONOrder(productList);
+        String vendor_id = "Bob";
+        Integer table_id = 5;
+
+        out.put("orders", orders);
+        out.put("vendor_id", vendor_id);
+        out.put("table_id", table_id);
+
+        return out;
+    }
+
     class PaymentProcessing extends AsyncTask<String, String, JSONObject> // <Input, Progress, Output>
     {
         JSONObject response_json;
@@ -194,7 +228,8 @@ public class CheckoutMain extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(String... token) {
             if(Utils.isNetworkAvailable(CheckoutMain.this)) {
-                PayAnyone payAnyone = new PayAnyone(getString(R.string.client_id),
+                PayAnyone payAnyone = new PayAnyone(
+                        getString(R.string.client_id),
                         getString(R.string.test_bank_account),
                         totalPriceDouble,
                         "Bob",
@@ -229,10 +264,25 @@ public class CheckoutMain extends AppCompatActivity {
                 Toast.makeText(CheckoutMain.this,"Error",Toast.LENGTH_SHORT).show();
             }
             if (success_response == "true") {
-                Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
-                i.putExtra("totalPriceDouble", totalPriceDouble);
-                i.putExtra("totalPriceString", totalPriceString);
-                startActivity(i);
+
+                // POST Order to server
+                try {
+                    PaymentPostRequest.postPayment(CheckoutMain.this,
+                            getJSONOrder(checkoutList),QRreaderMain.getStoreID(),"555",
+                            new VolleyCallback(){
+                                @Override
+                                public void onSuccessResponse(String result) { // on success, go to next screen
+                                    Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
+                                    i.putExtra("totalPriceDouble", totalPriceDouble);
+                                    i.putExtra("totalPriceString", totalPriceString);
+                                    startActivity(i);
+                                }
+                            });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
         }
     }

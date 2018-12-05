@@ -43,6 +43,16 @@ public class QRreaderMain extends AppCompatActivity {
     long pastTime = 0;
     long currTime = 0;
     static String savedResult;
+    private static String storeID = "";
+
+    public void setStoreID(String storeID) {
+        this.storeID = storeID;
+    }
+
+    public static String getStoreID() {
+
+        return storeID;
+    }
 
     public static void setSavedResult(String setsavedResult) {
         savedResult = setsavedResult;
@@ -120,6 +130,7 @@ public class QRreaderMain extends AppCompatActivity {
                                     public void onSuccessResponse(String result) {
                                         //checks if QR code is valid based on String length sent by server
                                         if (result.length() >= 16) {
+                                            setStoreID(qrCodes.valueAt(0).displayValue);
                                             Intent i = new Intent(QRreaderMain.this, MenuMain.class);
                                             i.putExtra("ServerResult", result);
                                             setSavedResult(result);
