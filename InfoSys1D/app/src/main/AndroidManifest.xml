@@ -55,9 +55,8 @@
 
         <activity
             android:name=".PaymentConfirmationMain"
-            android:label="Thank You!"></activity>
-            android:label="@string/title_activity_payment_confirmation_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="Thank You!"
+            ></activity>
         <activity android:name=".Vendor.VendorJobs" />
     </application>
 
