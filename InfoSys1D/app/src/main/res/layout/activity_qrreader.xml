@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffdde3"
     tools:context=".Login.LoginMain">
 
     <FrameLayout
@@ -16,7 +17,7 @@
     <SurfaceView
         android:id="@+id/camerapreview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="500sp"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
@@ -24,16 +25,20 @@
         android:cropToPadding="false"
         android:scaleType="fitXY" />
 
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/textView"-->
-        <!--android:textColor="#ffffff"-->
-        <!--android:layout_marginTop="400dp"-->
-        <!--android:text="Place QR code within grid"-->
-        <!--android:textSize="18sp"-->
-        <!--android:gravity="center"-->
-        <!--/>-->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/framelayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="23dp"
+        android:gravity="center"
+        android:text="Place QR code within grid"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentLeft="true" />
 
 
 

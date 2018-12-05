@@ -32,7 +32,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="115dp" />
+            android:paddingBottom="150sp" />
 
 
         <Button
@@ -48,18 +48,19 @@
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
             android:layout_marginEnd="18dp"
-            android:layout_marginRight="18dp"
+            android:layout_marginRight="12dp"
             android:layout_marginBottom="10dp"
-            android:textSize="20sp"
             android:background="@color/colorPrimary"
+            android:text="@string/place_order"
             android:textColor="#FFFFFF"
-            android:text="@string/place_order" />
+            android:textSize="20sp" />
 
         <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_width="374dp"
+            android:layout_height="85dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="0dp"
             android:layout_marginBottom="60dp">
             <!--android:background="@color/white"-->
 
@@ -71,18 +72,36 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
+
                 android:layout_marginBottom="8dp"
                 android:text="Total price:"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewTotalPrice"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewTotalName2"
+                android:layout_width="177dp"
+                android:layout_height="27dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Table number:"
+
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/editTextTable"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textViewTotalPrice"
@@ -91,17 +110,24 @@
                 android:layout_alignBottom="@+id/textViewTotalName"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
                 android:text="$ 12.50"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextTable"
+                android:layout_width="174dp"
+                android:layout_height="52dp"
+                android:layout_marginBottom="8dp"
+                android:ems="10"
+                android:gravity="right"
+                android:hint="Empty if no table"
+                android:inputType="number"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
     </RelativeLayout>

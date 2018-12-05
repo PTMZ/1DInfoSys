@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class CheckoutMain extends AppCompatActivity {
     Button buttonPlaceOrder;
     TextView textViewTotalPrice;
     RecyclerView recyclerView;
+    EditText editTextTable;
     CheckoutProductAdapter adapter;
 
     List<Product> checkoutList;
@@ -61,6 +63,7 @@ public class CheckoutMain extends AppCompatActivity {
         setContentView(R.layout.activity_checkout_main);
         //creation of a list for each individual item
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
+        editTextTable = findViewById(R.id.editTextTable);
         recyclerView = findViewById(R.id.recyclerView);
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder);
         recyclerView.setHasFixedSize(true);
@@ -206,7 +209,7 @@ public class CheckoutMain extends AppCompatActivity {
         return orders;
     }
 
-
+    //todo what to do here lol
     public JSONObject getJSONCheckout(List<Product> productList) throws JSONException {
         JSONObject out = new JSONObject();
 
@@ -267,8 +270,16 @@ public class CheckoutMain extends AppCompatActivity {
 
                 // POST Order to server
                 try {
+                    //checks if the table number field is empty, if empty send a 0
+                    String tableNo;
+                    if (editTextTable.getText().toString().equals("")){
+                        tableNo = "0";
+                    }
+                    else{
+                        tableNo = editTextTable.getText().toString();
+                    }
                     PaymentPostRequest.postPayment(CheckoutMain.this,
-                            getJSONOrder(checkoutList),QRreaderMain.getStoreID(),"555",
+                            getJSONOrder(checkoutList),QRreaderMain.getStoreID(),tableNo,
                             new VolleyCallback(){
                                 @Override
                                 public void onSuccessResponse(String result) { // on success, go to next screen

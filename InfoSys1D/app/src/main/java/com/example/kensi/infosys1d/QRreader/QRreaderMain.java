@@ -8,6 +8,7 @@ import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +45,7 @@ public class QRreaderMain extends AppCompatActivity {
     long currTime = 0;
     static String savedResult;
     private static String storeID = "";
+    private static final String TAG = "QR";
 
     public void setStoreID(String storeID) {
         this.storeID = storeID;
@@ -67,7 +69,7 @@ public class QRreaderMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrreader);
         surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
-//        textView = (TextView) findViewById(R.id.textView);
+        textView = (TextView) findViewById(R.id.textView);
         frameLayout = (FrameLayout) findViewById(R.id.framelayout);
         frameLayout.bringToFront();
         barcodeDetector = new BarcodeDetector.Builder(this)
@@ -122,6 +124,7 @@ public class QRreaderMain extends AppCompatActivity {
                         public void run() {
                             //checks for time, so function doesn't run more than once by accident
                             currTime = System.currentTimeMillis();
+                            Log.d(TAG, "aaaa"+qrCodes.valueAt(0).displayValue);
                             if (currTime - pastTime > 7000) {
                                 pastTime = currTime;
                                 //sends request to server for menu

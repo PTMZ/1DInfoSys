@@ -52,10 +52,12 @@ public class LoginPostRequest {
     }
 
 
-    public static void registration(final Context context, final String password, final String email, final String username, final boolean vendor, final VolleyCallback callback) {
+    public static void registration(final Context context, final String password, final String email, final String username, final boolean vendor, final String phoneNum, final VolleyCallback callback) {
         try {
             // Convert boolean to 1 or 0
             final String strVendor = vendor ? "1" : "0";
+            //Only vendors can have phone Numbers
+            final String phoneNumChk = vendor ? phoneNum : "";
 
             // Define the url
             String endpoint = "/admin/register";
@@ -66,6 +68,7 @@ public class LoginPostRequest {
             params.put("password", password);
             params.put("username", username);
             params.put("is_vendor", strVendor);
+            params.put("phone_no", phoneNumChk);
 
             // Send form POST request
             RequestUtils.sendPostStringReq(context, url, params, callback);
