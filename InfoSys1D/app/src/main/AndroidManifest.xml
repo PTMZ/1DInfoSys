@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.kensi.infosys1d">
+    package="com.example.kensi.infosys1d">F
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        android:screenOrientation="portrait">
         <activity android:name=".Login.LoginMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,10 +29,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".QRreader.QRreaderMain"
-            android:label="@string/title_activity_qrreader"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".QRreader.QRreaderMain"/>
         <activity android:name=".Registration.RegistrationMain" />
         <activity android:name=".Checkout.CheckoutMain" />
         <activity android:name=".Checkout.Payment.PaymentLogin"
@@ -57,8 +55,10 @@
 
         <activity
             android:name=".PaymentConfirmationMain"
+            android:label="Thank You!"></activity>
             android:label="@string/title_activity_payment_confirmation_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Vendor.VendorJobs" />
     </application>
 
 </manifest>

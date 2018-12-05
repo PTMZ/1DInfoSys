@@ -14,25 +14,26 @@
         android:background="@drawable/qr_code_reader_square"/>
 
     <SurfaceView
-        android:layout_width="match_parent"
-        android:layout_height="500dp"
         android:id="@+id/camerapreview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:adjustViewBounds="true"
         android:cropToPadding="false"
-        android:scaleType="fitXY"
-        />
+        android:scaleType="fitXY" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:textColor="#ffffff"
-        android:layout_marginTop="400dp"
-        android:text="Place QR code within grid"
-        android:textSize="18sp"
-        android:gravity="center"
-        />
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/textView"-->
+        <!--android:textColor="#ffffff"-->
+        <!--android:layout_marginTop="400dp"-->
+        <!--android:text="Place QR code within grid"-->
+        <!--android:textSize="18sp"-->
+        <!--android:gravity="center"-->
+        <!--/>-->
 
 
 

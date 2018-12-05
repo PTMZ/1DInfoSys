@@ -146,6 +146,62 @@ public class VendorRequests {
         }
     }
 
+    public static void getJobs(final Context context, final VolleyCallback callback) {
+        try {
+            // Define the url
+            String endpoint = "/sales/getTasks";
+            String url = RequestUtils.BASE_URL + endpoint;
+
+            // Send form POST request
+            RequestUtils.sendGetStringReq(context, url, callback);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("MYAPP", "exception", e);
+//            return "check log";
+        }
+    }
+
+    public static List<Job> jobs_iterate(String serverReply) {
+        List<Job> jobList = new ArrayList<>();
+        try {
+            JSONArray jsonData = new JSONObject(serverReply).getJSONArray("jobs");
+            for(int i=0; i<jsonData.length(); i++){
+                JSONObject curJob = jsonData.getJSONObject(i);
+                jobList.add(new Job(
+                        curJob.getInt("task_id"),
+                        curJob.getString("item_name"),
+                        curJob.getInt("qty"),
+                        curJob.getInt("table_id")
+                ));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jobList;
+    }
+
+    public static void removeJob(final Context context, final int taskId, final VolleyCallback callback) {
+        try {
+            // Define the url
+            String endpoint = "/sales/removeTask";
+            String url = RequestUtils.BASE_URL + endpoint;
+            // Make params
+            Map<String, String> params = new HashMap<>();
+            params.put("task_id", String.valueOf(taskId));
+
+            // Send form POST request
+            RequestUtils.sendPostStringReq(context, url, params, callback);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("MYAPP", "exception", e);
+//            return "check log";
+        }
+    }
+
+
     private static String imageToString(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
