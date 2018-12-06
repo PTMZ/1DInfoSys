@@ -19,7 +19,7 @@ import com.example.kensi.infosys1d.R;
 import java.util.List;
 
 public class MenuPop extends AppCompatActivity {
-    private ViewPager viewPager;
+    private WCViewPager viewPager;
     private SlideAdapter myadapter;
 
     LinearLayout sliderDotspanel;
@@ -28,6 +28,7 @@ public class MenuPop extends AppCompatActivity {
 
     private ImageButton removebutton;
     private RelativeLayout relativeLayout;
+    //private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class MenuPop extends AppCompatActivity {
 
 
         setContentView(R.layout.menu_pop);
+        //linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
         relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
 
@@ -44,7 +46,7 @@ public class MenuPop extends AppCompatActivity {
         int width = dm.widthPixels;
         int height = dm.heightPixels;
 
-        getWindow().setLayout((int) (width * .87), (int) (height * .87));
+        getWindow().setLayout((int) (width * .80), (int) (height * .80));
 
         int position = 0;
         Bundle extras = getIntent().getExtras();
@@ -53,7 +55,7 @@ public class MenuPop extends AppCompatActivity {
         }
 
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (WCViewPager) findViewById(R.id.viewpager);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             viewPager.setClipToOutline(true);
         }
@@ -64,6 +66,7 @@ public class MenuPop extends AppCompatActivity {
         viewPager.setAdapter(myadapter);
 
         viewPager.setCurrentItem(position);
+        viewPager.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         removebutton = findViewById(R.id.removeButton);
         removebutton.setOnClickListener(new View.OnClickListener() {
