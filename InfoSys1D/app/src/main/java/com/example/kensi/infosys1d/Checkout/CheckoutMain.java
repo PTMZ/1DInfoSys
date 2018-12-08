@@ -23,7 +23,6 @@ import com.example.kensi.infosys1d.Checkout.Payment.PaymentPostRequest;
 import com.example.kensi.infosys1d.Login.LoginMain;
 import com.example.kensi.infosys1d.Login.LoginPostRequest;
 import com.example.kensi.infosys1d.Menu.MenuMain;
-import com.example.kensi.infosys1d.MyClickListener;
 import com.example.kensi.infosys1d.OCBI_API.PayAnyone;
 import com.example.kensi.infosys1d.OCBI_API.Utils;
 import com.example.kensi.infosys1d.PaymentConfirmationMain;
@@ -56,6 +55,16 @@ public class CheckoutMain extends AppCompatActivity {
 
     private static final String TAG = "CheckoutMain";
 
+    //For removing item from the checkout page
+    public void removeItem(int position){
+        checkoutList.remove(position);
+        adapter.notifyDataSetChanged();
+        if(checkoutList.size()==0){
+            textViewTotalPrice.setText("$0.00");
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate: checkout");
@@ -76,10 +85,13 @@ public class CheckoutMain extends AppCompatActivity {
             Log.e(TAG,"JSON ERROR");
             e.printStackTrace();
         }
-        adapter = new CheckoutProductAdapter(CheckoutMain.this, checkoutList, new MyClickListener() {
+        adapter = new CheckoutProductAdapter(CheckoutMain.this, checkoutList, new MyClickListenerCheckout() {
             @Override
             public void onPositionClicked(int position, String type) {
                 // do something
+            }
+            public void onDeleteClick(int position){
+                removeItem(position);
             }
         });
         recyclerView.setAdapter(adapter);
@@ -158,7 +170,10 @@ public class CheckoutMain extends AppCompatActivity {
         }
         return totalPrice;
 
+
     }
+
+
 
     //Converts each item's double into strings
     public static String priceConversion(double price) {
@@ -261,7 +276,7 @@ public class CheckoutMain extends AppCompatActivity {
 //            response.setText(output);
             String success_response = null;
             try {
-                 success_response = output.getJSONObject("results").getString("success");
+                success_response = output.getJSONObject("results").getString("success");
             } catch (JSONException e) {
                 e.printStackTrace();
                 Toast.makeText(CheckoutMain.this,"Error",Toast.LENGTH_SHORT).show();

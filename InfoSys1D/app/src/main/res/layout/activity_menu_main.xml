@@ -14,25 +14,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|end"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="12dp"
-        android:onClick="showToast"
-        app:elevation="12dp"
-        app:borderWidth="0dp"
-        app:srcCompat="@drawable/ic_more_vert" />
-
     <!--Button
         android:id="@+id/checkoutbutton"
         android:layout_width="wrap_content"
