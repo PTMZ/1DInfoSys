@@ -11,7 +11,7 @@
         android:layout_height="275dp"
         android:layout_margin="14dp"
         card_view:cardCornerRadius="10dp"
-        card_view:cardElevation="10dp">
+        card_view:cardElevation="5sp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -37,16 +37,6 @@
                 android:textSize="9pt"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/dollarsign"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textViewTitle"
-                android:layout_marginLeft="5dp"
-                android:paddingTop="2dp"
-                android:text="$"
-                android:textStyle="bold" />
-
 
             <TextView
                 android:id="@+id/textViewPrice"
@@ -54,12 +44,12 @@
                 android:layout_height="wrap_content"
 
                 android:layout_below="@id/textViewTitle"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
                 android:layout_marginBottom="0dp"
-                android:layout_toEndOf="@+id/dollarsign"
-                android:layout_toRightOf="@+id/dollarsign"
-                android:text="INR 56990"
+                android:text="$ 57.00"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
         </RelativeLayout>

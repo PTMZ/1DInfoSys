@@ -108,4 +108,21 @@ public class MenuMain extends AppCompatActivity {
 
     public void showToast(View view) {
     }
+
+    //Converts each item's double into strings
+    public static String priceConversion(double price) {
+        String totalPriceString = String.valueOf(price);
+        if (totalPriceString.charAt(String.valueOf(price).length() - 2) == '.') {
+            return "$" + totalPriceString + "0";
+        } else if (totalPriceString.charAt(String.valueOf(price).length() - 3) != '.') {
+            int dotNum = totalPriceString.indexOf('.');
+            if (dotNum == -1) {
+                return "$" + totalPriceString + ".00";
+            } else {
+                return "$" + totalPriceString.substring(0, dotNum+3);
+            }
+        } else {
+            return "$" + totalPriceString;
+        }
+    }
 }

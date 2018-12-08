@@ -59,10 +59,7 @@ public class CheckoutMain extends AppCompatActivity {
     public void removeItem(int position){
         checkoutList.remove(position);
         adapter.notifyDataSetChanged();
-        if(checkoutList.size()==0){
-            textViewTotalPrice.setText("$0.00");
-        }
-
+        updateTotalPrice();
     }
 
     @Override
@@ -97,9 +94,7 @@ public class CheckoutMain extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         //Set total value
-        totalPriceDouble = getPrice(checkoutList);
-        totalPriceString = CheckoutMain.priceConversion(totalPriceDouble);
-        textViewTotalPrice.setText(totalPriceString);
+        updateTotalPrice();
 
         // Clicking the Place Order button
         buttonPlaceOrder.setOnClickListener(new View.OnClickListener() {
@@ -170,27 +165,11 @@ public class CheckoutMain extends AppCompatActivity {
         }
         return totalPrice;
 
-
     }
 
 
 
-    //Converts each item's double into strings
-    public static String priceConversion(double price) {
-        String totalPriceString = String.valueOf(price);
-        if (totalPriceString.charAt(String.valueOf(price).length() - 2) == '.') {
-            return "$" + totalPriceString + "0";
-        } else if (totalPriceString.charAt(String.valueOf(price).length() - 3) != '.') {
-            int dotNum = totalPriceString.indexOf('.');
-            if (dotNum == -1) {
-                return "$" + totalPriceString + ".00";
-            } else {
-                return "$" + totalPriceString.substring(0, dotNum+3);
-            }
-        } else {
-            return "$" + totalPriceString;
-        }
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -311,6 +290,12 @@ public class CheckoutMain extends AppCompatActivity {
 
             }
         }
+    }
+    //called to update the total price
+    private void updateTotalPrice(){
+        totalPriceDouble = getPrice(checkoutList);
+        totalPriceString = MenuMain.priceConversion(totalPriceDouble);
+        textViewTotalPrice.setText(totalPriceString);
     }
 
 }

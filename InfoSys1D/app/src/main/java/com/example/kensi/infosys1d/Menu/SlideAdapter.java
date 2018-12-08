@@ -69,7 +69,7 @@ public class SlideAdapter extends PagerAdapter {
         itemqty.setText(String.valueOf(MenuMain.getProductList().get(position).getQty()));
         txttitle.setText(MenuMain.getProductList().get(position).getTitle());
         description.setText(MenuMain.getProductList().get(position).getShortdesc());
-        itemprice.setText(MenuMain.getProductList().get(position).getPrice());
+        itemprice.setText(MenuMain.priceConversion(Double.valueOf(MenuMain.getProductList().get(position).getPrice())));
         Log.d("MENU_POS", "Position: " + String.valueOf(position));
 
         //checks if qty is below 100, then adds 1 if button is pressed

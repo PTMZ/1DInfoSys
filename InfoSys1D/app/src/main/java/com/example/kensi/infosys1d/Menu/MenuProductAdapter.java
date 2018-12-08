@@ -52,7 +52,7 @@ public class MenuProductAdapter extends RecyclerView.Adapter<MenuProductAdapter.
         holder.textViewTitle.setText(product.getTitle());
        // holder.textViewShortDesc.setText(product.getShortdesc());
         //holder.textViewRating.setText(String.valueOf(product.getRating()));
-        holder.textViewPrice.setText(String.valueOf(product.getPrice()));
+        holder.textViewPrice.setText(MenuMain.priceConversion(Double.valueOf(product.getPrice())));
 
 //        holder.imageView.setImageDrawable(mCtx.getResources().getDrawable(product.getImage()));
         Log.d("IMAGE_URL",product.getImageURL());

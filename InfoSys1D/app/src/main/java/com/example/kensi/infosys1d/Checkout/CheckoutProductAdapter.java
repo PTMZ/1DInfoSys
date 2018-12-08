@@ -55,7 +55,7 @@ public class CheckoutProductAdapter extends RecyclerView.Adapter<CheckoutProduct
         holder.textViewDesc.setText(checkoutProduct.getShortdesc());
         holder.textViewQty.setText("x " + String.valueOf(checkoutProduct.getQty()));
         //Changes the price amount to a $X.XX representation
-        holder.textViewPrice.setText(CheckoutMain.priceConversion(Double.valueOf(checkoutProduct.getPrice())));
+        holder.textViewPrice.setText(MenuMain.priceConversion(Double.valueOf(checkoutProduct.getPrice())));
         Log.d("IMAGE_URL", checkoutProduct.getImageURL());
         String downloadKey = checkoutProduct.getImageURL();
         if (downloadKey.length() > 0) {
