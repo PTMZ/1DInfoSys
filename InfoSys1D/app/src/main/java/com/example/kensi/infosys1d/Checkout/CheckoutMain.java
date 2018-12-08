@@ -37,6 +37,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class CheckoutMain extends AppCompatActivity {
 
     Button buttonPlaceOrder;
@@ -56,7 +57,7 @@ public class CheckoutMain extends AppCompatActivity {
     private static final String TAG = "CheckoutMain";
 
     //For removing item from the checkout page
-    public void removeItem(int position){
+    public void removeItem(int position) {
         checkoutList.remove(position);
         adapter.notifyDataSetChanged();
         updateTotalPrice();
@@ -79,7 +80,7 @@ public class CheckoutMain extends AppCompatActivity {
         try {
             checkoutJSON = getJSONCheckout(MenuMain.productList);
         } catch (JSONException e) {
-            Log.e(TAG,"JSON ERROR");
+            Log.e(TAG, "JSON ERROR");
             e.printStackTrace();
         }
         adapter = new CheckoutProductAdapter(CheckoutMain.this, checkoutList, new MyClickListenerCheckout() {
@@ -87,7 +88,8 @@ public class CheckoutMain extends AppCompatActivity {
             public void onPositionClicked(int position, String type) {
                 // do something
             }
-            public void onDeleteClick(int position){
+
+            public void onDeleteClick(int position) {
                 removeItem(position);
             }
         });
@@ -100,20 +102,24 @@ public class CheckoutMain extends AppCompatActivity {
         buttonPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
-                if (session_token == null){ // Go to OCBC Login if there is no session token
-                    if (Utils.isNetworkAvailable(CheckoutMain.this)) {
-                        Intent i = new Intent(CheckoutMain.this, PaymentLogin.class);
-                        i.putExtra("totalPriceDouble", totalPriceDouble);
-                        i.putExtra("totalPriceString", totalPriceString);
-                        startActivityForResult(i,PAYMENT_REQUEST);
-                    } else {
-                        Toast.makeText(CheckoutMain.this, getText(R.string.network_error), Toast.LENGTH_SHORT).show();
-                    }
+                if (totalPriceDouble == 0) {
+                    Toast.makeText(CheckoutMain.this,"Please add something to cart",Toast.LENGTH_LONG).show();
                 } else {
-                    if (Utils.isNetworkAvailable(CheckoutMain.this)) {
-                        PaymentProcessing paymentProcessing = new PaymentProcessing();
-                        paymentProcessing.execute(session_token);
+                    //Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
+                    if (session_token == null) { // Go to OCBC Login if there is no session token
+                        if (Utils.isNetworkAvailable(CheckoutMain.this)) {
+                            Intent i = new Intent(CheckoutMain.this, PaymentLogin.class);
+                            i.putExtra("totalPriceDouble", totalPriceDouble);
+                            i.putExtra("totalPriceString", totalPriceString);
+                            startActivityForResult(i, PAYMENT_REQUEST);
+                        } else {
+                            Toast.makeText(CheckoutMain.this, getText(R.string.network_error), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        if (Utils.isNetworkAvailable(CheckoutMain.this)) {
+                            PaymentProcessing paymentProcessing = new PaymentProcessing();
+                            paymentProcessing.execute(session_token);
+                        }
                     }
                 }
             }
@@ -168,18 +174,6 @@ public class CheckoutMain extends AppCompatActivity {
     }
 
 
-
-
-
-    @Override
-    public void onBackPressed() {
-        Intent i = new Intent();
-        i.putExtra("BackPress", true);
-        setResult(RESULT_OK, i);
-        finish();
-    }
-
-
     //removes all the QTY=0 elements
     public List<Product> removeZeroQtyList(List<Product> productList) {
         List<Product> checkoutList = new ArrayList<>();
@@ -192,7 +186,7 @@ public class CheckoutMain extends AppCompatActivity {
     }
 
     //removes all the QTY=0 elements
-    public List<JSONObject> getJSONOrder(List<Product> productList) throws  JSONException {
+    public List<JSONObject> getJSONOrder(List<Product> productList) throws JSONException {
 
         List<JSONObject> orders = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
@@ -224,7 +218,7 @@ public class CheckoutMain extends AppCompatActivity {
 
         @Override
         protected JSONObject doInBackground(String... token) {
-            if(Utils.isNetworkAvailable(CheckoutMain.this)) {
+            if (Utils.isNetworkAvailable(CheckoutMain.this)) {
                 PayAnyone payAnyone = new PayAnyone(
                         getString(R.string.client_id),
                         getString(R.string.test_bank_account),
@@ -249,6 +243,7 @@ public class CheckoutMain extends AppCompatActivity {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
         }
+
         @Override
         protected void onPostExecute(JSONObject output) {
             super.onPostExecute(output);
@@ -258,7 +253,7 @@ public class CheckoutMain extends AppCompatActivity {
                 success_response = output.getJSONObject("results").getString("success");
             } catch (JSONException e) {
                 e.printStackTrace();
-                Toast.makeText(CheckoutMain.this,"Error",Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckoutMain.this, "Error", Toast.LENGTH_SHORT).show();
             }
             if (success_response == "true") {
 
@@ -266,15 +261,14 @@ public class CheckoutMain extends AppCompatActivity {
                 try {
                     //checks if the table number field is empty, if empty send a 0
                     String tableNo;
-                    if (editTextTable.getText().toString().equals("")){
+                    if (editTextTable.getText().toString().equals("")) {
                         tableNo = "0";
-                    }
-                    else{
+                    } else {
                         tableNo = editTextTable.getText().toString();
                     }
                     PaymentPostRequest.postPayment(CheckoutMain.this,
-                            getJSONOrder(checkoutList),QRreaderMain.getStoreID(),tableNo,
-                            new VolleyCallback(){
+                            getJSONOrder(checkoutList), QRreaderMain.getStoreID(), tableNo,
+                            new VolleyCallback() {
                                 @Override
                                 public void onSuccessResponse(String result) { // on success, go to next screen
                                     Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
@@ -291,8 +285,9 @@ public class CheckoutMain extends AppCompatActivity {
             }
         }
     }
+
     //called to update the total price
-    private void updateTotalPrice(){
+    private void updateTotalPrice() {
         totalPriceDouble = getPrice(checkoutList);
         totalPriceString = MenuMain.priceConversion(totalPriceDouble);
         textViewTotalPrice.setText(totalPriceString);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class QRreaderMain extends AppCompatActivity {
     static String savedResult;
     private static String storeID = "";
     private static final String TAG = "QR";
+    final int MY_PERMISSIONS_REQUEST_READ_CAMERA = 50;
 
     public void setStoreID(String storeID) {
         this.storeID = storeID;
@@ -68,6 +70,70 @@ public class QRreaderMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrreader);
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.CAMERA)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA},
+                        MY_PERMISSIONS_REQUEST_READ_CAMERA);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            onCreateQRreader();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_CAMERA: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    onCreateQRreader();
+                }
+                return;
+            }
+        }
+    }
+
+    //adds Menu to top bar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_handicap, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                LoginPostRequest.logout(QRreaderMain.this, new VolleyCallback() {
+                    @Override
+                    public void onSuccessResponse(String result) {
+                        LoginMain.removeSessionCookie();
+                        finish();
+                        Intent intent = new Intent(QRreaderMain.this, LoginMain.class);
+                        startActivity(intent);
+                    }
+                });
+                return true;
+        }
+        return false;
+    }
+
+    private void onCreateQRreader(){
         surfaceView = (SurfaceView) findViewById(R.id.camerapreview);
         textView = (TextView) findViewById(R.id.textView);
         frameLayout = (FrameLayout) findViewById(R.id.framelayout);
@@ -124,7 +190,7 @@ public class QRreaderMain extends AppCompatActivity {
                         public void run() {
                             //checks for time, so function doesn't run more than once by accident
                             currTime = System.currentTimeMillis();
-                            Log.d(TAG, "aaaa"+qrCodes.valueAt(0).displayValue);
+                            Log.d(TAG, "aaaa" + qrCodes.valueAt(0).displayValue);
                             if (currTime - pastTime > 7000) {
                                 pastTime = currTime;
                                 //sends request to server for menu
@@ -159,29 +225,5 @@ public class QRreaderMain extends AppCompatActivity {
 
             }
         });
-    }
-
-    //adds Menu to top bar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_handicap, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_logout:
-                LoginPostRequest.logout(QRreaderMain.this, new VolleyCallback() {
-                    @Override
-                    public void onSuccessResponse(String result) {
-                        LoginMain.removeSessionCookie();
-                        finish();
-                        Intent intent = new Intent(QRreaderMain.this, LoginMain.class);
-                        startActivity(intent);
-                    }
-                });
-                return true;
-        }
-        return false;
     }
 }

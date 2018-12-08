@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE"/>
 
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -31,7 +32,8 @@
         </activity>
         <activity android:name=".QRreader.QRreaderMain"/>
         <activity android:name=".Registration.RegistrationMain" />
-        <activity android:name=".Checkout.CheckoutMain" />
+        <activity android:name=".Checkout.CheckoutMain"
+            android:parentActivityName = ".Menu.MenuMain"/>
         <activity android:name=".Checkout.Payment.PaymentLogin"
             android:parentActivityName = ".Checkout.CheckoutMain"
             android:label = "@string/paymentlogin_activity_name"/>

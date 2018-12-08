@@ -100,7 +100,9 @@ public class MenuMain extends AppCompatActivity {
                 Intent intent = new Intent(MenuMain.this, CheckoutMain.class);
                 startActivity(intent);
                 return true;
-
+            case R.id.qr_reader:
+                finish();
+                return true;
         }
         return false;
     }
@@ -119,7 +121,7 @@ public class MenuMain extends AppCompatActivity {
             if (dotNum == -1) {
                 return "$" + totalPriceString + ".00";
             } else {
-                return "$" + totalPriceString.substring(0, dotNum+3);
+                return "$" + totalPriceString.substring(0, dotNum + 3);
             }
         } else {
             return "$" + totalPriceString;
