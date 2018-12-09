@@ -1,6 +1,7 @@
 package com.example.kensi.infosys1d.QRreader;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,6 +49,7 @@ public class QRreaderMain extends AppCompatActivity {
     private static String storeID = "";
     private static final String TAG = "QR";
     final int MY_PERMISSIONS_REQUEST_READ_CAMERA = 50;
+    public static Activity QRreaderMain;
 
     public void setStoreID(String storeID) {
         this.storeID = storeID;
@@ -68,6 +70,7 @@ public class QRreaderMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        QRreaderMain = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrreader);
         if (ContextCompat.checkSelfPermission(this,
@@ -124,8 +127,8 @@ public class QRreaderMain extends AppCompatActivity {
                     public void onSuccessResponse(String result) {
                         LoginMain.removeSessionCookie();
                         finish();
-                        Intent intent = new Intent(QRreaderMain.this, LoginMain.class);
-                        startActivity(intent);
+//                        Intent intent = new Intent(QRreaderMain.this, LoginMain.class);
+//                        startActivity(intent);
                     }
                 });
                 return true;
@@ -190,7 +193,6 @@ public class QRreaderMain extends AppCompatActivity {
                         public void run() {
                             //checks for time, so function doesn't run more than once by accident
                             currTime = System.currentTimeMillis();
-                            Log.d(TAG, "aaaa" + qrCodes.valueAt(0).displayValue);
                             if (currTime - pastTime > 7000) {
                                 pastTime = currTime;
                                 //sends request to server for menu
@@ -225,5 +227,13 @@ public class QRreaderMain extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory( Intent.CATEGORY_HOME );
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
     }
 }

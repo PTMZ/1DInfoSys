@@ -1,5 +1,6 @@
 package com.example.kensi.infosys1d.Checkout;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import android.os.AsyncTask;
@@ -53,6 +54,7 @@ public class CheckoutMain extends AppCompatActivity {
     private double totalPriceDouble = 0;
     private String totalPriceString = "";
     final int PAYMENT_REQUEST = 1;
+    public static Activity CheckoutMain;
 
     private static final String TAG = "CheckoutMain";
 
@@ -65,6 +67,7 @@ public class CheckoutMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        CheckoutMain = this;
         Log.d(TAG, "onCreate: checkout");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_main);
@@ -153,9 +156,9 @@ public class CheckoutMain extends AppCompatActivity {
                 @Override
                 public void onSuccessResponse(String result) {
                     LoginMain.removeSessionCookie();
+                    QRreaderMain.QRreaderMain.finish();
+                    MenuMain.MenuMain.finish();
                     finish();
-                    Intent i = new Intent(CheckoutMain.this, LoginMain.class);
-                    startActivity(i);
                 }
             });
             return true;
