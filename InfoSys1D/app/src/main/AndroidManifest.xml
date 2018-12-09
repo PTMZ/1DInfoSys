@@ -58,7 +58,7 @@
         <activity
             android:name=".PaymentConfirmationMain"
             android:label="Thank You!"
-            ></activity>
+            />
         <activity android:name=".Vendor.VendorJobs" />
     </application>
 </manifest>

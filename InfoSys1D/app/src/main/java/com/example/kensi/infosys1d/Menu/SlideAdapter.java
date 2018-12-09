@@ -29,11 +29,9 @@ public class SlideAdapter extends PagerAdapter {
     Context context;
     LayoutInflater inflater;
 
-
     public SlideAdapter(Context context) {
         this.context = context;
     }
-
 
     @Override
     public int getCount() {

@@ -55,11 +55,12 @@ public class PaymentLogin extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             public void onPageFinished(WebView view, String url){
                 String currentURL = req.getUrl().toString();
+                // Parse URL to get access_token
                 HashMap<String, String> out = Utils.getParams(currentURL);
                 if (out.containsKey("access_token") & !accessed){
                     accessed = true;
                     Intent i = new Intent(PaymentLogin.this, CheckoutMain.class);
-                    i.putExtra(SESSION_TOKEN, out.get("access_token"));    //key -- value
+                    i.putExtra(SESSION_TOKEN, out.get("access_token"));
                     setResult(PaymentLogin.RESULT_OK,i);
                     finish();
                 }

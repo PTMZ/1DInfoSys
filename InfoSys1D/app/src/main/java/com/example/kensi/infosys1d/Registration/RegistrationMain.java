@@ -45,7 +45,13 @@ public class RegistrationMain extends AppCompatActivity {
                 if (!errorMsg.equals("no_error")) {
                     Toast.makeText(RegistrationMain.this, errorMsg, Toast.LENGTH_LONG).show();
                 } else {
-                    LoginPostRequest.registration(getApplicationContext(), inputPassword0.getText().toString(), email, inputUser.getText().toString(), checkVendor.isChecked(), inputPhone.getText().toString(), new VolleyCallback() {
+                    LoginPostRequest.registration(getApplicationContext(),
+                            inputPassword0.getText().toString(),
+                            email,
+                            inputUser.getText().toString(),
+                            checkVendor.isChecked(),
+                            inputPhone.getText().toString(),
+                            new VolleyCallback() {
                         //calls for response from postrequest
                         @Override
                         public void onSuccessResponse(String result) {

@@ -98,6 +98,16 @@ public class CheckoutMain extends AppCompatActivity {
         //Set total value
         updateTotalPrice();
 
+        // Immediately Ask for OCBC Login
+        if (session_token == null) { // Go to OCBC Login if there is no session token
+            if (Utils.isNetworkAvailable(CheckoutMain.this)) {
+                Intent i = new Intent(CheckoutMain.this, PaymentLogin.class);
+                startActivityForResult(i, PAYMENT_REQUEST);
+            } else {
+                Toast.makeText(CheckoutMain.this, getText(R.string.network_error), Toast.LENGTH_SHORT).show();
+            }
+        }
+
         // Clicking the Place Order button
         buttonPlaceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,8 +119,6 @@ public class CheckoutMain extends AppCompatActivity {
                     if (session_token == null) { // Go to OCBC Login if there is no session token
                         if (Utils.isNetworkAvailable(CheckoutMain.this)) {
                             Intent i = new Intent(CheckoutMain.this, PaymentLogin.class);
-                            i.putExtra("totalPriceDouble", totalPriceDouble);
-                            i.putExtra("totalPriceString", totalPriceString);
                             startActivityForResult(i, PAYMENT_REQUEST);
                         } else {
                             Toast.makeText(CheckoutMain.this, getText(R.string.network_error), Toast.LENGTH_SHORT).show();
@@ -250,6 +258,7 @@ public class CheckoutMain extends AppCompatActivity {
 //            response.setText(output);
             String success_response = null;
             try {
+                // Response from OCBC
                 success_response = output.getJSONObject("results").getString("success");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -266,10 +275,12 @@ public class CheckoutMain extends AppCompatActivity {
                     } else {
                         tableNo = editTextTable.getText().toString();
                     }
+                    // Post Order to Server
                     PaymentPostRequest.postPayment(CheckoutMain.this,
                             getJSONOrder(checkoutList), QRreaderMain.getStoreID(), tableNo,
                             new VolleyCallback() {
                                 @Override
+                                // Bring User to Payment Confirmed Activity on Success Response
                                 public void onSuccessResponse(String result) { // on success, go to next screen
                                     Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
                                     i.putExtra("totalPriceDouble", totalPriceDouble);
