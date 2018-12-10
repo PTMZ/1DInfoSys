@@ -60,9 +60,6 @@ public class VendorJobs extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_refresh){
-            refreshRecycler();
-        }
         if(item.getItemId() == R.id.action_logout){
             LoginPostRequest.logout(VendorJobs.this, new VolleyCallback(){
                 @Override
