@@ -9,7 +9,7 @@
 
     <EditText
         android:id="@+id/inputRegPhone"
-        android:layout_width="273dp"
+        android:layout_width="260sp"
         android:layout_height="42dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
@@ -24,15 +24,15 @@
         android:id="@+id/textPhone"
         android:layout_width="67dp"
         android:layout_height="38dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:text="Confirm Password"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="Phone Numer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/inputRegPhone" />
 
     <EditText
         android:id="@+id/inputRegUser"
-        android:layout_width="272dp"
+        android:layout_width="260sp"
         android:layout_height="44dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
@@ -44,7 +44,7 @@
 
     <EditText
         android:id="@+id/inputRegEmail"
-        android:layout_width="273dp"
+        android:layout_width="260sp"
         android:layout_height="42dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
@@ -56,7 +56,7 @@
 
     <EditText
         android:id="@+id/inputRegPassword0"
-        android:layout_width="273dp"
+        android:layout_width="260sp"
         android:layout_height="42dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
@@ -68,7 +68,7 @@
 
     <EditText
         android:id="@+id/inputRegPassword1"
-        android:layout_width="273dp"
+        android:layout_width="260sp"
         android:layout_height="42dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"

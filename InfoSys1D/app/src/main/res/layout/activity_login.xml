@@ -52,50 +52,29 @@
         app:layout_constraintEnd_toStartOf="@+id/inputRegEmail"
         app:layout_constraintTop_toBottomOf="@+id/textEmail" />
 
-    <CheckBox
-        android:id="@+id/checkRemember"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/buttonRegSubmit"
+        android:layout_width="205dp"
+        android:layout_height="41dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:checked="true"
-        android:text="Remember"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:text="Submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputRegEmail" />
 
     <Button
-        android:id="@+id/buttonRegSubmit"
-        android:layout_width="103dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:text="Submit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkRemember" />
-
-    <Button
-        android:id="@+id/buttonTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="4dp"
-        android:text="Test Button"
-        app:layout_constraintEnd_toEndOf="@+id/buttonSign"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/checkRemember" />
-
-    <Button
         android:id="@+id/buttonSign"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
-        android:layout_marginRight="28dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginRight="36dp"
         android:text="Sign Up"
         app:layout_constraintBottom_toBottomOf="@+id/buttonRegSubmit"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRegSubmit" />
+        app:layout_constraintEnd_toStartOf="@+id/buttonRegSubmit"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

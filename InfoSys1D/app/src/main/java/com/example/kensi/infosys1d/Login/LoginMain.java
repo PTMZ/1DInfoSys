@@ -76,9 +76,7 @@ public class LoginMain extends AppCompatActivity {
         //Input instantiations from UI
         final EditText inputEmail = findViewById(R.id.inputRegUser);
         final EditText inputPassword = findViewById(R.id.inputRegEmail);
-        final CheckBox checkRemember = findViewById(R.id.checkRemember);
         final Button buttonSubmit = findViewById(R.id.buttonRegSubmit);
-        final Button buttonTest = findViewById(R.id.buttonTest);
         final Button buttonSign = findViewById(R.id.buttonSign);
 
 
@@ -91,24 +89,6 @@ public class LoginMain extends AppCompatActivity {
             }
         });
 
-        //temporary button
-        //todo remove test button
-        buttonTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent i = new Intent(LoginMain.this, CheckoutMain.class);
-                MenuRequest.request_call_me(LoginMain.this, "cffde47dcc0f3f7a92ae96e1650d5b306382ce6e97bd14373b3aa96ffe54a986219e5b0e0632d7bb899c8a5d5ccea092beee41e2798c9dddfa03e11b71083080", new VolleyCallback() {
-                    @Override
-                    public void onSuccessResponse(String result) {
-                        Intent i = new Intent(LoginMain.this, MenuMain.class);
-                        i.putExtra("ServerResult", result);
-                        startActivity(i);
-                    }
-                });
-//                Intent i = new Intent(LoginMain.this, PaymentConfirmationMain.class);
-//                startActivity(i);
-            }
-        });
 
         // Submission press
         buttonSubmit.setOnClickListener(new View.OnClickListener() {
