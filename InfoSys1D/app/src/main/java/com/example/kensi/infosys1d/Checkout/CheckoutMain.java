@@ -50,7 +50,7 @@ public class CheckoutMain extends AppCompatActivity {
     List<Product> checkoutList;
     public JSONObject checkoutJSON;
 
-    String session_token;
+    private static String session_token;
     private double totalPriceDouble = 0;
     private String totalPriceString = "";
     final int PAYMENT_REQUEST = 1;
@@ -101,15 +101,6 @@ public class CheckoutMain extends AppCompatActivity {
         //Set total value
         updateTotalPrice();
 
-        // Immediately Ask for OCBC Login
-        if (session_token == null) { // Go to OCBC Login if there is no session token
-            if (Utils.isNetworkAvailable(CheckoutMain.this)) {
-                Intent i = new Intent(CheckoutMain.this, PaymentLogin.class);
-                startActivityForResult(i, PAYMENT_REQUEST);
-            } else {
-                Toast.makeText(CheckoutMain.this, getText(R.string.network_error), Toast.LENGTH_SHORT).show();
-            }
-        }
 
         // Clicking the Place Order button
         buttonPlaceOrder.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +137,32 @@ public class CheckoutMain extends AppCompatActivity {
                 //TODO: Make app go live
                 //session_token = data.getStringExtra(PaymentLogin.SESSION_TOKEN);
                 session_token = "9a948a49407c380ed0d0a07d995e9f38";
+
+                if (data.getIntExtra(PaymentLogin.JUST_LOGIN,0) == 1){
+                    String tableNo;
+                    if (editTextTable.getText().toString().equals("")) {
+                        tableNo = "0";
+                    } else {
+                        tableNo = editTextTable.getText().toString();
+                    }
+                    // Post Order to Server
+                    try {
+                        PaymentPostRequest.postPayment(CheckoutMain.this,
+                                getJSONOrder(checkoutList), QRreaderMain.getStoreID(), tableNo,
+                                new VolleyCallback() {
+                                    @Override
+                                    // Bring User to Payment Confirmed Activity on Success Response
+                                    public void onSuccessResponse(String result) { // on success, go to next screen
+                                        Intent i = new Intent(CheckoutMain.this, PaymentConfirmationMain.class);
+                                        i.putExtra("totalPriceDouble", totalPriceDouble);
+                                        i.putExtra("totalPriceString", totalPriceString);
+                                        startActivity(i);
+                                    }
+                                });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

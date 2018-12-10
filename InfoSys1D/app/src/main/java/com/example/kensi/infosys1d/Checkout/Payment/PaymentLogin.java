@@ -20,6 +20,7 @@ public class PaymentLogin extends AppCompatActivity {
 
     private boolean accessed;
     public final static String SESSION_TOKEN = "Session Token";
+    public final static String JUST_LOGIN = "JUST_LOGIN";
     private HashMap<String,String> login_params = new HashMap<>();
 
     @Override
@@ -61,6 +62,7 @@ public class PaymentLogin extends AppCompatActivity {
                     accessed = true;
                     Intent i = new Intent(PaymentLogin.this, CheckoutMain.class);
                     i.putExtra(SESSION_TOKEN, out.get("access_token"));
+                    i.putExtra(JUST_LOGIN, 1);
                     setResult(PaymentLogin.RESULT_OK,i);
                     finish();
                 }
