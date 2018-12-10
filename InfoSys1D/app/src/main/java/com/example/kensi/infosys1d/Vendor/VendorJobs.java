@@ -118,17 +118,20 @@ public class VendorJobs extends AppCompatActivity {
         Intent i = new Intent();
         i.putExtra("BackPress",true);
         setResult(RESULT_OK, i);
+        handler = null;
         finish();
     }
 
     private void autoRefresh(){
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshRecycler();
-                autoRefresh();
-            }
-        }, 5000);
+        if(handler != null){
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    refreshRecycler();
+                    autoRefresh();
+                }
+            }, 5000);
+        }
     }
 
 }

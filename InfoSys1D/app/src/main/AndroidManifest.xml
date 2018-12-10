@@ -67,5 +67,6 @@
             android:label="Thank You!"
             android:launchMode="singleInstance"></activity>
         <activity android:name=".Vendor.VendorJobs" />
+        <activity android:name=".Vendor.VendorQR" />
     </application>
 </manifest>

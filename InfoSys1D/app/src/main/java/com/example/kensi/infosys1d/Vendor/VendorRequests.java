@@ -201,6 +201,32 @@ public class VendorRequests {
         }
     }
 
+    public static void getQR(final Context context, final VolleyCallback callback) {
+        try {
+            // Define the url
+            String endpoint = "/admin/getQRcode";
+            String url = RequestUtils.BASE_URL + endpoint;
+
+            // Send form POST request
+            RequestUtils.sendGetStringReq(context, url, callback);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("MYAPP", "exception", e);
+//            return "check log";
+        }
+    }
+
+    public static String getQRKey(final String result){
+        String url = null;
+        try {
+            url = ( new JSONObject(result).getString("url"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
 
     private static String imageToString(Bitmap bitmap){
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

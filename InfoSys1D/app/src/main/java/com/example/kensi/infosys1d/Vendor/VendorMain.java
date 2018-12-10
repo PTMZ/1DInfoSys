@@ -35,6 +35,7 @@ public class VendorMain extends AppCompatActivity {
     private static final int UPDATE_FORM_REQ_CODE = 2;
     private static final int UPLOAD_FORM_REQ_CODE = 3;
     private static final int JOBS_REQ_CODE = 4;
+    private static final int QR_REQ_CODE = 5;
 
 
     String storeID = "";
@@ -108,11 +109,16 @@ public class VendorMain extends AppCompatActivity {
                 }
             });
         }
+        if(item.getItemId() == R.id.action_qr){
+            Intent i = new Intent(VendorMain.this, VendorQR.class);
+            startActivityForResult(i, QR_REQ_CODE);
+        }
         return true;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        /*
         if(requestCode == ADD_FORM_REQ_CODE){
             refreshRecycler();
         }
@@ -122,6 +128,8 @@ public class VendorMain extends AppCompatActivity {
         else if(requestCode == UPLOAD_FORM_REQ_CODE){
             refreshRecycler();
         }
+        */
+        refreshRecycler();
     }
 
     public void refreshRecycler(){
