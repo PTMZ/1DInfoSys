@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.kensi.infosys1d.Checkout.CheckoutMain;
 import com.example.kensi.infosys1d.Login.LoginMain;
 import com.example.kensi.infosys1d.Login.LoginPostRequest;
 import com.example.kensi.infosys1d.Menu.MenuMain;
@@ -71,8 +72,9 @@ public class PaymentConfirmationMain extends AppCompatActivity {
         buttonQRScanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(PaymentConfirmationMain.this, QRreaderMain.class);
-                startActivity(i);
+                MenuMain.MenuMain.finish();
+                CheckoutMain.CheckoutMain.finish();
+                finish();
             }
         });
 
@@ -80,8 +82,11 @@ public class PaymentConfirmationMain extends AppCompatActivity {
         buttonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                MenuMain.MenuMain.finish();
+                CheckoutMain.CheckoutMain.finish();
                 Intent i = new Intent(PaymentConfirmationMain.this, MenuMain.class);
                 startActivity(i);
+                finish();
             }
         });
     }
@@ -100,13 +105,22 @@ public class PaymentConfirmationMain extends AppCompatActivity {
                     @Override
                     public void onSuccessResponse(String result) {
                         LoginMain.removeSessionCookie();
+                        QRreaderMain.QRreaderMain.finish();
+                        MenuMain.MenuMain.finish();
+                        CheckoutMain.CheckoutMain.finish();
                         finish();
-                        Intent intent = new Intent(PaymentConfirmationMain.this, LoginMain.class);
-                        startActivity(intent);
                     }
                 });
                 return true;
         }
         return false;
+    }
+
+    //when back button is pressed, it goes to the main menu
+    @Override
+    public void onBackPressed() {
+        MenuMain.MenuMain.finish();
+        CheckoutMain.CheckoutMain.finish();
+        finish();
     }
 }

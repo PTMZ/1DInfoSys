@@ -1,5 +1,6 @@
 package com.example.kensi.infosys1d.Menu;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class MenuMain extends AppCompatActivity {
 
     //the recyclerview
     RecyclerView recyclerView;
+    public static Activity MenuMain;
 
     public static List<Product> getProductList() {
         return productList;
@@ -39,6 +41,8 @@ public class MenuMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        MenuMain = this;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_main);
@@ -89,9 +93,8 @@ public class MenuMain extends AppCompatActivity {
                     @Override
                     public void onSuccessResponse(String result) {
                         LoginMain.removeSessionCookie();
+                        QRreaderMain.QRreaderMain.finish();
                         finish();
-                        Intent intent = new Intent(MenuMain.this, LoginMain.class);
-                        startActivity(intent);
                     }
                 });
                 return true;

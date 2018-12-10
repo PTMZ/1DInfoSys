@@ -66,8 +66,7 @@ public class RegistrationMain extends AppCompatActivity {
                             if (status == 1) {
                                 //If successful, opens login page
                                 Toast.makeText(RegistrationMain.this, "Registration success", Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(RegistrationMain.this, LoginMain.class);
-                                startActivity(i);
+                                finish();
                             } else if (status == 0 ) {
                                 Toast.makeText(RegistrationMain.this, "Server error", Toast.LENGTH_LONG).show();
                             } else if (status == -1) {
@@ -88,8 +87,7 @@ public class RegistrationMain extends AppCompatActivity {
     }
         //Back button function
         public boolean onOptionsItemSelected (MenuItem item) {
-            Intent myIntent = new Intent(getApplicationContext(), LoginMain.class);
-            startActivityForResult(myIntent, 0);
+            finish();
             return true;
         }
 
